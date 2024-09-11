@@ -102,4 +102,4 @@ Este projeto está licenciado sob a [Licença MIT](LICENSE).
 
 ## Contato
 
-Para mais informações ou dúvidas, entre em contato com [seu.email@dominio.com](mailto:seu.email@dominio.com).
+Para mais informações ou dúvidas, entre em contato com Linkedins: Valdineide Schunk: www.linkedin.com/in/valdineide-schunk, Vitor Casotti:www.linkedin.com/in/vitor-casotti-667a14285, Mateus Barboza: www.linkedin.com/in/mateus-barboza-santana.
