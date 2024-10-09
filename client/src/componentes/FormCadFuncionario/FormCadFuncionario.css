@@ -1,0 +1,26 @@
+/* Estilo para todas as abas */
+.nav-tabs .nav-link {
+    border: 1px solid #212a33; /* Borda padrão */
+    border-bottom: none; /* Remove a borda inferior */
+    color: #495057; /* Cor padrão do texto */
+    background-color: transparent; /* Fundo transparente */
+    transition: none; /* Remove qualquer transição suave */
+}
+
+/* Remover o efeito de hover */
+.nav-tabs .nav-link:hover {
+    color: inherit; /* Mantém a cor original do texto */
+    background-color: transparent; /* Mantém o fundo original */
+    border-color: #212a33; /* Mantém a cor da borda original */
+}
+
+/* Estilo para a aba ativa */
+.nav-tabs .nav-link.active {
+    border: 2px solid green; /* Mudar borda para verde quando ativo */
+    background-color: #f8f9fa; /* Fundo cinza claro para aba ativa */
+    color: #495057; /* Cor do texto da aba ativa */
+    border-bottom: none;
+}
+
+  
+  
