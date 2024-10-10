@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tab, Nav, Form, Button } from 'react-bootstrap';
-import './FormCadFuncionario.css';
+import './FormCadFuncionario.module.css';
 
 function FormCadFuncionario({ handleSubmit }) {
+
   const [activeTab, setActiveTab] = useState('informacoes');
+
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -13,13 +15,16 @@ function FormCadFuncionario({ handleSubmit }) {
     sexo: '',
     email: '',
     telefone: '',
-    observacao: '',
+    observacoes: '',
     endereco: {
       rua: '',
       numero: '',
       cidade: '',
       estado: '',
       cep: '',
+      bairro: '',
+      complemento: '',
+      observacoes: '',
     },
     adicionais: {
       cargo: '',
@@ -56,10 +61,15 @@ function FormCadFuncionario({ handleSubmit }) {
     }
   };
 
-  const submit = (event) => {
-    event.preventDefault();
+  const submit = (e) => {
+    e.preventDefault();
+    const infoFuncinario = {
+   
+    };
     handleSubmit(formData);
   };
+  
+
 
   const handleCancel = () => {
     setFormData({
@@ -70,13 +80,16 @@ function FormCadFuncionario({ handleSubmit }) {
       sexo: '',
       email: '',
       telefone: '',
-      observacao: '',
+      observacoes: '',
       endereco: {
         rua: '',
         numero: '',
         cidade: '',
         estado: '',
         cep: '',
+        bairro: '',
+        complemento: '',
+        observacoes: '',
       },
       adicionais: {
         cargo: '',
@@ -91,6 +104,18 @@ function FormCadFuncionario({ handleSubmit }) {
     });
     setActiveTab('informacoes');
   };
+
+  
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="container mt-4">
@@ -210,12 +235,12 @@ function FormCadFuncionario({ handleSubmit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formObservacao" style={{ width: '200px' }}>Observação:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: '200px' }}>Observações:</Form.Label>
                   <Form.Control
                     as="textarea"
-                    id="formObservacao"
-                    name="observacao"
-                    value={formData.observacao}
+                    id="formObservacoes"
+                    name="observacoes"
+                    value={formData.observacoes}
                     onChange={handleChange}
                     style={{ width: '400px' }} 
                   />
@@ -225,110 +250,112 @@ function FormCadFuncionario({ handleSubmit }) {
           </Tab.Pane>
 
           <Tab.Pane eventKey="endereco">
-            <Form onSubmit={submit} className="border rounded p-3">
-              <div className="w-75 mx-auto">
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formRua" style={{ width: '200px' }}>CEP:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formRua"
-                    name="endereco.rua"
-                    value={formData.endereco.rua}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
+  <Form onSubmit={submit} className="border rounded p-3">
+    <div className="w-75 mx-auto">
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '200px' }}>CEP:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formCep"
+          name="endereco.cep"
+          value={formData.endereco.cep}
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
 
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formNumero" style={{ width: '200px' }}>Estado:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formNumero"
-                    name="endereco.numero"
-                    value={formData.endereco.numero}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formEstado" style={{ width: '200px' }}>Estado:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formEstado"
+          name="endereco.estado"
+          value={formData.endereco.estado}
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
 
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCidade" style={{ width: '200px' }}>Cidade:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formCidade"
-                    name="endereco.cidade"
-                    value={formData.endereco.cidade}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formCidade" style={{ width: '200px' }}>Cidade:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formCidade"
+          name="endereco.cidade"
+          value={formData.endereco.cidade}
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
 
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formEstado" style={{ width: '200px' }}>Bairro:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formEstado"
-                    name="endereco.estado"
-                    value={formData.endereco.estado}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formBairro" style={{ width: '200px' }}>Bairro:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formBairro" 
+          name="endereco.bairro" 
+          value={formData.endereco.bairro} 
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
 
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '200px' }}>Endereço:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formCep"
-                    name="endereco.cep"
-                    value={formData.endereco.cep}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '200px' }}>Numero:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formCep"
-                    name="endereco.cep"
-                    value={formData.endereco.cep}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '200px' }}>Complemento:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    id="formCep"
-                    name="endereco.cep"
-                    value={formData.endereco.cep}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '500px' }} 
-                  />
-                </div>
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formObservacao" style={{ width: '200px' }}>Observação:</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    id="formObservacao"
-                    name="observacao"
-                    value={formData.observacao}
-                    onChange={handleChange}
-                    style={{ width: '400px' }} 
-                  />
-                </div>
-              </div>
-            </Form>
-          </Tab.Pane>
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formRua" style={{ width: '200px' }}>Endereço:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formRua"
+          name="endereco.rua" 
+          value={formData.endereco.rua} 
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
+
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formNumero" style={{ width: '200px' }}>Número:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formNumero" 
+          name="endereco.numero" 
+          value={formData.endereco.numero} 
+          onChange={handleChange}
+          required
+          style={{ width: '500px' }} 
+        />
+      </div>
+
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formComplemento" style={{ width: '200px' }}>Complemento:</Form.Label>
+        <Form.Control
+          type="text"
+          id="formComplemento" 
+          name="endereco.complemento" 
+          value={formData.endereco.complemento} 
+          onChange={handleChange}
+          style={{ width: '500px' }} 
+        />
+      </div>
+
+      <div className="mb-3 d-flex align-items-center">
+        <Form.Label className="me-2 text-end" htmlFor="formObservacaoendereco" style={{ width: '200px' }}>Observações:</Form.Label>
+        <Form.Control
+          as="textarea"
+          id="formObservacaoendereco"
+          name="endereco.observacoes"
+          value={formData.endereco.observacoes}
+          onChange={handleChange}
+          style={{ width: '400px' }} 
+        />
+      </div>
+    </div>
+  </Form>
+</Tab.Pane>
 
           <Tab.Pane eventKey="adicionais">
             <Form onSubmit={submit} className="border rounded p-3">

@@ -1,0 +1,66 @@
+{
+  "funcionario": [
+    {
+      "id": "7417",
+      "nome": "valdineide schunk",
+      "cpf": "143.199.027-26",
+      "rg": "3233012",
+      "dataNascimento": "1992-05-28",
+      "sexo": "masculino",
+      "email": "valdineideschunk@gmail.com",
+      "telefone": "27998402372",
+      "observacoes": "11111111111",
+      "endereco": {
+        "rua": "apartamento",
+        "numero": "101",
+        "cidade": "Vitória - ES",
+        "estado": "ES",
+        "cep": "29047-170",
+        "bairro": "da penha",
+        "complemento": "apartamento 101",
+        "observacoes": "22222222222222"
+      },
+      "adicionais": {
+        "cargo": "recepcionista",
+        "dataAdmissao": "2024-10-03",
+        "dataEmissaoCarteira": "2024-10-01",
+        "banco": "Brasil",
+        "agencia": "01",
+        "conta": "01",
+        "status": "ativo",
+        "observacoes": "3333333333333"
+      }
+    },
+    {
+      "id": "e223",
+      "nome": "valdineide schunk",
+      "cpf": "143.199.027-26",
+      "rg": "3233012",
+      "dataNascimento": "1992-05-28",
+      "sexo": "masculino",
+      "email": "valdineideschunk@gmail.com",
+      "telefone": "27998402372",
+      "observacoes": "11111111111",
+      "endereco": {
+        "rua": "apartamento",
+        "numero": "101",
+        "cidade": "Vitória - ES",
+        "estado": "ES",
+        "cep": "29047-170",
+        "bairro": "da penha",
+        "complemento": "apartamento 101",
+        "observacoes": "22222222222222"
+      },
+      "adicionais": {
+        "cargo": "recepcionista",
+        "dataAdmissao": "2024-10-03",
+        "dataEmissaoCarteira": "2024-10-01",
+        "banco": "Brasil",
+        "agencia": "01",
+        "conta": "01",
+        "status": "ativo",
+        "observacoes": "3333333333333"
+      }
+    }
+  ]
+}
