@@ -32,37 +32,6 @@
       }
     },
     {
-      "id": "a0a4",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "",
-      "sexo": "",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "1111111111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha ",
-        "complemento": "apartamento 101",
-        "observacoes": "222222222222222222"
-      },
-      "adicionais": {
-        "cargo": "recepcionista",
-        "dataAdmissao": "2024-10-03",
-        "dataEmissaoCarteira": "2024-10-09",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "01",
-        "status": "inativo",
-        "observacoes": "3333333333333"
-      }
-    },
-    {
       "id": "7ab9",
       "nome": "Mateus Barboza",
       "cpf": "115.046.137-01",
