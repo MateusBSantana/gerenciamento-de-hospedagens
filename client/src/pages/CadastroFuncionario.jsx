@@ -1,5 +1,5 @@
 import React from 'react';
-import FormCadFuncionario from '../FormCadFuncionario/FormCadFuncionario';
+import FormCadFuncionario from '../componentes/Funcionarios/FormCadFuncionario/FormCadFuncionario';
 
 function CadastroFuncionario() {
 

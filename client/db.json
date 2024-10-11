@@ -1,188 +1,96 @@
 {
   "funcionario": [
     {
-      "id": "6844",
-      "nome": "valdineide schunk",
+      "id": "5f8d",
+      "nome": "Ney Schunk",
       "cpf": "143.199.027-26",
       "rg": "3233012",
-      "dataNascimento": "1992-05-28",
+      "dataNascimento": "2024-10-08",
       "sexo": "masculino",
       "email": "valdineideschunk@gmail.com",
       "telefone": "27998402372",
-      "observacoes": "1111111111",
+      "observacoes": "11111111",
       "endereco": {
         "rua": "apartamento",
         "numero": "101",
         "cidade": "Vitória - ES",
         "estado": "ES",
         "cep": "29047-170",
-        "bairro": "da penha",
+        "bairro": "da penha ",
         "complemento": "apartamento 101",
-        "observacoes": "2222222222"
+        "observacoes": "2222222222222222222"
       },
       "adicionais": {
         "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
+        "dataAdmissao": "2024-10-11",
+        "dataEmissaoCarteira": "2024-10-11",
         "banco": "Brasil",
         "agencia": "01",
-        "conta": "02",
+        "conta": "01",
         "status": "ativo",
-        "observacoes": "333333333333333"
+        "observacoes": "3333333333333333333333"
       }
     },
     {
-      "id": "6838",
+      "id": "a0a4",
       "nome": "valdineide schunk",
       "cpf": "143.199.027-26",
       "rg": "3233012",
-      "dataNascimento": "1992-05-28",
-      "sexo": "masculino",
+      "dataNascimento": "",
+      "sexo": "",
       "email": "valdineideschunk@gmail.com",
       "telefone": "27998402372",
-      "observacoes": "1111111111",
+      "observacoes": "1111111111111",
       "endereco": {
         "rua": "apartamento",
         "numero": "101",
         "cidade": "Vitória - ES",
         "estado": "ES",
         "cep": "29047-170",
-        "bairro": "da penha",
+        "bairro": "da penha ",
         "complemento": "apartamento 101",
-        "observacoes": "2222222222"
+        "observacoes": "222222222222222222"
       },
       "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
+        "cargo": "recepcionista",
+        "dataAdmissao": "2024-10-03",
+        "dataEmissaoCarteira": "2024-10-09",
         "banco": "Brasil",
         "agencia": "01",
-        "conta": "02",
-        "status": "ativo",
-        "observacoes": "333333333333333"
+        "conta": "01",
+        "status": "inativo",
+        "observacoes": "3333333333333"
       }
     },
     {
-      "id": "dd8b",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
+      "id": "7ab9",
+      "nome": "Mateus Barboza",
+      "cpf": "115.046.137-01",
       "rg": "3233012",
-      "dataNascimento": "1992-05-28",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
+      "dataNascimento": "2024-10-07",
+      "sexo": "",
+      "email": "mateus@gmail.com",
       "telefone": "27998402372",
-      "observacoes": "1111111111",
+      "observacoes": "11111111111111",
       "endereco": {
         "rua": "apartamento",
         "numero": "101",
         "cidade": "Vitória - ES",
         "estado": "ES",
         "cep": "29047-170",
-        "bairro": "da penha",
+        "bairro": "da penha ",
         "complemento": "apartamento 101",
-        "observacoes": "2222222222"
+        "observacoes": "22222222222222"
       },
       "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
+        "cargo": "recepcionista",
+        "dataAdmissao": "2024-10-01",
+        "dataEmissaoCarteira": "2024-10-14",
         "banco": "Brasil",
         "agencia": "01",
-        "conta": "02",
+        "conta": "01",
         "status": "ativo",
-        "observacoes": "333333333333333"
-      }
-    },{
-      "id": "6844",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "1992-05-28",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "1111111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha",
-        "complemento": "apartamento 101",
-        "observacoes": "2222222222"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "02",
-        "status": "ativo",
-        "observacoes": "333333333333333"
-      }
-    },
-    {
-      "id": "6838",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "1992-05-28",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "1111111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha",
-        "complemento": "apartamento 101",
-        "observacoes": "2222222222"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "02",
-        "status": "ativo",
-        "observacoes": "333333333333333"
-      }
-    },
-    {
-      "id": "dd8b",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "1992-05-28",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "1111111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha",
-        "complemento": "apartamento 101",
-        "observacoes": "2222222222"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-10",
-        "dataEmissaoCarteira": "2024-10-01",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "02",
-        "status": "ativo",
-        "observacoes": "333333333333333"
+        "observacoes": "3333333333333"
       }
     }
   ]

@@ -17,8 +17,8 @@
   color: #fff;
 }
 
-.TabelaFuncionarios tbody tr:nth-child(odd) {
-  background-color: #e1dbdb;
+.TabelaFuncionarios tbody tr:nth-child(even) {
+  background-color: #eae6e6;
 }
 
 .TabelaFuncionarios td,
