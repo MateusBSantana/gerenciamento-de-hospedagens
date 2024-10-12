@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Form, Button } from 'react-bootstrap';
-import FormFuncionario from '../componentes/Funcionarios/FormCadFuncionario/FormFuncionario';
+import FormFuncionario from '../Funcionarios/FormCadFuncionario/FormFuncionario';
+import MenuLateral from '../layout/MenuLateral/MenuLateral';
 
 function EditarFuncionario() {
   const { id } = useParams(); // Captura o ID do funcionário da URL
@@ -129,9 +130,10 @@ function EditarFuncionario() {
   }
   
   return (
+    <div className="d-flex">
+      <MenuLateral />
     <div className="container mt-4">
       <h2>Editando Funcionário</h2>
-
       <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
         <Nav variant="tabs">
           <Nav.Item>
@@ -144,7 +146,6 @@ function EditarFuncionario() {
             <Nav.Link eventKey="adicionais">Adicionais</Nav.Link>
           </Nav.Item>
         </Nav>
-
         <Tab.Content>
           <FormFuncionario
             formData={formData}
@@ -171,6 +172,8 @@ function EditarFuncionario() {
         </Button>
       </div>
     </div>
+    </div>
+    
   );
 }
 

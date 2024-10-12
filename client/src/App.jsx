@@ -2,9 +2,9 @@
 import './App.css';
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import CadastroFuncionario from './pages/CadastroFuncionario';
+import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
 import TabelaFuncionarios from './componentes/Funcionarios/TabelaFuncionarios/TabelaFuncionarios';
-import EditarFuncionario from './pages/EditarFuncionario';
+import EditarFuncionario from './componentes/pages/EditarFuncionario';
 
 function App() {
   return (

@@ -32,15 +32,15 @@
       }
     },
     {
-      "id": "7ab9",
+      "id": "f365",
       "nome": "Mateus Barboza",
       "cpf": "115.046.137-01",
       "rg": "3233012",
-      "dataNascimento": "2024-10-07",
+      "dataNascimento": "",
       "sexo": "",
       "email": "mateus@gmail.com",
       "telefone": "27998402372",
-      "observacoes": "11111111111111",
+      "observacoes": "",
       "endereco": {
         "rua": "apartamento",
         "numero": "101",
@@ -49,17 +49,17 @@
         "cep": "29047-170",
         "bairro": "da penha ",
         "complemento": "apartamento 101",
-        "observacoes": "22222222222222"
+        "observacoes": ""
       },
       "adicionais": {
-        "cargo": "recepcionista",
-        "dataAdmissao": "2024-10-01",
-        "dataEmissaoCarteira": "2024-10-14",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "01",
-        "status": "ativo",
-        "observacoes": "3333333333333"
+        "cargo": "",
+        "dataAdmissao": "",
+        "dataEmissaoCarteira": "",
+        "banco": "",
+        "agencia": "",
+        "conta": "",
+        "status": "",
+        "observacoes": ""
       }
     }
   ]
