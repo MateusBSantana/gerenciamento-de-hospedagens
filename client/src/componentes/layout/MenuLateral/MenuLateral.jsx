@@ -64,7 +64,7 @@ function MenuLateral() {
       </li>
     </ul>
     {/* Botão para abrir/fechar o menu */}
-    <button id="open_btn" className="btn btn-link text-white d-flex justify-content-center align-items-center p-2" onClick={toggleMenu} style={{ position: 'absolute', top: '10px', right: '-40px', backgroundColor: '#4f46e5', borderRadius: '30%', width: '50px', height: '50px', transition: 'transform 0.3s' }}>
+    <button id="open_btn" className="btn btn-link text-white d-flex justify-content-center align-items-center p-2" onClick={toggleMenu} style={{ position: 'absolute', top: '10px', right: '-40px', backgroundColor: '#4f46e5', borderRadius: '30%', width: '50px', height: '50px', transition: 'transform 0.6s' }}>
       <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '20px' }} />
       <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '20px'}} />
     </button>

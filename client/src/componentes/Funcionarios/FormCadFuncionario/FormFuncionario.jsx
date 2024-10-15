@@ -131,7 +131,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.cep}
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '180px' }} 
         />
       </div>
 
@@ -144,7 +144,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.estado}
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '250px' }} 
         />
       </div>
 
@@ -157,7 +157,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.cidade}
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '250px' }} 
         />
       </div>
 
@@ -170,7 +170,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.bairro} 
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '250px' }} 
         />
       </div>
 
@@ -183,7 +183,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.rua} 
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '350px' }} 
         />
       </div>
 
@@ -196,7 +196,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           value={formData.endereco.numero} 
           onChange={handleChange}
           required
-          style={{ width: '500px' }} 
+          style={{ width: '100px' }} 
         />
       </div>
 
@@ -208,7 +208,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           name="endereco.complemento" 
           value={formData.endereco.complemento} 
           onChange={handleChange}
-          style={{ width: '500px' }} 
+          style={{ width: '350px' }} 
         />
       </div>
 
@@ -220,7 +220,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
           name="endereco.observacoes"
           value={formData.endereco.observacoes}
           onChange={handleChange}
-          style={{ width: '400px' }} 
+          style={{ width: '350px' }} 
         />
       </div>
     </div>
@@ -283,7 +283,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     value={formData.adicionais.banco}
                     onChange={handleChange}
                     required
-                    style={{ width: '500px' }} 
+                    style={{ width: '250px' }} 
                   />
                 </div>
 
@@ -296,7 +296,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     value={formData.adicionais.agencia}
                     onChange={handleChange}
                     required
-                    style={{ width: '500px' }} 
+                    style={{ width: '150px' }} 
                   />
                 </div>
 
@@ -309,7 +309,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     value={formData.adicionais.conta}
                     onChange={handleChange}
                     required
-                    style={{ width: '500px' }} 
+                    style={{ width: '150px' }} 
                   />
                 </div>
 
@@ -338,7 +338,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     name="adicionais.observacoes"
                     value={formData.adicionais.observacoes}
                     onChange={handleChange}
-                    style={{ width: '500px' }} 
+                    style={{ width: '350px' }} 
                   />
                 </div>
               </div>

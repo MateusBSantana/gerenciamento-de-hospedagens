@@ -16,7 +16,7 @@
 }
 
 .side-item:hover:not(active), #btn:hover {
-  background-color: #7dcbd8;
+  background-color: #4f46e5;
 }
 
 #sidebar.open-sidebar #open_btn {
@@ -42,21 +42,20 @@
   #sidebar {
     position: absolute;
     z-index: 1000;
-    transform: translateX(-100%); /* Esconder o menu fora da tela */
+    transform: translateX(-100%);
   }
 
   #sidebar.open-sidebar {
-    transform: translateX(0); /* Mostrar o menu */
+    transform: translateX(0);
     width: 200px;
     min-width: 200px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Adicionar uma sombra para destaque */
   }
 }
 
 @media (min-width: 600px) {
   #sidebar {
     position: relative;
-    width: 65px; /* Ajuste conforme necessário */
+    width: 65px; 
   }
 
   #sidebar.open-sidebar {
