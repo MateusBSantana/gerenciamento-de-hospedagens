@@ -44,6 +44,7 @@ function TabelaFuncionarios() {
     <div className="d-flex">
       <MenuLateral />
       <div className="flex-grow-1 p-3">
+      <h2 className="text-center">Lista de Funcionários</h2>
         <div className={styles.Funcionarios}>
           <table className={`${styles.TabelaFuncionarios} table-bordered mt-3`}>
             <thead>

@@ -133,17 +133,19 @@ function EditarFuncionario() {
     <div className="d-flex">
       <MenuLateral />
     <div className="container mt-4">
-      <h2>Editando Funcionário</h2>
+      <div className="">
+        <h2 style={{ marginLeft: '50px' }}>Editando Funcionário</h2>
+      </div>
       <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
         <Nav variant="tabs">
           <Nav.Item>
-            <Nav.Link eventKey="informacoes">Informações do Funcionário</Nav.Link>
+            <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="endereco">Endereço</Nav.Link>
+            <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="adicionais">Adicionais</Nav.Link>
+            <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
           </Nav.Item>
         </Nav>
         <Tab.Content>

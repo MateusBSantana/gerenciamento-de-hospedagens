@@ -5,10 +5,11 @@ function FormFuncionario({ formData, handleChange, submit }) {
   return (
     <>
     <Tab.Pane eventKey="informacoes">
-            <Form onSubmit={submit} className="border rounded p-3">
-              <div className="w-75 mx-auto">
+    <Form onSubmit={submit} className="border rounded pt-3" style={{ textAlign: 'left' }}>
+            <div className="mx-auto">
+                
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formNome" style={{ width: '200px' }}>Nome Completo:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formNome" style={{ width: '160px' }}>Nome Completo:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formNome"
@@ -21,7 +22,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCpf" style={{ width: '200px' }}>CPF:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formCpf" style={{ width: '160px' }}>CPF:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formCpf"
@@ -34,7 +35,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formRg" style={{ width: '200px' }}>RG:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formRg" style={{ width: '160px' }}>RG:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formRg"
@@ -47,7 +48,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formDataNascimento" style={{ width: '200px' }}>Data de Nascimento:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formDataNascimento" style={{ width: '160px' }}>Data de Nascimento:</Form.Label>
                   <Form.Control
                     type="date"
                     id="formDataNascimento"
@@ -60,7 +61,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formSexo" style={{ width: '200px' }}>Sexo:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formSexo" style={{ width: '160px' }}>Sexo:</Form.Label>
                   <Form.Control
                     as="select"
                     id="formSexo"
@@ -68,7 +69,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     value={formData.sexo}
                     onChange={handleChange}
                     required
-                    style={{ width: '200px' }} 
+                    style={{ width: '160px' }} 
                   >
                     <option value="">Por favor selecione</option>
                     <option value="masculino">Masculino</option>
@@ -78,7 +79,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formEmail" style={{ width: '200px' }}>E-mail:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formEmail" style={{ width: '160px' }}>E-mail:</Form.Label>
                   <Form.Control
                     type="email"
                     id="formEmail"
@@ -91,7 +92,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formTelefone" style={{ width: '200px' }}>Número de Telefone:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formTelefone" style={{ width: '160px' }}>Número de Telefone:</Form.Label>
                   <Form.Control
                     type="tel"
                     id="formTelefone"
@@ -104,7 +105,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: '200px' }}>Observações:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: '160px' }}>Observações:</Form.Label>
                   <Form.Control
                     as="textarea"
                     id="formObservacoes"
@@ -120,9 +121,9 @@ function FormFuncionario({ formData, handleChange, submit }) {
 
           <Tab.Pane eventKey="endereco">
   <Form onSubmit={submit} className="border rounded p-3">
-    <div className="w-75 mx-auto">
+    <div className="mx-auto">
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '200px' }}>CEP:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: '160px' }}>CEP:</Form.Label>
         <Form.Control
           type="text"
           id="formCep"
@@ -135,7 +136,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formEstado" style={{ width: '200px' }}>Estado:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formEstado" style={{ width: '160px' }}>Estado:</Form.Label>
         <Form.Control
           type="text"
           id="formEstado"
@@ -148,7 +149,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formCidade" style={{ width: '200px' }}>Cidade:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formCidade" style={{ width: '160px' }}>Cidade:</Form.Label>
         <Form.Control
           type="text"
           id="formCidade"
@@ -161,7 +162,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formBairro" style={{ width: '200px' }}>Bairro:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formBairro" style={{ width: '160px' }}>Bairro:</Form.Label>
         <Form.Control
           type="text"
           id="formBairro" 
@@ -174,7 +175,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formRua" style={{ width: '200px' }}>Endereço:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formRua" style={{ width: '160px' }}>Endereço:</Form.Label>
         <Form.Control
           type="text"
           id="formRua"
@@ -187,7 +188,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formNumero" style={{ width: '200px' }}>Número:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formNumero" style={{ width: '160px' }}>Número:</Form.Label>
         <Form.Control
           type="text"
           id="formNumero" 
@@ -200,7 +201,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formComplemento" style={{ width: '200px' }}>Complemento:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formComplemento" style={{ width: '160px' }}>Complemento:</Form.Label>
         <Form.Control
           type="text"
           id="formComplemento" 
@@ -212,7 +213,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
       </div>
 
       <div className="mb-3 d-flex align-items-center">
-        <Form.Label className="me-2 text-end" htmlFor="formObservacaoendereco" style={{ width: '200px' }}>Observações:</Form.Label>
+        <Form.Label className="me-2 text-end" htmlFor="formObservacaoendereco" style={{ width: '160px' }}>Observações:</Form.Label>
         <Form.Control
           as="textarea"
           id="formObservacaoendereco"
@@ -228,9 +229,9 @@ function FormFuncionario({ formData, handleChange, submit }) {
 
           <Tab.Pane eventKey="adicionais">
             <Form onSubmit={submit} className="border rounded p-3">
-              <div className="w-75 mx-auto">
+              <div className="mx-auto">
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '200px' }}>Cargo:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
                   <Form.Control
                     as="select"
                     id="formCargo"
@@ -248,7 +249,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formDataAdmissao" style={{ width: '200px' }}>Data de Admissão:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formDataAdmissao" style={{ width: '160px' }}>Data de Admissão:</Form.Label>
                   <Form.Control
                     type="date"
                     id="formDataAdmissao"
@@ -261,7 +262,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formDataEmissaoCarteira" style={{ width: '200px' }}>Data de Emissão da Carteira:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formDataEmissaoCarteira" style={{ width: '160px' }}>Data de Emissão da Carteira:</Form.Label>
                   <Form.Control
                     type="date"
                     id="formDataEmissaoCarteira"
@@ -274,7 +275,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formBanco" style={{ width: '200px' }}>Banco:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formBanco" style={{ width: '160px' }}>Banco:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formBanco"
@@ -287,7 +288,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formAgencia" style={{ width: '200px' }}>Agência:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formAgencia" style={{ width: '160px' }}>Agência:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formAgencia"
@@ -300,7 +301,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formConta" style={{ width: '200px' }}>Conta:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formConta" style={{ width: '160px' }}>Conta:</Form.Label>
                   <Form.Control
                     type="text"
                     id="formConta"
@@ -313,7 +314,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formStatus" style={{ width: '200px' }}>Status:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formStatus" style={{ width: '160px' }}>Status:</Form.Label>
                   <Form.Control
                     as="select"
                     id="formStatus"
@@ -330,7 +331,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 </div>
 
                 <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: '200px' }}>Observações:</Form.Label>
+                  <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: '160px' }}>Observações:</Form.Label>
                   <Form.Control
                     as="textarea"
                     id="formObservacoes"
