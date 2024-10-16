@@ -61,6 +61,37 @@
         "status": "",
         "observacoes": ""
       }
+    },
+    {
+      "id": "adf8",
+      "nome": "",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "email": "",
+      "telefone": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "adicionais": {
+        "cargo": "",
+        "dataAdmissao": "",
+        "dataEmissaoCarteira": "",
+        "banco": "",
+        "agencia": "",
+        "conta": "",
+        "status": "",
+        "observacoes": ""
+      }
     }
   ]
 }
