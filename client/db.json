@@ -1,54 +1,85 @@
 {
   "funcionario": [
     {
-      "id": "5f8d",
-      "nome": "Ney Schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "2024-10-08",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "11111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha ",
-        "complemento": "apartamento 101",
-        "observacoes": "2222222222222222222"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-11",
-        "dataEmissaoCarteira": "2024-10-11",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "01",
-        "status": "ativo",
-        "observacoes": "3333333333333333333333"
-      }
-    },
-    {
-      "id": "f365",
+      "id": "dfb4",
       "nome": "Mateus Barboza",
       "cpf": "115.046.137-01",
       "rg": "3233012",
       "dataNascimento": "",
-      "sexo": "",
+      "sexo": "masculino",
       "email": "mateus@gmail.com",
       "telefone": "27998402372",
       "observacoes": "",
       "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha ",
-        "complemento": "apartamento 101",
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "adicionais": {
+        "cargo": "",
+        "dataAdmissao": "",
+        "dataEmissaoCarteira": "",
+        "banco": "",
+        "agencia": "",
+        "conta": "",
+        "status": "",
+        "observacoes": ""
+      }
+    },
+    {
+      "id": "e67b",
+      "nome": "valdineide schunk",
+      "cpf": "143.199.027-26",
+      "rg": "123453",
+      "dataNascimento": "2024-10-24",
+      "sexo": "masculino",
+      "email": "valdineideschunk@gmail.com",
+      "telefone": "27998402372",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "adicionais": {
+        "cargo": "",
+        "dataAdmissao": "",
+        "dataEmissaoCarteira": "",
+        "banco": "",
+        "agencia": "",
+        "conta": "",
+        "status": "",
+        "observacoes": ""
+      }
+    },
+    {
+      "id": "6142",
+      "nome": "vitor ifood",
+      "cpf": "12345678912",
+      "rg": "123453",
+      "dataNascimento": "2024-10-08",
+      "sexo": "masculino",
+      "email": "lordsh1604@hmail.com",
+      "telefone": "27998402373",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
         "observacoes": ""
       },
       "adicionais": {
