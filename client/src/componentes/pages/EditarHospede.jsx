@@ -50,11 +50,9 @@ function EditarFuncionario() {
             'Content-Type': 'application/json',
           },
         });
-
         if (!resposta.ok) {
           throw new Error('Erro ao buscar funcionário');
         }
-
         const dadosFuncionario = await resposta.json();
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
         setLoading(false);
@@ -62,7 +60,6 @@ function EditarFuncionario() {
         console.error('Erro ao buscar funcionário', error);
       }
     }
-
     buscarFuncionario();
   }, [id]);
 
@@ -91,22 +88,22 @@ function EditarFuncionario() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Se estamos na aba 'adicionais', tentamos salvar os dados
     if (activeTab === 'adicionais') {
       try {
-        const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
+        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData), // Envia os dados atualizados
         });
-  
+
         if (!resposta.ok) {
           throw new Error('Erro ao atualizar funcionário');
         }
-  
+
         navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
       } catch (error) {
         console.error('Erro ao atualizar funcionário', error);
@@ -128,54 +125,52 @@ function EditarFuncionario() {
   if (loading) {
     return <p>Carregando...</p>; // Exibe uma mensagem de carregamento
   }
-  
+
   return (
     <div className="d-flex">
       <MenuLateral />
-    <div className="container mt-4">
-      <div className="">
-        <h2 style={{ marginLeft: '50px' }}>Editando Funcionário</h2>
-      </div>
-      <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
-        <Nav variant="tabs">
-          <Nav.Item>
-            <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <Tab.Content>
-          <FormFuncionario
-            formData={formData}
-            handleChange={handleChange}
-          />
-        </Tab.Content>
-      </Tab.Container>
-
-      <div className="text-center mt-4">
-        <Button
-          variant="danger"
-          className="mt-2 me-2"
-          onClick={handleCancel} // Chama handleCancel ao clicar
-        >
-          Cancelar
-        </Button>
-        <Button
-          variant="primary"
-          className="mt-2"
-          type="submit"
-          onClick={handleSubmit} // Chama handleSubmit ao clicar
-        >
-          {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
-        </Button>
+      <div className="container mt-4">
+        <div className="">
+          <h2 style={{ marginLeft: '50px' }}>Editando Funcionário</h2>
+        </div>
+        <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
+          <Nav variant="tabs">
+            <Nav.Item>
+              <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <Tab.Content>
+            <FormFuncionario
+              formData={formData}
+              handleChange={handleChange}
+            />
+          </Tab.Content>
+        </Tab.Container>
+        <div className="text-center mt-4">
+          <Button
+            variant="danger"
+            className="mt-2 me-2"
+            onClick={handleCancel} // Chama handleCancel ao clicar
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="primary"
+            className="mt-2"
+            type="submit"
+            onClick={handleSubmit} // Chama handleSubmit ao clicar
+          >
+            {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
+          </Button>
+        </div>
       </div>
     </div>
-    </div>
-    
   );
 }
 

@@ -1,0 +1,27 @@
+.Hospedes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.TabelaHospedes {
+  width: 80%;
+  max-width: 800px;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.TabelaHospedes thead {
+  background-color: #006bb4;
+  color: #fff;
+}
+
+.TabelaHospedes tbody tr:nth-child(even) {
+  background-color: #eae6e6;
+}
+
+.TabelaHospedes td,
+.TabelaHospedes th {
+  padding: 4px;
+}

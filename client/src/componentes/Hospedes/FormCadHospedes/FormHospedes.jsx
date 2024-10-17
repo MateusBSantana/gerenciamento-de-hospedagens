@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Tab } from "react-bootstrap";
 
-function FormFuncionario({ formData, handleChange, submit }) {
+function FormHospede({ formData, handleChange, submit }) {
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -495,4 +495,4 @@ function FormFuncionario({ formData, handleChange, submit }) {
   );
 }
 
-export default FormFuncionario;
+export default FormHospede;

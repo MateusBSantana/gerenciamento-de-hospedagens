@@ -39,7 +39,7 @@ function MenuLateral() {
         </a>
       </li>
       <li className="nav-item side-item w-100">
-        <a href="#" className="nav-link text-white d-flex align-items-center  justify-content-start w-100">
+        <a href="/tabela_hospedes" className="nav-link text-white d-flex align-items-center  justify-content-start w-100">
           <FontAwesomeIcon icon={faUserGroup} style={{ fontSize: '25px', color: '#ffffff', paddingRight:  '12px' }} />
           <span className="item-description text-white">Hóspedes</span>
         </a>
