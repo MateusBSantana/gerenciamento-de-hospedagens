@@ -16,8 +16,8 @@
 
 /* Estilo para a aba ativa */
 .nav-tabs .nav-link.active {
-    border: 2px solid rgb(39, 121, 39); 
-    background-color: #41ead3c8; 
+    border: 2px solid rgb(61, 39, 121); 
+    background-color: #9ad4ecc8; 
     color: #495057; 
     border-bottom: none;
 }

@@ -7,6 +7,7 @@ import TabelaFuncionarios from './componentes/Funcionarios/TabelaFuncionarios/Ta
 import EditarFuncionario from './componentes/pages/EditarFuncionario';
 import CadastroHospede from './componentes/pages/CadastroHospede';
 import TabelaHospedes from './componentes/Hospedes/TabelaHospedes/TabelaHospedes';
+import EditarHospede from './componentes/pages/EditarHospede';
 
 function App() {
   return (
@@ -14,10 +15,13 @@ function App() {
       <Routes>
         
         <Route path='/cadastro_funcionario' element={<CadastroFuncionario/>}/>
-        <Route path='/cadastro_hospede' element={<CadastroHospede/>}/>
         <Route path='/tabela_funcionarios' element={<TabelaFuncionarios/>}/>
-        <Route path='/tabela_hospedes' element={<TabelaHospedes/>}/>
         <Route path="/editar_funcionario/:id" element={<EditarFuncionario/>} />
+        
+        <Route path='/cadastro_hospede' element={<CadastroHospede/>}/>
+        <Route path='/tabela_hospedes' element={<TabelaHospedes/>}/>
+        <Route path="/editar_hospede/:id" element={<EditarHospede/>} />
+        
       </Routes>
     </Router>
   );

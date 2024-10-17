@@ -158,76 +158,13 @@
   ],
   "hospede": [
     {
-      "id": "1274",
-      "nome": "valdineide ",
-      "cpf": "aasdasd",
-      "rg": "dfv",
-      "dataNascimento": "2024-10-02",
-      "sexo": "masculino",
-      "email": "ssdf",
-      "telefone": "sdfsd",
-      "observacoes": "sdfs",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "3d7e",
-      "nome": "vitor ",
-      "cpf": "126535153",
-      "rg": "4752452",
-      "dataNascimento": "2024-10-02",
-      "sexo": "masculino",
-      "email": "ghjfgh",
-      "telefone": "45245",
-      "observacoes": "hfghd",
-      "endereco": {
-        "rua": "ghjg",
-        "numero": "ghj",
-        "cidade": "sdf",
-        "estado": "sdfs",
-        "cep": "sdfsd",
-        "bairro": "fgh",
-        "complemento": "ghjg",
-        "observacoes": "ghj"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-09",
-        "dataEmissaoCarteira": "2024-10-09",
-        "banco": "ghjghj",
-        "agencia": "dfgf",
-        "conta": "dfg",
-        "status": "ativo",
-        "observacoes": "dgdf"
-      }
-    },
-    {
-      "id": "7a34",
-      "nome": "",
-      "cpf": "",
-      "rg": "",
+      "id": "2e57",
+      "nome": "cvxcv",
+      "cpf": "xcv",
+      "rg": "xcv",
       "dataNascimento": "",
-      "sexo": "",
-      "email": "",
-      "telefone": "",
+      "sexo": "feminino",
+      "Profissao": "",
       "observacoes": "",
       "endereco": {
         "rua": "",
@@ -248,99 +185,6 @@
         "conta": "",
         "status": "",
         "observacoes": ""
-      }
-    },
-    {
-      "id": "a184",
-      "nome": "",
-      "cpf": "",
-      "rg": "",
-      "dataNascimento": "",
-      "sexo": "",
-      "email": "",
-      "telefone": "",
-      "observacoes": "",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "2cfd",
-      "nome": "s\\zxc\\",
-      "cpf": "\\zx\\",
-      "rg": "\\zx",
-      "dataNascimento": "2024-10-16",
-      "sexo": "",
-      "email": "\\zx",
-      "telefone": "\\zx",
-      "observacoes": "\\zx",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "64fd",
-      "nome": "Vitor Cassoti",
-      "cpf": "11122266689",
-      "rg": "23261d",
-      "dataNascimento": "2024-10-02",
-      "sexo": "outro",
-      "email": "vitor",
-      "telefone": "dsfsdfsfd",
-      "observacoes": "sdfsdfsfds",
-      "endereco": {
-        "rua": "oi",
-        "numero": "mo",
-        "cidade": "im",
-        "estado": "biono",
-        "cep": "sdfdsfdssfs",
-        "bairro": "noin",
-        "complemento": "inoi",
-        "observacoes": "npo"
-      },
-      "adicionais": {
-        "cargo": "recepcionista",
-        "dataAdmissao": "2024-10-02",
-        "dataEmissaoCarteira": "2024-10-24",
-        "banco": "regsdfgd",
-        "agencia": "dfgdfgdfgfdg",
-        "conta": "dfgdfgdfg",
-        "status": "inativo",
-        "observacoes": "dfgdfggdfg"
       }
     }
   ]

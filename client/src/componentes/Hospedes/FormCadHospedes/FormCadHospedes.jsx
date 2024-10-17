@@ -14,8 +14,7 @@ function FormCadHospede({ handleSubmit }) {
     rg: '',
     dataNascimento: '',
     sexo: '',
-    email: '',
-    telefone: '',
+    Profissao: '',
     observacoes: '',
     endereco: {
       rua: '',
@@ -27,15 +26,9 @@ function FormCadHospede({ handleSubmit }) {
       complemento: '',
       observacoes: '',
     },
-    adicionais: {
-      cargo: '',
-      dataAdmissao: '',
-      dataEmissaoCarteira: '',
-      banco: '',
-      agencia: '',
-      conta: '',
-      status: '',
-      observacoes: '',
+    contato: {
+      email: '',
+      telefone: '',
     },
   });
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Form, Button } from 'react-bootstrap';
-import FormFuncionario from '../Funcionarios/FormCadFuncionario/FormFuncionario';
+import FormHospede from '../Hospedes/FormCadHospedes/FormHospedes';
 import MenuLateral from '../layout/MenuLateral/MenuLateral';
 
-function EditarFuncionario() {
-  const { id } = useParams(); // Captura o ID do funcionário da URL
+function EditarHospede() {
+  const { id } = useParams(); // Captura o ID do hóspede da URL
   const navigate = useNavigate(); // Para navegação
   const [activeTab, setActiveTab] = useState('informacoes'); // Controla as abas ativas
   const [formData, setFormData] = useState({
@@ -41,26 +41,26 @@ function EditarFuncionario() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Função para buscar dados do funcionário pelo ID
-    async function buscarFuncionario() {
+    // Função para buscar dados do hóspede pelo ID
+    async function buscarHospede() {
       try {
-        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
+        const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
         if (!resposta.ok) {
-          throw new Error('Erro ao buscar funcionário');
+          throw new Error('Erro ao buscar hóspede');
         }
-        const dadosFuncionario = await resposta.json();
-        setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
+        const dadosHospede = await resposta.json();
+        setFormData(dadosHospede); // Preenche os dados do hóspede no formulário
         setLoading(false);
       } catch (error) {
-        console.error('Erro ao buscar funcionário', error);
+        console.error('Erro ao buscar hóspede', error);
       }
     }
-    buscarFuncionario();
+    buscarHospede();
   }, [id]);
 
   const handleChange = (e) => {
@@ -92,7 +92,7 @@ function EditarFuncionario() {
     // Se estamos na aba 'adicionais', tentamos salvar os dados
     if (activeTab === 'adicionais') {
       try {
-        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
+        const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -101,12 +101,12 @@ function EditarFuncionario() {
         });
 
         if (!resposta.ok) {
-          throw new Error('Erro ao atualizar funcionário');
+          throw new Error('Erro ao atualizar hóspede');
         }
 
-        navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
+        navigate('/Tabela_Hospedes'); // Redireciona para a tabela de hóspedes após salvar
       } catch (error) {
-        console.error('Erro ao atualizar funcionário', error);
+        console.error('Erro ao atualizar hóspede', error);
       }
     } else {
       // Muda para a próxima aba dependendo da aba atual
@@ -119,7 +119,7 @@ function EditarFuncionario() {
   };
 
   const handleCancel = () => {
-    navigate('/Tabela_Funcionarios'); // Redireciona para a página TabelaFuncionarios
+    navigate('/Tabela_Hospedes'); // Redireciona para a página TabelaHospedes
   };
 
   if (loading) {
@@ -131,12 +131,12 @@ function EditarFuncionario() {
       <MenuLateral />
       <div className="container mt-4">
         <div className="">
-          <h2 style={{ marginLeft: '50px' }}>Editando Funcionário</h2>
+          <h2 style={{ marginLeft: '50px' }}>Editando Hóspede</h2>
         </div>
         <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
           <Nav variant="tabs">
             <Nav.Item>
-              <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
+              <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Hóspede</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
@@ -146,7 +146,7 @@ function EditarFuncionario() {
             </Nav.Item>
           </Nav>
           <Tab.Content>
-            <FormFuncionario
+            <FormHospede
               formData={formData}
               handleChange={handleChange}
             />
@@ -174,4 +174,4 @@ function EditarFuncionario() {
   );
 }
 
-export default EditarFuncionario;
+export default EditarHospede;

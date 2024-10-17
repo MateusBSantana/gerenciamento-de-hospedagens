@@ -343,7 +343,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     <option value="">Por favor selecione</option>
                     <option value="administrador">Administrador</option> 
                     <option value="recepcionista">Recepcionista</option>
-                    <option value="recepcionista">Camareira</option>
+                    <option value="camareira">Camareira</option>
                     </Form.Control>
                 </div>
 

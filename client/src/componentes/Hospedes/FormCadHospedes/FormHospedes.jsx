@@ -117,35 +117,16 @@ function FormHospede({ formData, handleChange, submit }) {
                 htmlFor="formEmail"
                 style={{ width: "160px" }}
               >
-                E-mail:
+                Profissão:
               </Form.Label>
               <Form.Control
-                type="email"
-                id="formEmail"
-                name="email"
-                value={formData.email}
+                type="text"
+                id="formProfissao"
+                name="Profissao"
+                value={formData.Profissao}
                 onChange={handleChange}
                 required
                 style={{ width: "400px" }}
-              />
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formTelefone"
-                style={{ width: "160px" }}
-              >
-                Número de Telefone:
-              </Form.Label>
-              <Form.Control
-                type="tel"
-                id="formTelefone"
-                name="telefone"
-                value={formData.telefone}
-                onChange={handleChange}
-                required
-                style={{ width: "200px" }}
               />
             </div>
 
@@ -329,165 +310,44 @@ function FormHospede({ formData, handleChange, submit }) {
       <Tab.Pane eventKey="adicionais">
         <Form onSubmit={submit} className="border rounded p-3">
           <div className="mx-auto">
-            <div className="mb-3 d-flex align-items-center">
+          <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formCargo"
+                htmlFor="formEmail"
                 style={{ width: "160px" }}
               >
-                Cargo:
+                E-mail:
               </Form.Label>
               <Form.Control
-                as="select"
-                id="formCargo"
-                name="adicionais.cargo"
-                value={formData.adicionais.cargo}
+                type="email"
+                id="formEmail"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
-                style={{ width: "200px" }}
-              >
-                <option value="">Por favor selecione</option>
-                <option value="administrador">Administrador</option>
-                <option value="recepcionista">Recepcionista</option>
-                <option value="recepcionista">Camareira</option>
-              </Form.Control>
+                style={{ width: "400px" }}
+              />
             </div>
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formDataAdmissao"
+                htmlFor="formTelefone"
                 style={{ width: "160px" }}
               >
-                Data de Admissão:
+                Número de Telefone:
               </Form.Label>
               <Form.Control
-                type="date"
-                id="formDataAdmissao"
-                name="adicionais.dataAdmissao"
-                value={formData.adicionais.dataAdmissao}
+                type="tel"
+                id="formTelefone"
+                name="telefone"
+                value={formData.telefone}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
               />
             </div>
 
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formDataEmissaoCarteira"
-                style={{ width: "160px" }}
-              >
-                Data de Emissão da Carteira:
-              </Form.Label>
-              <Form.Control
-                type="date"
-                id="formDataEmissaoCarteira"
-                name="adicionais.dataEmissaoCarteira"
-                value={formData.adicionais.dataEmissaoCarteira}
-                onChange={handleChange}
-                required
-                style={{ width: "200px" }}
-              />
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formBanco"
-                style={{ width: "160px" }}
-              >
-                Banco:
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id="formBanco"
-                name="adicionais.banco"
-                value={formData.adicionais.banco}
-                onChange={handleChange}
-                required
-                style={{ width: "250px" }}
-              />
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formAgencia"
-                style={{ width: "160px" }}
-              >
-                Agência:
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id="formAgencia"
-                name="adicionais.agencia"
-                value={formData.adicionais.agencia}
-                onChange={handleChange}
-                required
-                style={{ width: "150px" }}
-              />
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formConta"
-                style={{ width: "160px" }}
-              >
-                Conta:
-              </Form.Label>
-              <Form.Control
-                type="text"
-                id="formConta"
-                name="adicionais.conta"
-                value={formData.adicionais.conta}
-                onChange={handleChange}
-                required
-                style={{ width: "150px" }}
-              />
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formStatus"
-                style={{ width: "160px" }}
-              >
-                Status:
-              </Form.Label>
-              <Form.Control
-                as="select"
-                id="formStatus"
-                name="adicionais.status"
-                value={formData.adicionais.status}
-                onChange={handleChange}
-                required
-                style={{ width: "200px" }}
-              >
-                <option value="">Por favor selecione</option>
-                <option value="ativo">Ativo</option>
-                <option value="inativo">Inativo</option>
-              </Form.Control>
-            </div>
-
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formObservacoes"
-                style={{ width: "160px" }}
-              >
-                Observações:
-              </Form.Label>
-              <Form.Control
-                as="textarea"
-                id="formObservacoes"
-                name="adicionais.observacoes"
-                value={formData.adicionais.observacoes}
-                onChange={handleChange}
-                style={{ width: "350px" }}
-              />
-            </div>
           </div>
         </Form>
       </Tab.Pane>
