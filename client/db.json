@@ -311,6 +311,37 @@
         "status": "",
         "observacoes": ""
       }
+    },
+    {
+      "id": "64fd",
+      "nome": "Vitor Cassoti",
+      "cpf": "11122266689",
+      "rg": "23261d",
+      "dataNascimento": "2024-10-02",
+      "sexo": "outro",
+      "email": "vitor",
+      "telefone": "dsfsdfsfd",
+      "observacoes": "sdfsdfsfds",
+      "endereco": {
+        "rua": "oi",
+        "numero": "mo",
+        "cidade": "im",
+        "estado": "biono",
+        "cep": "sdfdsfdssfs",
+        "bairro": "noin",
+        "complemento": "inoi",
+        "observacoes": "npo"
+      },
+      "adicionais": {
+        "cargo": "recepcionista",
+        "dataAdmissao": "2024-10-02",
+        "dataEmissaoCarteira": "2024-10-24",
+        "banco": "regsdfgd",
+        "agencia": "dfgdfgdfgfdg",
+        "conta": "dfgdfgdfg",
+        "status": "inativo",
+        "observacoes": "dfgdfggdfg"
+      }
     }
   ]
 }

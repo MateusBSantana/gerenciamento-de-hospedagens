@@ -326,32 +326,26 @@ function FormFuncionario({ formData, handleChange, submit }) {
         </Form>
       </Tab.Pane>
 
-      <Tab.Pane eventKey="adicionais">
-        <Form onSubmit={submit} className="border rounded p-3">
-          <div className="mx-auto">
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formCargo"
-                style={{ width: "160px" }}
-              >
-                Cargo:
-              </Form.Label>
-              <Form.Control
-                as="select"
-                id="formCargo"
-                name="adicionais.cargo"
-                value={formData.adicionais.cargo}
-                onChange={handleChange}
-                required
-                style={{ width: "200px" }}
-              >
-                <option value="">Por favor selecione</option>
-                <option value="administrador">Administrador</option>
-                <option value="recepcionista">Recepcionista</option>
-                <option value="recepcionista">Camareira</option>
-              </Form.Control>
-            </div>
+          <Tab.Pane eventKey="adicionais">
+            <Form onSubmit={submit} className="border rounded p-3">
+              <div className="mx-auto">
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    id="formCargo"
+                    name="adicionais.cargo"
+                    value={formData.adicionais.cargo}
+                    onChange={handleChange}
+                    required
+                    style={{ width: '200px' }} 
+                    >
+                    <option value="">Por favor selecione</option>
+                    <option value="administrador">Administrador</option> 
+                    <option value="recepcionista">Recepcionista</option>
+                    <option value="recepcionista">Camareira</option>
+                    </Form.Control>
+                </div>
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
