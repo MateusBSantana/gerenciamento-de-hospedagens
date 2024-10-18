@@ -1,5 +1,5 @@
 {
-  "funcionario": [
+  "funcionarios": [
     {
       "id": "5f8d",
       "nome": "Ney Schunk",
@@ -16,7 +16,7 @@
         "cidade": "Vitória - ES",
         "estado": "ES",
         "cep": "29047-170",
-        "bairro": "da penha ",
+        "bairro": "da penha",
         "complemento": "apartamento 101",
         "observacoes": "2222222222222222222"
       },
@@ -47,7 +47,7 @@
         "cidade": "Vitória - ES",
         "estado": "ES",
         "cep": "29047-170",
-        "bairro": "da penha ",
+        "bairro": "da penha",
         "complemento": "apartamento 101",
         "observacoes": ""
       },
@@ -61,6 +61,36 @@
         "status": "",
         "observacoes": ""
       }
+    }
+  ],
+  "acomodacoes": [
+    {
+      "id": "eebc",
+      "nome": "WEQ EWQE",
+      "capacidade": "1",
+      "tipo": "ae",
+      "observacoes": "aseae"
+    },
+    {
+      "id": "b939",
+      "nome": "james",
+      "capacidade": "8",
+      "tipo": "estacina",
+      "observacoes": ""
+    },
+    {
+      "id": "96ba",
+      "nome": "james",
+      "capacidade": "8",
+      "tipo": "estacina",
+      "observacoes": "sadasd"
+    },
+    {
+      "id": "77f5",
+      "nome": "julio",
+      "capacidade": "2",
+      "tipo": "sadiasd",
+      "observacoes": "dasda"
     }
   ]
 }
