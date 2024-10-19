@@ -5,12 +5,10 @@ import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
 import TabelaFuncionarios from './componentes/Funcionarios/TabelaFuncionarios/TabelaFuncionarios';
 import EditarFuncionario from './componentes/pages/EditarFuncionario';
 
+
 // Importação dos novos componentes para acomodações
-import CadastroAcomodacao from './componentes/acomodacao/Cadastro';
-import ListagemAcomodacoes from './componentes/acomodacao/Listagem';
-import EditarAcomodacao from './componentes/acomodacao/Editar';
-import Comodidades from './componentes/acomodacao/Comodidades';
-import MenuLateral from './componentes/layout/MenuLateral/MenuLateral'; // Ajustando o caminho
+import CadastroAcomodacao from './componentes/acomodacao/Cadastro'; // Caminho corrigido
+import MenuLateral from './componentes/layout/MenuLateral/MenuLateral'; // Caminho ajustado
 
 
 function App() {
@@ -27,9 +25,6 @@ function App() {
 
             {/* Novas rotas para acomodações */}
             <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
-            <Route path='/listagem_acomodacoes' element={<ListagemAcomodacoes />} />
-            <Route path='/editar_acomodacao/:id' element={<EditarAcomodacao />} />
-            <Route path='/comodidades' element={<Comodidades />} />
           </Routes>
         </div>
       </div>

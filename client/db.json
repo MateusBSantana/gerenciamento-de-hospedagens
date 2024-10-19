@@ -65,32 +65,42 @@
   ],
   "acomodacoes": [
     {
-      "id": "eebc",
-      "nome": "WEQ EWQE",
+      "id": "71cd",
+      "nome": "asdasd",
       "capacidade": "1",
-      "tipo": "ae",
-      "observacoes": "aseae"
+      "tipo": "domo",
+      "observacoes": "asdasd",
+      "comodidades": {
+        "wifi": true,
+        "arCondicionado": true,
+        "tv": true,
+        "frigobar": true,
+        "banheiroAdaptado": true,
+        "entradaAcessivel": true,
+        "braille": true,
+        "estacionamentoAcessivel": true
+      }
     },
     {
-      "id": "b939",
-      "nome": "james",
-      "capacidade": "8",
-      "tipo": "estacina",
-      "observacoes": ""
+      "id": "64c8",
+      "nome": "sadsd",
+      "capacidade": "3",
+      "tipo": "domoq",
+      "observacoes": "wqeqw"
     },
     {
-      "id": "96ba",
-      "nome": "james",
-      "capacidade": "8",
-      "tipo": "estacina",
-      "observacoes": "sadasd"
-    },
-    {
-      "id": "77f5",
-      "nome": "julio",
+      "id": "3fff",
+      "nome": "WEQ EWQEd",
       "capacidade": "2",
-      "tipo": "sadiasd",
-      "observacoes": "dasda"
+      "tipo": "weae",
+      "observacoes": "eaweawe"
+    },
+    {
+      "id": "3ae0",
+      "nome": "WEQ EWQEd",
+      "capacidade": "2",
+      "tipo": "weae",
+      "observacoes": "eaweawe"
     }
   ]
 }

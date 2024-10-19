@@ -1,6 +1,6 @@
 // src/componentes/acomodacao/Cadastro.jsx
-import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container, Row, Col, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api'; // Importando o serviço da API
 
@@ -12,7 +12,18 @@ const CadastroAcomodacao = () => {
     observacoes: '',
   });
 
+  const [acomodacoes, setAcomodacoes] = useState([]);
   const navigate = useNavigate();
+
+  // Função para carregar acomodações
+  const loadAcomodacoes = async () => {
+    const response = await api.get('/acomodacoes');
+    setAcomodacoes(response.data);
+  };
+
+  useEffect(() => {
+    loadAcomodacoes(); // Carrega acomodações ao montar o componente
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +38,8 @@ const CadastroAcomodacao = () => {
     
     try {
       await api.post('/acomodacoes', formData); // Salva a acomodação na API
-      navigate('/comodidades'); // Redireciona para a página de comodidades
+      loadAcomodacoes(); // Atualiza a lista de acomodações
+      alert('Acomodação cadastrada com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar a acomodação:', error);
     }
@@ -94,6 +106,26 @@ const CadastroAcomodacao = () => {
           Continuar
         </Button>
       </Form>
+
+      <h3 className="mt-5">Lista de Acomodações</h3>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Capacidade</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {acomodacoes.map((acomodacao) => (
+            <tr key={acomodacao.id}>
+              <td>{acomodacao.nome}</td>
+              <td>{acomodacao.capacidade}</td>
+              <td>{acomodacao.tipo}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Container>
   );
 };
