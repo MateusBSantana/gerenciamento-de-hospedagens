@@ -9,6 +9,8 @@ import CadastroHospede from './componentes/pages/CadastroHospede';
 import TabelaHospedes from './componentes/Hospedes/TabelaHospedes/TabelaHospedes';
 import EditarHospede from './componentes/pages/EditarHospede';
 
+import MapaReservas from './componentes/MapaDeReservas/MapaReservas';
+
 function App() {
   return (
     <Router>
@@ -21,6 +23,8 @@ function App() {
         <Route path='/cadastro_hospede' element={<CadastroHospede/>}/>
         <Route path='/tabela_hospedes' element={<TabelaHospedes/>}/>
         <Route path="/editar_hospede/:id" element={<EditarHospede/>} />
+
+        <Route path="/mapa_reservas" element={<MapaReservas/>} />
         
       </Routes>
     </Router>

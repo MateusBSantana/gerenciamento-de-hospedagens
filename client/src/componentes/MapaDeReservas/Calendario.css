@@ -1,0 +1,25 @@
+
+    .reservation-cell {
+        position: relative;
+        height: 10px; 
+      }
+    
+  
+  
+  .reservation-button {
+    background-color: #5a8cdb;
+    border: none;
+    padding: 5px 2px;
+    cursor: pointer;
+    width: 100%;
+    color: #000;
+  }
+  
+  .reservation-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .half-cell {
+    width: 50%;
+  }
+  
