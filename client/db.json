@@ -101,6 +101,108 @@
       "capacidade": "2",
       "tipo": "weae",
       "observacoes": "eaweawe"
+    },
+    {
+      "id": "b409",
+      "nome": "vitor",
+      "capacidade": "3",
+      "tipo": "DOMO",
+      "observacoes": "dsd",
+      "comodidades": {
+        "wifi": false,
+        "tv": true,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "6645",
+      "nome": "matehus",
+      "capacidade": "3",
+      "tipo": "jus",
+      "observacoes": "adsad",
+      "comodidades": {
+        "wifi": true,
+        "tv": true,
+        "arCondicionado": false,
+        "frigobar": true,
+        "banheirosAdaptados": true,
+        "sinalizacaoBraille": true,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "1194",
+      "nome": "WEQ EWQE",
+      "capacidade": "5465",
+      "tipo": "16",
+      "observacoes": "werfghjkl",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": true,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "dffb",
+      "nome": "ju",
+      "capacidade": "5",
+      "tipo": "domo",
+      "observacoes": "junior",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": true,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "aa37",
+      "nome": "juniior",
+      "capacidade": "3",
+      "tipo": "estacina",
+      "observacoes": "asd",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": true,
+        "sinalizacaoBraille": true,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "c6d8",
+      "nome": "",
+      "capacidade": "",
+      "tipo": "",
+      "observacoes": "",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
     }
   ]
 }
