@@ -1,7 +1,6 @@
-// src/componentes/acomodacao/Cadastro.jsx
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Tabs, Tab } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Form, Button, Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api'; // Importando o serviço da API
 import Comodidades from './Comodidades'; // Importando o componente Comodidades
 
@@ -27,30 +26,23 @@ const CadastroAcomodacao = () => {
 
   const [activeTab, setActiveTab] = useState('acomodacao'); // Controle das abas
   const navigate = useNavigate();
+  const { id } = useParams(); // Pega o ID da URL
 
-  // Função para buscar os dados de acomodações
-  const fetchAcomodacoes = async () => {
+  // Função para buscar os dados da acomodação pelo ID (para edição)
+  const fetchAcomodacaoById = async (id) => {
     try {
-      const response = await api.get('/acomodacoes'); // Fazendo a requisição para obter as acomodações
-      const acomModacoes = response.data;
-
-      // Encontrando o maior ID existente
-      const maxId = acomModacoes.length > 0 
-        ? Math.max(...acomModacoes.map(ac => ac.id)) 
-        : 0;
-
-      setFormData((prevData) => ({
-        ...prevData,
-        id: maxId + 1 // Define o ID como maior ID + 1, mas não será exibido no formulário
-      }));
+      const response = await api.get(`/acomodacoes/${id}`);
+      setFormData(response.data);
     } catch (error) {
-      console.error('Erro ao buscar acomodações:', error);
+      console.error('Erro ao buscar acomodação:', error);
     }
   };
 
   useEffect(() => {
-    fetchAcomodacoes(); // Chama a função ao carregar o componente
-  }, []);
+    if (id) {
+      fetchAcomodacaoById(id); // Se houver ID, busca a acomodação para editar
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -81,21 +73,35 @@ const CadastroAcomodacao = () => {
 
   const handleFinalizarCadastro = async (e) => {
     e.preventDefault();
-    console.log("Dados a serem enviados:", formData); // Exibe os dados no console
 
     try {
-      const response = await api.post('/acomodacoes', formData); // Salva a acomodação na API
-      console.log("Resposta da API:", response.data); // Exibe a resposta no console
-      navigate('/listagem_acomodacoes'); // Navega para a listagem de acomodações
+      if (id) {
+        // Atualiza a acomodação existente
+        await api.put(`/acomodacoes/${id}`, formData);
+      } else {
+        // Cria uma nova acomodação
+        await api.post('/acomodacoes', formData);
+      }
+      navigate('/listagem_acomodacoes'); // Redireciona para a listagem de acomodações
     } catch (error) {
-      console.error('Erro ao salvar a acomodação:', error); // Exibe o erro no console
+      console.error('Erro ao salvar a acomodação:', error);
     }
   };
 
   return (
     <Container className="mt-5">
+      <Row className="mb-3">
+        <Col>
+          <h2>{id ? 'Editar Acomodação' : 'Nova Acomodação'}</h2>
+        </Col>
+        <Col className="text-end">
+          <Button variant="secondary" onClick={() => navigate('/listagem_acomodacoes')}>
+            Voltar
+          </Button>
+        </Col>
+      </Row>
       <Tabs activeKey={activeTab} onSelect={(tab) => setActiveTab(tab)} className="mb-3">
-        <Tab eventKey="acomodacao" title="Nova Acomodação">
+        <Tab eventKey="acomodacao" title="Acomodação">
           <Form onSubmit={handleContinue}>
             <Form.Group controlId="nome">
               <Form.Label>Nome da Acomodação</Form.Label>
@@ -140,7 +146,6 @@ const CadastroAcomodacao = () => {
               />
             </Form.Group>
 
-            {/* Novo campo de status */}
             <Form.Group controlId="status">
               <Form.Label>Status</Form.Label>
               <Form.Control
@@ -163,7 +168,7 @@ const CadastroAcomodacao = () => {
         <Tab eventKey="comodidades" title="Comodidades">
           <Comodidades formData={formData} handleChange={handleChange} />
           <Button variant="success" className="mt-3" onClick={handleFinalizarCadastro}>
-            Finalizar Cadastro
+            {id ? 'Salvar Alterações' : 'Finalizar Cadastro'}
           </Button>
         </Tab>
       </Tabs>

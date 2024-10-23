@@ -64,31 +64,12 @@
     }
   ],
   "acomodacoes": [
-    {},
     {
-      "id": null,
+      "id": "ae7e",
       "nome": "vitor",
-      "capacidade": "1",
-      "tipo": "ae",
-      "observacoes": "asdasd",
-      "status": "disponivel",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": false,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": null,
-      "nome": "fsaubfnsa",
       "capacidade": "2",
-      "tipo": "estacina",
-      "observacoes": "\niopup",
+      "tipo": "domo",
+      "observacoes": "s",
       "status": "disponivel",
       "comodidades": {
         "wifi": false,

@@ -25,6 +25,7 @@ function App() {
             {/*  rotas para acomodações */}
             <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
             <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} /> 
+            <Route path="/editar_acomodacao/:id" element={<CadastroAcomodacao />} /> 
           </Routes>
         </div>
       </div>
