@@ -64,53 +64,17 @@
     }
   ],
   "acomodacoes": [
+    {},
     {
-      "id": "71cd",
-      "nome": "asdasd",
-      "capacidade": "1",
-      "tipo": "domo",
-      "observacoes": "asdasd",
-      "comodidades": {
-        "wifi": true,
-        "arCondicionado": true,
-        "tv": true,
-        "frigobar": true,
-        "banheiroAdaptado": true,
-        "entradaAcessivel": true,
-        "braille": true,
-        "estacionamentoAcessivel": true
-      }
-    },
-    {
-      "id": "64c8",
-      "nome": "sadsd",
-      "capacidade": "3",
-      "tipo": "domoq",
-      "observacoes": "wqeqw"
-    },
-    {
-      "id": "3fff",
-      "nome": "WEQ EWQEd",
-      "capacidade": "2",
-      "tipo": "weae",
-      "observacoes": "eaweawe"
-    },
-    {
-      "id": "3ae0",
-      "nome": "WEQ EWQEd",
-      "capacidade": "2",
-      "tipo": "weae",
-      "observacoes": "eaweawe"
-    },
-    {
-      "id": "b409",
+      "id": null,
       "nome": "vitor",
-      "capacidade": "3",
-      "tipo": "DOMO",
-      "observacoes": "dsd",
+      "capacidade": "1",
+      "tipo": "ae",
+      "observacoes": "asdasd",
+      "status": "disponivel",
       "comodidades": {
         "wifi": false,
-        "tv": true,
+        "tv": false,
         "arCondicionado": false,
         "frigobar": false,
         "banheirosAdaptados": false,
@@ -120,79 +84,12 @@
       }
     },
     {
-      "id": "6645",
-      "nome": "matehus",
-      "capacidade": "3",
-      "tipo": "jus",
-      "observacoes": "adsad",
-      "comodidades": {
-        "wifi": true,
-        "tv": true,
-        "arCondicionado": false,
-        "frigobar": true,
-        "banheirosAdaptados": true,
-        "sinalizacaoBraille": true,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "1194",
-      "nome": "WEQ EWQE",
-      "capacidade": "5465",
-      "tipo": "16",
-      "observacoes": "werfghjkl",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": true,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "dffb",
-      "nome": "ju",
-      "capacidade": "5",
-      "tipo": "domo",
-      "observacoes": "junior",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": true,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "aa37",
-      "nome": "juniior",
-      "capacidade": "3",
+      "id": null,
+      "nome": "fsaubfnsa",
+      "capacidade": "2",
       "tipo": "estacina",
-      "observacoes": "asd",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": true,
-        "sinalizacaoBraille": true,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "c6d8",
-      "nome": "",
-      "capacidade": "",
-      "tipo": "",
-      "observacoes": "",
+      "observacoes": "\niopup",
+      "status": "disponivel",
       "comodidades": {
         "wifi": false,
         "tv": false,

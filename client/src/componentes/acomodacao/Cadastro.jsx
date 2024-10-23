@@ -1,5 +1,5 @@
 // src/componentes/acomodacao/Cadastro.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Tabs, Tab } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api'; // Importando o serviço da API
@@ -7,10 +7,12 @@ import Comodidades from './Comodidades'; // Importando o componente Comodidades
 
 const CadastroAcomodacao = () => {
   const [formData, setFormData] = useState({
+    id: 0, // Inicializando ID como 0, mas não será exibido no formulário
     nome: '',
     capacidade: '',
     tipo: '',
     observacoes: '',
+    status: 'disponivel', // Campo de status
     comodidades: {
       wifi: false,
       tv: false,
@@ -26,7 +28,30 @@ const CadastroAcomodacao = () => {
   const [activeTab, setActiveTab] = useState('acomodacao'); // Controle das abas
   const navigate = useNavigate();
 
-  // Ajuste para separar campos comuns de comodidades
+  // Função para buscar os dados de acomodações
+  const fetchAcomodacoes = async () => {
+    try {
+      const response = await api.get('/acomodacoes'); // Fazendo a requisição para obter as acomodações
+      const acomModacoes = response.data;
+
+      // Encontrando o maior ID existente
+      const maxId = acomModacoes.length > 0 
+        ? Math.max(...acomModacoes.map(ac => ac.id)) 
+        : 0;
+
+      setFormData((prevData) => ({
+        ...prevData,
+        id: maxId + 1 // Define o ID como maior ID + 1, mas não será exibido no formulário
+      }));
+    } catch (error) {
+      console.error('Erro ao buscar acomodações:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAcomodacoes(); // Chama a função ao carregar o componente
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const updatedValue = type === 'checkbox' ? checked : value;
@@ -54,7 +79,6 @@ const CadastroAcomodacao = () => {
     setActiveTab('comodidades'); // Alterna para a aba de Comodidades
   };
 
-  // Função atualizada para incluir logs no console
   const handleFinalizarCadastro = async (e) => {
     e.preventDefault();
     console.log("Dados a serem enviados:", formData); // Exibe os dados no console
@@ -114,6 +138,21 @@ const CadastroAcomodacao = () => {
                 value={formData.observacoes}
                 onChange={handleChange}
               />
+            </Form.Group>
+
+            {/* Novo campo de status */}
+            <Form.Group controlId="status">
+              <Form.Label>Status</Form.Label>
+              <Form.Control
+                as="select"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                required
+              >
+                <option value="disponivel">Disponível</option>
+                <option value="reservado">Reservado</option>
+              </Form.Control>
             </Form.Group>
 
             <Button variant="primary" type="submit" className="mt-3">
