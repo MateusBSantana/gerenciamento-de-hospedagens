@@ -125,38 +125,7 @@
       }
     }
   ],
-  "hospede": [
-    {
-      "id": "2e57",
-      "nome": "cvxcv",
-      "cpf": "xcv",
-      "rg": "xcv",
-      "dataNascimento": "",
-      "sexo": "feminino",
-      "Profissao": "",
-      "observacoes": "",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha",
-        "complemento": "apartamento 101",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    }
-  ],
+  "hospede": [],
   "acomodacoes": [
     {
       "id": "H1",
