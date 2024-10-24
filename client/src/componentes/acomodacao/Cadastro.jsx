@@ -3,10 +3,11 @@ import { Form, Button, Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api'; // Importando o serviço da API
 import Comodidades from './Comodidades'; // Importando o componente Comodidades
+import './Cadastro.css'; // Importando o CSS
 
 const CadastroAcomodacao = () => {
   const [formData, setFormData] = useState({
-    id: 0, // Inicializando ID como 0, mas não será exibido no formulário
+    id: '', // Inicializando ID como string vazia
     nome: '',
     capacidade: '',
     tipo: '',
@@ -71,6 +72,13 @@ const CadastroAcomodacao = () => {
     setActiveTab('comodidades'); // Alterna para a aba de Comodidades
   };
 
+  // Função para gerar um ID único com letra e número
+  const generateUniqueId = () => {
+    const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Gera uma letra de A a Z
+    const number = Math.floor(Math.random() * 10); // Gera um número entre 0 e 9
+    return `${letter}${number}`; // Retorna a combinação letra + número
+  };
+
   const handleFinalizarCadastro = async (e) => {
     e.preventDefault();
 
@@ -79,8 +87,9 @@ const CadastroAcomodacao = () => {
         // Atualiza a acomodação existente
         await api.put(`/acomodacoes/${id}`, formData);
       } else {
-        // Cria uma nova acomodação
-        await api.post('/acomodacoes', formData);
+        // Cria uma nova acomodação com ID gerado
+        const newAcomodacao = { ...formData, id: generateUniqueId() }; // ID com letra e número
+        await api.post('/acomodacoes', newAcomodacao);
       }
       navigate('/listagem_acomodacoes'); // Redireciona para a listagem de acomodações
     } catch (error) {
@@ -102,68 +111,70 @@ const CadastroAcomodacao = () => {
       </Row>
       <Tabs activeKey={activeTab} onSelect={(tab) => setActiveTab(tab)} className="mb-3">
         <Tab eventKey="acomodacao" title="Acomodação">
-          <Form onSubmit={handleContinue}>
-            <Form.Group controlId="nome">
-              <Form.Label>Nome da Acomodação</Form.Label>
-              <Form.Control
-                type="text"
-                name="nome"
-                value={formData.nome}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+          <div className="form-container"> {/* Div para aplicar a borda ao formulário */}
+            <Form onSubmit={handleContinue}>
+              <Form.Group controlId="nome">
+                <Form.Label>Nome da Acomodação</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nome"
+                  value={formData.nome}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="capacidade">
-              <Form.Label>Capacidade</Form.Label>
-              <Form.Control
-                type="number"
-                name="capacidade"
-                value={formData.capacidade}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form.Group controlId="capacidade">
+                <Form.Label>Capacidade</Form.Label>
+                <Form.Control
+                  type="number"
+                  name="capacidade"
+                  value={formData.capacidade}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="tipo">
-              <Form.Label>Tipo</Form.Label>
-              <Form.Control
-                type="text"
-                name="tipo"
-                value={formData.tipo}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form.Group controlId="tipo">
+                <Form.Label>Tipo</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="tipo"
+                  value={formData.tipo}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="observacoes">
-              <Form.Label>Observações</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="observacoes"
-                value={formData.observacoes}
-                onChange={handleChange}
-              />
-            </Form.Group>
+              <Form.Group controlId="observacoes">
+                <Form.Label>Observações</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="observacoes"
+                  value={formData.observacoes}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-            <Form.Group controlId="status">
-              <Form.Label>Status</Form.Label>
-              <Form.Control
-                as="select"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                required
-              >
-                <option value="disponivel">Disponível</option>
-                <option value="reservado">Reservado</option>
-              </Form.Control>
-            </Form.Group>
+              <Form.Group controlId="status">
+                <Form.Label>Status</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="disponivel">Disponível</option>
+                  <option value="reservado">Reservado</option>
+                </Form.Control>
+              </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3">
-              Continuar
-            </Button>
-          </Form>
+              <Button variant="primary" type="submit" className="mt-3">
+                Continuar
+              </Button>
+            </Form>
+          </div>
         </Tab>
         <Tab eventKey="comodidades" title="Comodidades">
           <Comodidades formData={formData} handleChange={handleChange} />

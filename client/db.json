@@ -65,11 +65,29 @@
   ],
   "acomodacoes": [
     {
-      "id": "ae7e",
-      "nome": "vitor",
-      "capacidade": "2",
-      "tipo": "domo",
-      "observacoes": "s",
+      "id": "H1",
+      "nome": "junir",
+      "capacidade": "1",
+      "tipo": "d",
+      "observacoes": "",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "I2",
+      "nome": "ddfghjm,",
+      "capacidade": "1",
+      "tipo": "d",
+      "observacoes": "",
       "status": "disponivel",
       "comodidades": {
         "wifi": false,

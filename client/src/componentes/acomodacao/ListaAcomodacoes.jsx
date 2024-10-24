@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Table, Container, Button, Row, Col, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import './ListaAcomodacoes.css'; // Importa o CSS
 
 const ListagemAcomodacoes = () => {
   const [acomodacoes, setAcomodacoes] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para o campo de busca
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const fetchAcomodacoes = async () => {
     try {
       const response = await api.get('/acomodacoes');
-      setAcomodacoes(response.data);
+      const validAcomodacoes = response.data.filter(Boolean); // Remove nulos
+      setAcomodacoes(validAcomodacoes);
     } catch (error) {
       console.error('Erro ao buscar acomodações:', error);
     }
@@ -20,7 +22,7 @@ const ListagemAcomodacoes = () => {
   const handleDelete = async (id) => {
     try {
       await api.delete(`/acomodacoes/${id}`);
-      fetchAcomodacoes(); // Atualiza a lista após a exclusão
+      fetchAcomodacoes();
     } catch (error) {
       console.error('Erro ao deletar acomodação:', error);
     }
@@ -30,12 +32,14 @@ const ListagemAcomodacoes = () => {
     fetchAcomodacoes();
   }, []);
 
-  // Função para filtrar as acomodações com base no campo de pesquisa
-  const filteredAcomodacoes = acomodacoes.filter((acomodacao) =>
-    acomodacao.nome.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtra pelo nome
-    acomodacao.id.toString().includes(searchTerm) || // Filtra pelo ID
-    acomodacao.tipo.toLowerCase().includes(searchTerm.toLowerCase()) // Filtra pelo tipo
-  );
+  const filteredAcomodacoes = acomodacoes.filter((acomodacao) => {
+    return (
+      acomodacao &&
+      (acomodacao.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       acomodacao.id.toString().includes(searchTerm) ||
+       acomodacao.tipo.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
 
   return (
     <Container className="mt-5">
@@ -51,20 +55,19 @@ const ListagemAcomodacoes = () => {
         </Col>
       </Row>
 
-      {/* Campo de busca */}
       <Row className="mb-3">
         <Col>
           <Form.Control
             type="text"
             placeholder="Pesquisar por nome, ID ou tipo"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o valor da pesquisa
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Col>
       </Row>
 
       <Table striped bordered hover>
-        <thead>
+        <thead className="table-header"> {/* Adicione a classe aqui */}
           <tr>
             <th>ID</th>
             <th>Nome</th>
