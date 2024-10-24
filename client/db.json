@@ -1,5 +1,5 @@
 {
-  "funcionario": [
+  "funcionarios": [
     {
       "id": "dfb4",
       "nome": "Mateus Barboza",
@@ -29,6 +29,37 @@
         "conta": "",
         "status": "",
         "observacoes": ""
+      }
+    },
+    {
+      "id": "5f8d",
+      "nome": "Ney Schunk",
+      "cpf": "143.199.027-26",
+      "rg": "3233012",
+      "dataNascimento": "2024-10-08",
+      "sexo": "masculino",
+      "email": "valdineideschunk@gmail.com",
+      "telefone": "27998402372",
+      "observacoes": "11111111",
+      "endereco": {
+        "rua": "apartamento",
+        "numero": "101",
+        "cidade": "Vitória - ES",
+        "estado": "ES",
+        "cep": "29047-170",
+        "bairro": "da penha",
+        "complemento": "apartamento 101",
+        "observacoes": "2222222222222222222"
+      },
+      "adicionais": {
+        "cargo": "administrador",
+        "dataAdmissao": "2024-10-11",
+        "dataEmissaoCarteira": "2024-10-11",
+        "banco": "Brasil",
+        "agencia": "01",
+        "conta": "01",
+        "status": "ativo",
+        "observacoes": "3333333333333333333333"
       }
     },
     {
@@ -92,56 +123,26 @@
         "status": "",
         "observacoes": ""
       }
-    },
+    }
+  ],
+  "hospede": [
     {
-      "id": "adf8",
-      "nome": "",
-      "cpf": "",
-      "rg": "",
+      "id": "2e57",
+      "nome": "cvxcv",
+      "cpf": "xcv",
+      "rg": "xcv",
       "dataNascimento": "",
-      "sexo": "",
-      "email": "",
-      "telefone": "",
+      "sexo": "feminino",
+      "Profissao": "",
       "observacoes": "",
       "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "ee3f",
-      "nome": "",
-      "cpf": "",
-      "rg": "",
-      "dataNascimento": "",
-      "sexo": "",
-      "email": "",
-      "telefone": "",
-      "observacoes": "",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
+        "rua": "apartamento",
+        "numero": "101",
+        "cidade": "Vitória - ES",
+        "estado": "ES",
+        "cep": "29047-170",
+        "bairro": "da penha",
+        "complemento": "apartamento 101",
         "observacoes": ""
       },
       "adicionais": {
@@ -156,35 +157,41 @@
       }
     }
   ],
-  "hospede": [
+  "acomodacoes": [
     {
-      "id": "2e57",
-      "nome": "cvxcv",
-      "cpf": "xcv",
-      "rg": "xcv",
-      "dataNascimento": "",
-      "sexo": "feminino",
-      "Profissao": "",
+      "id": "H1",
+      "nome": "junir",
+      "capacidade": "1",
+      "tipo": "d",
       "observacoes": "",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "I2",
+      "nome": "ddfghjm,",
+      "capacidade": "1",
+      "tipo": "d",
+      "observacoes": "",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
       }
     }
   ]
