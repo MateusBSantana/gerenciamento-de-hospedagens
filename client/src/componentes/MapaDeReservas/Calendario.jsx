@@ -30,7 +30,7 @@ const Calendar = () => {
   const rooms = ['Quarto 1', 'Quarto 2', 'Quarto 3', 'Quarto 4', 'Quarto 5', 'Quarto 6', 'Quarto 7', 'Quarto 8'];
 
   const [reservations, setReservations] = useState({
-    'Quarto 1': [{ start: '21/10', end: '23/10', name: 'João', status: 'reservado' }, { start: '11/11', end: '13/11', name: 'Sofia', status: 'hospedado' }],
+    'Quarto 1': [{ start: '21/10', end: '25/10', name: 'João', status: 'reservado' }, { start: '11/11', end: '13/11', name: 'Sofia', status: 'hospedado' }],
     'Quarto 2': [{ start: '24/10', end: '26/10', name: 'Maria', status: 'cancelada' }],
     'Quarto 3': [{ start: '27/10', end: '29/10', name: 'Pedro', status: 'finalizada' }],
     'Quarto 4': [{ start: '30/10', end: '01/11', name: 'Ana', status: 'reservado' }],
