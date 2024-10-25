@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import styles from './TabelaHospede.module.css';
 import { Link } from 'react-router-dom';
-import { deletarHospede } from './deletarHospede'; // Verifique se a importação está correta
-import MenuLateral from '../../layout/MenuLateral/MenuLateral';
+import { deletarHospede } from './deletarHospede';
 
 function TabelaHospede() {
   // Estado para armazenar a lista de hóspedes
@@ -33,24 +31,24 @@ function TabelaHospede() {
         throw new Error('Erro ao buscar Hóspedes');
       }
       const consulta = await resposta.json();
-      setHospedes(consulta);
-      setRemoveLoading(true);
+      setHospedes(consulta); // Atualiza o estado com a lista de hóspedes
+      setRemoveLoading(true); // Indica que o carregamento está concluído
     } catch (error) {
-      console.log('erro ao buscar Hóspedes', error);
+      console.log('erro ao buscar Hóspedes', error); // Exibe erro no console
     }
   }
 
   // Função para deletar um hóspede
   const handleDelete = async (id) => {
-    const sucesso = await deletarHospede(id); // Corrigir para deletarHospede
+    const sucesso = await deletarHospede(id); // Chama a função de deletar hóspede
     if (sucesso) {
-      setHospedes(hospedes.filter((hospede) => hospede.id !== id));
+      setHospedes(hospedes.filter((hospede) => hospede.id !== id)); // Atualiza a lista removendo o hóspede deletado
     }
   };
 
   // Função para atualizar o estado de pesquisa
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa conforme o usuário digita
   };
 
   // Filtrando os hóspedes com base no termo de pesquisa (nome ou CPF)
@@ -61,17 +59,16 @@ function TabelaHospede() {
 
   return (
     <div className="d-flex">
-      {/* Componente de menu lateral */}
-      <MenuLateral />
       <div className="flex-grow-1 p-3">
         <h2 className="text-center">Lista de Hóspedes</h2>
+        
         {/* Campo de pesquisa e botão ao lado direito */}
         <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
           <input
             type="text"
             placeholder="Pesquisar Hóspede por Nome ou CPF"
             value={searchTerm}
-            onChange={handleSearchChange}
+            onChange={handleSearchChange} // Atualiza o termo de pesquisa ao digitar
             className="form-control me-2"
             style={{ flex: '1' }}
           />
@@ -79,10 +76,14 @@ function TabelaHospede() {
             <button className="btn btn-primary">Novo Hóspede</button>
           </Link>
         </div>
+        
         {/* Mensagem de ausência de hóspedes */}
         {removeLoading && filteredHospedes.length === 0 && (
-          <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>Não há hóspedes disponíveis</h1>
+          <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>
+            Não há hóspedes disponíveis
+          </h1>
         )}
+        
         <div className={styles.Hospedes}>
           <table className={`${styles.TabelaHospedes} table-bordered mt-3`}>
             <thead>
@@ -103,8 +104,15 @@ function TabelaHospede() {
                   <td>{hospede.telefone}</td>
                   <td>{hospede.sexo}</td>
                   <td className="bg-light">
-                    <Link className="btn btn-primary btn-sm" to={`/editar_hospede/${hospede.id}`}>Editar</Link>
-                    <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(hospede.id)}>Deletar</button>
+                    <Link className="btn btn-primary btn-sm" to={`/editar_hospede/${hospede.id}`}>
+                      Editar
+                    </Link>
+                    <button
+                      className="btn btn-danger btn-sm ms-2"
+                      onClick={() => handleDelete(hospede.id)} // Chama a função de deletar hóspede ao clicar
+                    >
+                      Deletar
+                    </button>
                   </td>
                 </tr>
               ))}

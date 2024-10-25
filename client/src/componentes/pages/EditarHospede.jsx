@@ -2,12 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Form, Button } from 'react-bootstrap';
 import FormHospede from '../Hospedes/FormCadHospedes/FormHospedes';
-import MenuLateral from '../layout/MenuLateral/MenuLateral';
 
 function EditarHospede() {
-  const { id } = useParams(); // Captura o ID do hóspede da URL
-  const navigate = useNavigate(); // Para navegação
-  const [activeTab, setActiveTab] = useState('informacoes'); // Controla as abas ativas
+  // Captura o ID do hóspede diretamente da URL
+  const { id } = useParams();
+  // Permite navegar para outras páginas do app
+  const navigate = useNavigate();
+
+  // Controla qual aba (tab) está ativa, começando pela aba de informações
+  const [activeTab, setActiveTab] = useState('informacoes');
+
+  // Armazena os dados do formulário, incluindo dados do hóspede e informações adicionais
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -38,33 +43,41 @@ function EditarHospede() {
       observacoes: '',
     },
   });
+
+  // Variável de estado para mostrar uma mensagem de "Carregando..." enquanto os dados são buscados
   const [loading, setLoading] = useState(true);
 
+  // Função chamada ao carregar o componente. Busca os dados do hóspede usando o ID capturado.
   useEffect(() => {
-    // Função para buscar dados do hóspede pelo ID
     async function buscarHospede() {
       try {
+        // Requisição GET para obter os dados do hóspede com o ID específico
         const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        if (!resposta.ok) {
-          throw new Error('Erro ao buscar hóspede');
-        }
+
+        // Verifica se a resposta da requisição foi bem-sucedida
+        if (!resposta.ok) throw new Error('Erro ao buscar hóspede');
+
+        // Converte a resposta em JSON e armazena no estado para preencher o formulário
         const dadosHospede = await resposta.json();
-        setFormData(dadosHospede); // Preenche os dados do hóspede no formulário
-        setLoading(false);
+        setFormData(dadosHospede);
+        setLoading(false); // Define que os dados já foram carregados, ocultando o "Carregando..."
       } catch (error) {
         console.error('Erro ao buscar hóspede', error);
       }
     }
     buscarHospede();
-  }, [id]);
+  }, [id]); // A função será chamada sempre que o ID mudar
 
+  // Função para atualizar os dados do formulário conforme o usuário preenche os campos
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Verifica se o campo faz parte do endereço e atualiza o valor específico no estado
     if (name.startsWith('endereco')) {
       setFormData((prevState) => ({
         ...prevState,
@@ -73,7 +86,9 @@ function EditarHospede() {
           [name.split('.')[1]]: value,
         },
       }));
-    } else if (name.startsWith('adicionais')) {
+    }
+    // Verifica se o campo faz parte das informações adicionais e atualiza o valor específico no estado
+    else if (name.startsWith('adicionais')) {
       setFormData((prevState) => ({
         ...prevState,
         adicionais: {
@@ -81,59 +96,60 @@ function EditarHospede() {
           [name.split('.')[1]]: value,
         },
       }));
-    } else {
+    }
+    // Atualiza os demais campos
+    else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
+  // Função chamada ao enviar o formulário (clicar no botão "Salvar" ou "Continuar")
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Impede o recarregamento da página
 
-    // Se estamos na aba 'adicionais', tentamos salvar os dados
+    // Se o usuário estiver na aba "Adicionais", salva os dados no backend
     if (activeTab === 'adicionais') {
       try {
+        // Requisição PUT para atualizar os dados do hóspede com o ID específico
         const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData), // Envia os dados atualizados
+          body: JSON.stringify(formData), // Envia os dados do formulário como JSON
         });
 
-        if (!resposta.ok) {
-          throw new Error('Erro ao atualizar hóspede');
-        }
+        // Verifica se a resposta da requisição foi bem-sucedida
+        if (!resposta.ok) throw new Error('Erro ao atualizar hóspede');
 
-        navigate('/Tabela_Hospedes'); // Redireciona para a tabela de hóspedes após salvar
+        // Redireciona para a página de listagem de hóspedes
+        navigate('/Tabela_Hospedes');
       } catch (error) {
         console.error('Erro ao atualizar hóspede', error);
       }
     } else {
-      // Muda para a próxima aba dependendo da aba atual
-      if (activeTab === 'informacoes') {
-        setActiveTab('endereco');
-      } else if (activeTab === 'endereco') {
-        setActiveTab('adicionais');
-      }
+      // Avança para a próxima aba, dependendo da aba atual
+      setActiveTab(activeTab === 'informacoes' ? 'endereco' : 'adicionais');
     }
   };
 
+  // Função chamada ao clicar no botão "Cancelar", redireciona para a lista de hóspedes
   const handleCancel = () => {
-    navigate('/Tabela_Hospedes'); // Redireciona para a página TabelaHospedes
+    navigate('/Tabela_Hospedes');
   };
 
-  if (loading) {
-    return <p>Carregando...</p>; // Exibe uma mensagem de carregamento
-  }
+  // Exibe uma mensagem de carregamento enquanto os dados estão sendo buscados
+  if (loading) return <p>Carregando...</p>;
 
   return (
     <div className="d-flex">
-      <MenuLateral />
       <div className="container mt-4">
-        <div className="">
-          <h2 style={{ marginLeft: '50px' }}>Editando Hóspede</h2>
-        </div>
-        <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
+        {/* Título do formulário de edição */}
+        <h2 style={{ marginLeft: '50px' }}>Editando Hóspede</h2>
+        
+        {/* Tab.Container é usado para gerenciar as abas do formulário */}
+        <Tab.Container activeKey={activeTab} onSelect={setActiveTab}>
+          {/* Navegação entre abas para acessar diferentes partes do formulário */}
           <Nav variant="tabs">
             <Nav.Item>
               <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Hóspede</Nav.Link>
@@ -145,33 +161,27 @@ function EditarHospede() {
               <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
             </Nav.Item>
           </Nav>
+  
+          {/* Exibe o componente FormHospede para renderizar os campos do formulário */}
           <Tab.Content>
-            <FormHospede
-              formData={formData}
-              handleChange={handleChange}
-            />
+            <FormHospede formData={formData} handleChange={handleChange} />
           </Tab.Content>
         </Tab.Container>
+  
+        {/* Botões para cancelar ou continuar/salvar o formulário */}
         <div className="text-center mt-4">
-          <Button
-            variant="danger"
-            className="mt-2 me-2"
-            onClick={handleCancel} // Chama handleCancel ao clicar
-          >
+          <Button variant="danger" className="mt-2 me-2" onClick={handleCancel}>
             Cancelar
           </Button>
-          <Button
-            variant="primary"
-            className="mt-2"
-            type="submit"
-            onClick={handleSubmit} // Chama handleSubmit ao clicar
-          >
+          <Button variant="primary" className="mt-2" type="submit" onClick={handleSubmit}>
+            {/* Alterna o texto do botão dependendo da aba ativa */}
             {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
           </Button>
         </div>
       </div>
     </div>
   );
+  
 }
 
 export default EditarHospede;

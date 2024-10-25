@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Tab, Nav, Form, Button } from 'react-bootstrap';
+import { Tab, Nav, Button } from 'react-bootstrap';
 import FormFuncionario from '../Funcionarios/FormCadFuncionario/FormFuncionario';
 import MenuLateral from '../layout/MenuLateral/MenuLateral';
 
 function EditarFuncionario() {
   const { id } = useParams(); // Captura o ID do funcionário da URL
-  const navigate = useNavigate(); // Para navegação
-  const [activeTab, setActiveTab] = useState('informacoes'); // Controla as abas ativas
+  const navigate = useNavigate(); // Função para navegação entre páginas
+  const [activeTab, setActiveTab] = useState('informacoes'); // Controla a aba ativa
   const [formData, setFormData] = useState({
+    // Estado inicial do formulário com dados do funcionário
     nome: '',
     cpf: '',
     rg: '',
@@ -38,7 +39,7 @@ function EditarFuncionario() {
       observacoes: '',
     },
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Estado de carregamento enquanto os dados são buscados
 
   useEffect(() => {
     // Função para buscar dados do funcionário pelo ID
@@ -57,7 +58,7 @@ function EditarFuncionario() {
 
         const dadosFuncionario = await resposta.json();
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
-        setLoading(false);
+        setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
         console.error('Erro ao buscar funcionário', error);
       }
@@ -66,6 +67,7 @@ function EditarFuncionario() {
     buscarFuncionario();
   }, [id]);
 
+  // Função para manipular as mudanças no formulário, incluindo campos de endereço e adicionais
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.startsWith('endereco')) {
@@ -89,30 +91,31 @@ function EditarFuncionario() {
     }
   };
 
+  // Função de envio do formulário, que atualiza os dados do funcionário
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Se estamos na aba 'adicionais', tentamos salvar os dados
+
+    // Verifica se estamos na aba 'adicionais' para salvar os dados
     if (activeTab === 'adicionais') {
       try {
-        const resposta = await fetch(`http://localhost:5000/hospede/${id}`, {
+        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData), // Envia os dados atualizados
         });
-  
+
         if (!resposta.ok) {
           throw new Error('Erro ao atualizar funcionário');
         }
-  
+
         navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
       } catch (error) {
         console.error('Erro ao atualizar funcionário', error);
       }
     } else {
-      // Muda para a próxima aba dependendo da aba atual
+      // Muda para a próxima aba, conforme a aba atual
       if (activeTab === 'informacoes') {
         setActiveTab('endereco');
       } else if (activeTab === 'endereco') {
@@ -128,54 +131,54 @@ function EditarFuncionario() {
   if (loading) {
     return <p>Carregando...</p>; // Exibe uma mensagem de carregamento
   }
-  
+
   return (
     <div className="d-flex">
-      <MenuLateral />
-    <div className="container mt-4">
-      <div className="">
+      <div className="container mt-4">
         <h2 style={{ marginLeft: '50px' }}>Editando Funcionário</h2>
-      </div>
-      <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
-        <Nav variant="tabs">
-          <Nav.Item>
-            <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <Tab.Content>
-          <FormFuncionario
-            formData={formData}
-            handleChange={handleChange}
-          />
-        </Tab.Content>
-      </Tab.Container>
+        {/* Configura as abas para navegar entre diferentes seções do formulário */}
+        <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
+          <Nav variant="tabs">
+            <Nav.Item>
+              <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Funcionário</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="endereco" className="p-1 fs-6">Endereço</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="adicionais" className="p-1 fs-6">Adicionais</Nav.Link>
+            </Nav.Item>
+          </Nav>
 
-      <div className="text-center mt-4">
-        <Button
-          variant="danger"
-          className="mt-2 me-2"
-          onClick={handleCancel} // Chama handleCancel ao clicar
-        >
-          Cancelar
-        </Button>
-        <Button
-          variant="primary"
-          className="mt-2"
-          type="submit"
-          onClick={handleSubmit} // Chama handleSubmit ao clicar
-        >
-          {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
-        </Button>
+          {/* Renderiza o formulário de edição usando o componente FormFuncionario */}
+          <Tab.Content>
+            <FormFuncionario
+              formData={formData}
+              handleChange={handleChange}
+            />
+          </Tab.Content>
+        </Tab.Container>
+
+        {/* Botões para cancelar ou avançar no formulário */}
+        <div className="text-center mt-4">
+          <Button
+            variant="danger"
+            className="mt-2 me-2"
+            onClick={handleCancel} // Chama handleCancel ao clicar
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="primary"
+            className="mt-2"
+            type="submit"
+            onClick={handleSubmit} // Chama handleSubmit ao clicar
+          >
+            {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
+          </Button>
+        </div>
       </div>
     </div>
-    </div>
-    
   );
 }
 

@@ -6,8 +6,8 @@ import './FormCadHospedes.css';
 import FormHospede from './FormHospedes';
 
 function FormCadHospede({ handleSubmit }) {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('informacoes');
+  const navigate = useNavigate(); // Navegação entre páginas
+  const [activeTab, setActiveTab] = useState('informacoes'); // Aba ativa
   const [formData, setFormData] = useState({
     nome: '',
     cpf: '',
@@ -33,7 +33,9 @@ function FormCadHospede({ handleSubmit }) {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Captura o nome e valor do campo
+
+    // Atualiza os dados do formulário com base no campo modificado
     if (name.startsWith('endereco')) {
       setFormData((prevState) => ({
         ...prevState,
@@ -56,11 +58,12 @@ function FormCadHospede({ handleSubmit }) {
   };
 
   const submit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Previne o comportamento padrão
     if (activeTab === 'adicionais') {
-      handleSubmit(formData);
-      navigate('/tabela_hospedes');
+      handleSubmit(formData); // Envia os dados
+      navigate('/tabela_hospedes'); // Navega para a tabela
     } else {
+      // Muda a aba ativa
       if (activeTab === 'informacoes') {
         setActiveTab('endereco');
       } else if (activeTab === 'endereco') {
@@ -70,16 +73,14 @@ function FormCadHospede({ handleSubmit }) {
   };
 
   const handleCancel = () => {
-    navigate('/tabela_hospedes'); // Redireciona para a página TabelaHospedes
+    navigate('/tabela_hospedes'); // Cancela e redireciona
   };
 
   return (
     <div className="container mt-4 ">
-      <div className="">
-        <h2 style={{ marginLeft: '50px' }}>Novo Hóspede</h2>
-      </div>
+      <h2 style={{ marginLeft: '50px' }}>Novo Hóspede</h2> {/* Título */}
       <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
-        <Nav variant="tabs">
+        <Nav variant="tabs"> {/* Navegação das abas */}
           <Nav.Item>
             <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Hóspede</Nav.Link>
           </Nav.Item>
@@ -93,22 +94,22 @@ function FormCadHospede({ handleSubmit }) {
 
         <Tab.Content>
           <FormHospede
-            formData={formData}
-            handleChange={handleChange}
+            formData={formData} // Dados do formulário
+            handleChange={handleChange} // Função de alteração
           />
         </Tab.Content>
       </Tab.Container>
 
       <div className="text-center mt-4">
         <Button
-          variant="danger"
+          variant="danger" // Botão de cancelar
           className="mt-2 me-2"
           onClick={handleCancel}
         >
           Cancelar
         </Button>
         <Button
-          variant="primary"
+          variant="primary" // Botão de salvar ou continuar
           className="mt-2"
           type="submit"
           onClick={submit}
@@ -120,4 +121,4 @@ function FormCadHospede({ handleSubmit }) {
   );
 }
 
-export default FormCadHospede;
+export default FormCadHospede; // Exporta o componente

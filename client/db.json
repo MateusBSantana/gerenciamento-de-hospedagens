@@ -1,107 +1,14 @@
 {
-  "funcionarios": [
+  "funcionario": [
     {
-      "id": "dfb4",
-      "nome": "Mateus Barboza",
-      "cpf": "115.046.137-01",
-      "rg": "3233012",
+      "id": "ef97",
+      "nome": "valdineidedghdfgdfgschunk",
+      "cpf": "",
+      "rg": "",
       "dataNascimento": "",
-      "sexo": "masculino",
-      "email": "mateus@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "5f8d",
-      "nome": "Ney Schunk",
-      "cpf": "143.199.027-26",
-      "rg": "3233012",
-      "dataNascimento": "2024-10-08",
-      "sexo": "masculino",
+      "sexo": "",
       "email": "valdineideschunk@gmail.com",
       "telefone": "27998402372",
-      "observacoes": "11111111",
-      "endereco": {
-        "rua": "apartamento",
-        "numero": "101",
-        "cidade": "Vitória - ES",
-        "estado": "ES",
-        "cep": "29047-170",
-        "bairro": "da penha",
-        "complemento": "apartamento 101",
-        "observacoes": "2222222222222222222"
-      },
-      "adicionais": {
-        "cargo": "administrador",
-        "dataAdmissao": "2024-10-11",
-        "dataEmissaoCarteira": "2024-10-11",
-        "banco": "Brasil",
-        "agencia": "01",
-        "conta": "01",
-        "status": "ativo",
-        "observacoes": "3333333333333333333333"
-      }
-    },
-    {
-      "id": "e67b",
-      "nome": "valdineide schunk",
-      "cpf": "143.199.027-26",
-      "rg": "123453",
-      "dataNascimento": "2024-10-24",
-      "sexo": "masculino",
-      "email": "valdineideschunk@gmail.com",
-      "telefone": "27998402372",
-      "observacoes": "",
-      "endereco": {
-        "rua": "",
-        "numero": "",
-        "cidade": "",
-        "estado": "",
-        "cep": "",
-        "bairro": "",
-        "complemento": "",
-        "observacoes": ""
-      },
-      "adicionais": {
-        "cargo": "",
-        "dataAdmissao": "",
-        "dataEmissaoCarteira": "",
-        "banco": "",
-        "agencia": "",
-        "conta": "",
-        "status": "",
-        "observacoes": ""
-      }
-    },
-    {
-      "id": "6142",
-      "nome": "vitor ifood",
-      "cpf": "12345678912",
-      "rg": "123453",
-      "dataNascimento": "2024-10-08",
-      "sexo": "masculino",
-      "email": "lordsh1604@hmail.com",
-      "telefone": "27998402373",
       "observacoes": "",
       "endereco": {
         "rua": "",
@@ -125,7 +32,248 @@
       }
     }
   ],
-  "hospede": [],
+  "hospede": [
+    {
+      "id": "78f8",
+      "nome": "xc vzxcvsxc",
+      "cpf": "xcvx",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "df8e",
+      "nome": "xcv xc",
+      "cpf": "xc",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "b0fe",
+      "nome": "c x",
+      "cpf": "",
+      "rg": "xc ",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "dde2",
+      "nome": "thnfgf",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "a1a7",
+      "nome": "dfgdfgdfg",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "6e21",
+      "nome": "ghnghng",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "316b",
+      "nome": "ghnghn",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "78cf",
+      "nome": "ghnghnghng",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "8fc2",
+      "nome": "valdineide schunk",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    },
+    {
+      "id": "6731",
+      "nome": "valdineide schunk",
+      "cpf": "",
+      "rg": "",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
+    }
+  ],
   "acomodacoes": [
     {
       "id": "H1",
@@ -150,6 +298,24 @@
       "nome": "ddfghjm,",
       "capacidade": "1",
       "tipo": "d",
+      "observacoes": "",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "F8",
+      "nome": "ujkyuj",
+      "capacidade": "4",
+      "tipo": "fghfgh",
       "observacoes": "",
       "status": "disponivel",
       "comodidades": {

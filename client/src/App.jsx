@@ -12,7 +12,8 @@ import ListaAcomodacoes from './componentes/acomodacao/ListaAcomodacoes';
 
 import CadastroHospede  from './componentes/pages/CadastroHospede';
 import TabelaHospedes from './componentes/Hospedes/TabelaHospedes/TabelaHospedes';
-import EditarHospede from './componentes/pages/CadastroHospede';
+import EditarHospede from './componentes/pages/EditarHospede';
+
 
 function App() {
   return (
