@@ -1,4 +1,45 @@
 {
+  "reserva": [
+    {
+      "id": "ca98",
+      "situacao": "hospedar",
+      "hospede": "78f8",
+      "dataEntrada": "2024-10-29",
+      "dataSaida": "2024-10-30",
+      "acomodacao": "H1",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "100",
+      "pago": "nao",
+      "observacoes": "52452452452452452"
+    },
+    {
+      "id": "28e6",
+      "situacao": "hospedar",
+      "hospede": "8fc2",
+      "dataEntrada": "2024-10-02",
+      "dataSaida": "2024-10-17",
+      "acomodacao": "K6",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "5274",
+      "pago": "nao",
+      "observacoes": ""
+    },
+    {
+      "id": "e80a",
+      "situacao": "reservar",
+      "hospede": "8fc2",
+      "dataEntrada": "2024-10-24",
+      "dataSaida": "2024-10-25",
+      "acomodacao": "H1",
+      "numAdultos": "1",
+      "numCriancas": "1",
+      "valorDiaria": "100",
+      "pago": "nao",
+      "observacoes": "12345699999"
+    }
+  ],
   "funcionario": [
     {
       "id": "ef97",
@@ -327,6 +368,24 @@
         "sinalizacaoBraille": false,
         "entradaAcessivel": false,
         "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "K6",
+      "nome": "domo",
+      "capacidade": "3",
+      "tipo": "suite",
+      "observacoes": "nova",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": true,
+        "tv": false,
+        "arCondicionado": true,
+        "frigobar": false,
+        "banheirosAdaptados": true,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": true,
+        "estacionamentoAcessivel": true
       }
     }
   ]

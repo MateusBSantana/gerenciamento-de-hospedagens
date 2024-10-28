@@ -1,6 +1,8 @@
 // src/App.jsx
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Importação dos componentes para funcionarios
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
 import TabelaFuncionarios from './componentes/Funcionarios/TabelaFuncionarios/TabelaFuncionarios';
 import EditarFuncionario from './componentes/pages/EditarFuncionario';
@@ -10,10 +12,14 @@ import CadastroAcomodacao from './componentes/acomodacao/Cadastro';
 import MenuLateral from './componentes/layout/MenuLateral/MenuLateral';
 import ListaAcomodacoes from './componentes/acomodacao/ListaAcomodacoes'; 
 
+// Importação dos componentes para hóspedes
 import CadastroHospede  from './componentes/pages/CadastroHospede';
 import TabelaHospedes from './componentes/Hospedes/TabelaHospedes/TabelaHospedes';
 import EditarHospede from './componentes/pages/EditarHospede';
 
+// Importação dos componentes para reservas
+import CadastroReserva from './componentes/pages/CadastroReserva';
+import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
 function App() {
   return (
@@ -36,6 +42,12 @@ function App() {
             <Route path='/cadastro_hospede' element={<CadastroHospede/>} />
             <Route path='/tabela_hospedes' element={<TabelaHospedes/>} /> 
             <Route path="/editar_hospede/:id" element={<EditarHospede />} />
+
+            {/*  rotas para reservas */}
+            <Route path='/cadastro_reserva' element={<CadastroReserva/>} />
+            <Route path='/tabela_reserva' element={<TabelaReservas/>} />
+            <Route path="/cadastro_reserva/:id" element={<CadastroReserva/>} />
+
           </Routes>
         </div>
       </div>
