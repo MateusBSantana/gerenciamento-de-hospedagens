@@ -15,14 +15,16 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
   const InfHospede = () => setMostrarTabelaHospedes(true);
 
   const handleSelectHospede = (hospede) => {
-    handleChange({ target: { name: 'hospede', value: hospede.id } });
+    handleChange({ target: { name: 'hospede', value: hospede.nome } });
     setMostrarTabelaHospedes(false);
   };
 
   const handleSelectAcomodacao = (acomodacao) => {
-    handleChange({ target: { name: 'acomodacao', value: acomodacao.id } });
+    const concatenatedValue = `(${acomodacao.id}) ${acomodacao.nome}`; // Concatena nome e ID
+    handleChange({ target: { name: 'acomodacao', value: concatenatedValue } });
     setMostrarTabelaAcomodacoes(false);
   };
+  
 
   useEffect(() => {
 
@@ -48,11 +50,11 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
           </div>
         </div>
 
-        <div className="container">
+        
           {/* Campo Hóspede */}
-          <div className="mb-3 row align-items-center d-flex">
-            <label className="col-form-label col-md-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
-            <div className="col-md-6 d-flex align-items-center" style={{ width: "400px" }}>
+          <div className="mb-3 d-flex align-items-center">
+            <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
+            <div className="d-flex align-items-center" style={{ width: "400px" }}>
               <input
                 type="text"
                 name="hospedeNome"
@@ -71,7 +73,6 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
             </div>
           </div>
 
-
           {/* Renderização condicional da tabela em overlay */}
           {mostrarTabelaHospedes && (
             <div
@@ -88,7 +89,7 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
               </div>
             </div>
           )}
-        </div>
+        
 
         {/* Campo Data de Entrada */}
         <div className="mb-3 d-flex align-items-center">

@@ -1,43 +1,86 @@
 {
   "reserva": [
     {
-      "id": "ca98",
+      "id": "ae20",
       "situacao": "hospedar",
-      "hospede": "78f8",
-      "dataEntrada": "2024-10-29",
-      "dataSaida": "2024-10-30",
-      "acomodacao": "H1",
+      "hospede": "(6731) valdineide schunk",
+      "dataEntrada": "2024-10-17",
+      "dataSaida": "2024-10-17",
+      "acomodacao": "(H0) domo",
       "numAdultos": "1",
       "numCriancas": "0",
       "valorDiaria": "100",
-      "pago": "nao",
-      "observacoes": "52452452452452452"
-    },
-    {
-      "id": "28e6",
-      "situacao": "hospedar",
-      "hospede": "8fc2",
-      "dataEntrada": "2024-10-02",
-      "dataSaida": "2024-10-17",
-      "acomodacao": "K6",
-      "numAdultos": "1",
-      "numCriancas": "0",
-      "valorDiaria": "5274",
       "pago": "nao",
       "observacoes": ""
     },
     {
-      "id": "e80a",
-      "situacao": "reservar",
-      "hospede": "8fc2",
-      "dataEntrada": "2024-10-24",
-      "dataSaida": "2024-10-25",
-      "acomodacao": "H1",
+      "id": "9e29",
+      "situacao": "hospedar",
+      "hospede": "(78f8) xc vzxcvsxc",
+      "dataEntrada": "2024-10-10",
+      "dataSaida": "2024-10-17",
+      "acomodacao": "",
       "numAdultos": "1",
-      "numCriancas": "1",
+      "numCriancas": "0",
       "valorDiaria": "100",
       "pago": "nao",
-      "observacoes": "12345699999"
+      "observacoes": "sfsdf45245",
+      "hospedeNome": "valdineide schunk",
+      "acomodacaoNome": "domo"
+    },
+    {
+      "id": "0813",
+      "situacao": "hospedar",
+      "hospede": "(78f8) xc vzxcvsxc",
+      "dataEntrada": "2024-10-11",
+      "dataSaida": "2024-10-04",
+      "acomodacao": "(H0) domo",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "100",
+      "pago": "nao",
+      "observacoes": "4524524"
+    },
+    {
+      "id": "438f",
+      "situacao": "",
+      "nomeHospede": "",
+      "idHospede": "",
+      "dataEntrada": "2024-10-31",
+      "dataSaida": "2024-10-16",
+      "nomeAcomodacao": "",
+      "idAcomodacao": "",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "100",
+      "pago": "nao",
+      "observacoes": ""
+    },
+    {
+      "id": "cd7a",
+      "situacao": "",
+      "hospede": "valdineide schunk",
+      "dataEntrada": "2024-10-03",
+      "dataSaida": "2024-10-11",
+      "acomodacao": "H0 domo",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "100",
+      "pago": "nao",
+      "observacoes": ""
+    },
+    {
+      "id": "f8ac",
+      "situacao": "",
+      "hospede": "valdineide schunk",
+      "dataEntrada": "2024-10-28",
+      "dataSaida": "2024-10-28",
+      "acomodacao": "(H0) domo",
+      "numAdultos": "1",
+      "numCriancas": "0",
+      "valorDiaria": "100",
+      "pago": "",
+      "observacoes": ""
     }
   ],
   "funcionario": [
@@ -317,75 +360,21 @@
   ],
   "acomodacoes": [
     {
-      "id": "H1",
-      "nome": "junir",
-      "capacidade": "1",
-      "tipo": "d",
-      "observacoes": "",
-      "status": "disponivel",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": false,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "I2",
-      "nome": "ddfghjm,",
-      "capacidade": "1",
-      "tipo": "d",
-      "observacoes": "",
-      "status": "disponivel",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": false,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "F8",
-      "nome": "ujkyuj",
-      "capacidade": "4",
-      "tipo": "fghfgh",
-      "observacoes": "",
-      "status": "disponivel",
-      "comodidades": {
-        "wifi": false,
-        "tv": false,
-        "arCondicionado": false,
-        "frigobar": false,
-        "banheirosAdaptados": false,
-        "sinalizacaoBraille": false,
-        "entradaAcessivel": false,
-        "estacionamentoAcessivel": false
-      }
-    },
-    {
-      "id": "K6",
+      "id": "H0",
       "nome": "domo",
       "capacidade": "3",
-      "tipo": "suite",
+      "tipo": "duplo",
       "observacoes": "nova",
       "status": "disponivel",
       "comodidades": {
         "wifi": true,
         "tv": false,
-        "arCondicionado": true,
+        "arCondicionado": false,
         "frigobar": false,
-        "banheirosAdaptados": true,
-        "sinalizacaoBraille": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": true,
         "entradaAcessivel": true,
-        "estacionamentoAcessivel": true
+        "estacionamentoAcessivel": false
       }
     }
   ]

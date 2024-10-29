@@ -84,7 +84,7 @@ function TabelaReservas() {
               {filteredReservas.map((reserva) => (
                 <tr key={reserva.id}>
                   <td>{reserva.id}</td>
-                  <td>{reserva.hospede.nome}</td>
+                  <td>{reserva.hospede}</td>
                   <td>{reserva.dataEntrada}</td>
                   <td>{reserva.dataSaida}</td>
                   <td>{reserva.situacao}</td>
