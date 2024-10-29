@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import './ListaAcomodacoes.css'; // Importa o CSS
 
-const ListagemAcomodacoes = () => {
+
+const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
   const [acomodacoes, setAcomodacoes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -36,8 +37,8 @@ const ListagemAcomodacoes = () => {
     return (
       acomodacao &&
       (acomodacao.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       acomodacao.id.toString().includes(searchTerm) ||
-       acomodacao.tipo.toLowerCase().includes(searchTerm.toLowerCase()))
+        acomodacao.id.toString().includes(searchTerm) ||
+        acomodacao.tipo.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 
@@ -89,13 +90,20 @@ const ListagemAcomodacoes = () => {
               <td>{acomodacao.status}</td>
               <td>
                 <Button
-                  variant="warning"
+                  variant="primary"
                   size="sm"
-                  onClick={() => navigate(`/editar_acomodacao/${acomodacao.id}`)}
+                  onClick={() => {
+                    if (textoBotao === 'Selecionar') {
+                      onSelectAcomodacao(acomodacao); // Chama a função onSelectAcomodacao com a acomodação selecionada
+                    } else if (textoBotao === 'Editar') {
+                      navigate(`/editar_acomodacao/${acomodacao.id}`); // Navega para a página de edição de acomodação
+                    }
+                  }}
                   className="me-2"
                 >
-                  Editar
+                  {textoBotao}
                 </Button>
+
                 <Button
                   variant="danger"
                   size="sm"

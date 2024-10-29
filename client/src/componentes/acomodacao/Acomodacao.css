@@ -1,0 +1,91 @@
+/* src/components/Acomodacao/Acomodacao.css */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+  }
+  
+  .content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header h1 {
+    margin: 0;
+    color: #4a0082;
+    font-size: 28px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .form-group input[type="text"],
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #4a0082;
+    outline: none;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    background-color: #4a0082;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #5c0099;
+  }
+  
+  .tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .tab {
+    padding: 12px 24px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+  
+  .tab.active {
+    background-color: white;
+    border-bottom: 2px solid #4a0082;
+    color: #4a0082;
+    font-weight: bold;
+  }
+  
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .checkbox-item {
+    width: 50%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+  }
+  

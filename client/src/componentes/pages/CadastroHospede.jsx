@@ -1,9 +1,9 @@
 import React from 'react';
-import FormCadHospede from '../Hospedes/FormCadHospedes/FormCadHospedes'
-import MenuLateral from '../layout/MenuLateral/MenuLateral';
+import FormCadHospede from '../Hospedes/FormCadHospedes/FormCadHospedes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CadastroHospede() {
+  // Função assíncrona para cadastrar um novo hóspede
   async function cadastrarHospede(infoHospede) {
     try {
       const resposta = await fetch('http://localhost:5000/hospede', {
@@ -11,27 +11,28 @@ function CadastroHospede() {
         headers: {
           'Content-Type': 'application/json',
         },
+        // Envia os dados do hóspede no corpo da requisição como JSON
         body: JSON.stringify(infoHospede),
       });
+      // Verifica se a resposta da requisição foi bem-sucedida
       if (!resposta.ok) {
-        console.log('Erro ao cadastrar Hóspede');
+        console.log('Erro ao cadastrar Hóspede'); // Log em caso de erro
       } else {
-        alert('Hóspede Cadastrado');
+        alert('Hóspede Cadastrado'); // Confirmação para o usuário em caso de sucesso
       }
     } catch (error) {
-      console.log('Erro ao cadastrar Hóspede', error);
+      console.log('Erro ao cadastrar Hóspede', error); // Log de erro no caso de exceção
     }
   }
 
   return (
     <div className="d-flex">
-      <MenuLateral />
-        <FormCadHospede
-          titulo="Cadastro Hóspede"
-          txtBtn="Cadastrar"
-          handleSubmit={cadastrarHospede}
-        />
-      
+      {/* Componente de formulário de cadastro, passando propriedades */}
+      <FormCadHospede
+        titulo="Cadastro Hóspede"      // Título exibido no formulário
+        txtBtn="Cadastrar"             // Texto do botão de envio
+        handleSubmit={cadastrarHospede} // Função chamada ao submeter o formulário
+      />
     </div>
   );
 }
