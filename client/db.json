@@ -356,6 +356,30 @@
         "email": "",
         "telefone": ""
       }
+    },
+    {
+      "id": "115b",
+      "nome": "valdineide schunk",
+      "cpf": "14319902726",
+      "rg": "3233012",
+      "dataNascimento": "",
+      "sexo": "",
+      "Profissao": "mecanico",
+      "observacoes": "",
+      "endereco": {
+        "rua": "",
+        "numero": "",
+        "cidade": "",
+        "estado": "",
+        "cep": "",
+        "bairro": "",
+        "complemento": "",
+        "observacoes": ""
+      },
+      "contato": {
+        "email": "",
+        "telefone": ""
+      }
     }
   ],
   "acomodacoes": [

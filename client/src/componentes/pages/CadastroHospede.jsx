@@ -17,6 +17,7 @@ function CadastroHospede() {
       // Verifica se a resposta da requisição foi bem-sucedida
       if (!resposta.ok) {
         console.log('Erro ao cadastrar Hóspede'); // Log em caso de erro
+        console.log('Erro aqui'); 
       } else {
         alert('Hóspede Cadastrado'); // Confirmação para o usuário em caso de sucesso
       }
