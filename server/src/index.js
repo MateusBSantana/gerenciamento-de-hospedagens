@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { cadastroHospede } from './controllers/HospedeController.js'; 
+import { cadastroFuncionario } from './controllers/FuncionarioController.js'; 
 
 const app = express();
 const porta = 5000;
@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // Rotas de CRUD de hospede
-app.post('/hospede',cadastroHospede);
+app.post('/funcionario', cadastroFuncionario);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

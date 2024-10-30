@@ -1,27 +1,29 @@
 const params = [
     'nome_hospede',
-    /*'rg',
+    'rg',
     'cpf',
     'data_nascimento',
     'sexo',
-    'celular',
     'email',
+    'telefone',
+    'observacoes',
     'CEP',
     'Estado',
     'cidade',
     'bairro',
     'rua',
     'complemento',
-    'observacoes'*/
+    'observacoes'
   ];
+  
   
   export function isNullOrEmpty(value) {
     return value === null || value === '' || value === undefined;
   }
   
-  export function validateHospede(hospede) {
+  export function validateFuncionario(funcionario) {
     return params.some((param) => {
-      return isNullOrEmpty(hospede[param]);
+      return isNullOrEmpty(funcionario[param]);
     });
   }
   

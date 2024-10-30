@@ -18,7 +18,7 @@ function FormCadFuncionario({ handleSubmit }) {
     telefone: '',
     observacoes: '',
     endereco: {
-      rua: '',
+      logradouro: '',
       numero: '',
       cidade: '',
       estado: '',

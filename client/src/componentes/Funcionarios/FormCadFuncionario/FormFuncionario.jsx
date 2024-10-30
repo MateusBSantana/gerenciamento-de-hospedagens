@@ -255,13 +255,13 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 htmlFor="formRua"
                 style={{ width: "160px" }}
               >
-                Endereço:
+                Logradouro:
               </Form.Label>
               <Form.Control
                 type="text"
-                id="formRua"
-                name="endereco.rua"
-                value={formData.endereco.rua}
+                id="formLogradouro"
+                name="endereco.logradouro"
+                value={formData.endereco.logradouro}
                 onChange={handleChange}
                 required
                 style={{ width: "350px" }}
