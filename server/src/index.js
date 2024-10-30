@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.send('API Funcionando');
 });
 
-// Rotas de CRUD de hospede
+// Rotas de CRUD de hospe
 app.post('/hospede',cadastroHospede);
 
 app.listen(porta, () => {

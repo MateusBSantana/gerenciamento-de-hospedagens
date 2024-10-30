@@ -10,7 +10,7 @@ export async function cadastroHospede(req, res) {
     console.log('HospedeController cadastroHospede');
     const hospede = req.body;
   
-    console.log('Dados recebidos do frontend:', hospede); // Log dos dados recebidos
+    console.log('Dados recebidos do frontend:', hospede);
 
     if (validateHospede(hospede)) {
       res.status(400).json({ mensagem: 'Hóspede não pode ter campos vazios' });
