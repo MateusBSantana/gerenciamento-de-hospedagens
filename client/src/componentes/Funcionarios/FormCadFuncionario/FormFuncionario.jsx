@@ -316,8 +316,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="textarea"
                 id="formObservacaoendereco"
-                name="endereco.observacoes"
-                value={formData.endereco.observacoes}
+                name="endereco.observacoesEndereco"
+                value={formData.endereco.observacoesEndereco}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
@@ -468,16 +468,16 @@ function FormFuncionario({ formData, handleChange, submit }) {
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formObservacoes"
+                htmlFor="formObservacoesadicionais"
                 style={{ width: "160px" }}
               >
                 Observações:
               </Form.Label>
               <Form.Control
                 as="textarea"
-                id="formObservacoes"
-                name="adicionais.observacoes"
-                value={formData.adicionais.observacoes}
+                id="formObservacoesadicionais"
+                name="adicionais.observacoesAdicionais"
+                value={formData.adicionais.observacoesAdicionais}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />

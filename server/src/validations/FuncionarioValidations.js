@@ -1,5 +1,5 @@
 const params = [
-    'nome_funcionario'
+    'rg'
   ];
   
   

@@ -18,14 +18,14 @@ function FormCadFuncionario({ handleSubmit }) {
     telefone: '',
     observacoes: '',
     endereco: {
+      cep: '',
+      estado: '',
+      cidade: '',
+      bairro: '',
       logradouro: '',
       numero: '',
-      cidade: '',
-      estado: '',
-      cep: '',
-      bairro: '',
       complemento: '',
-      observacoes: '',
+      observacoesEndereco: '',
     },
     adicionais: {
       cargo: '',
@@ -35,7 +35,7 @@ function FormCadFuncionario({ handleSubmit }) {
       agencia: '',
       conta: '',
       status: '',
-      observacoes: '',
+      observacoesAdicionais: '',
     },
   });
 
