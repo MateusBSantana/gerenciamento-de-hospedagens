@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { cadastroHospede } from './controllers/HospedeController.js'; 
+import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes } from './controllers/HospedeController.js'; 
 
 const app = express();
 const porta = 5000;
@@ -12,8 +12,11 @@ app.get('/', (req, res) => {
   res.send('API Funcionando');
 });
 
-// Rotas de CRUD de hospe
+// Rotas de CRUD de hospedes
 app.post('/hospede',cadastroHospede);
+app.get('/hospede', mostrandoHospedes);
+app.put('/hospede/:id', atualizandoHospede);
+app.delete('/hospede/:id', excluindoHospede);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);
