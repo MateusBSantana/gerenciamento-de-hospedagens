@@ -1,19 +1,5 @@
 const params = [
-    'nome_hospede',
-    'rg',
-    'cpf',
-    'data_nascimento',
-    'sexo',
-    'email',
-    'telefone',
-    'observacoes',
-    'CEP',
-    'Estado',
-    'cidade',
-    'bairro',
-    'rua',
-    'complemento',
-    'observacoes'
+    'nome_funcionario'
   ];
   
   

@@ -12,9 +12,9 @@ export async function cadastroFuncionario(req, res) {
   
     console.log('Dados recebidos do frontend:', funcionario); // Log dos dados recebidos
 
-    if (validateFuncionario(funcionario)) {
-      res.status(400).json({ mensagem: 'Funcionario não pode ter campos vazios' });
-    } else {
+    // if (validateFuncionario(funcionario)) {
+    //   res.status(400).json({ mensagem: 'Funcionario não pode ter campos vazios' });
+    // } else {
       try {
         const [status, resposta] = await createFuncionario(funcionario);
         res.status(status).json(resposta);
@@ -22,5 +22,5 @@ export async function cadastroFuncionario(req, res) {
         console.log(error);
         res.status(500).json(error);
       }
-    }
+    // }
 }
