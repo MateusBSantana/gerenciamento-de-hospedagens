@@ -26,10 +26,8 @@ function FormCadHospede({ handleSubmit }) {
       complemento: '',
       observacoes: '',
     },
-    contato: {
       email: '',
       telefone: '',
-    },
   });
 
   const handleChange = (e) => {

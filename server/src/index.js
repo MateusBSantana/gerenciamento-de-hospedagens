@@ -18,6 +18,7 @@ app.post('/hospede',cadastroHospede);
 app.get('/hospede', mostrandoHospedes);
 app.put('/hospede/:id', atualizandoHospede);
 app.delete('/hospede/:id', excluindoHospede);
+
 // Rotas de CRUD de hospede
 app.post('/funcionario', cadastroFuncionario);
 

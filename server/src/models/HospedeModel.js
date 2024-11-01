@@ -10,25 +10,28 @@ import db from '../conexao.js';
 export async function createHospede(hospede) {
     const conexao = mysql.createPool(db);
     const sql = `INSERT INTO hospedes 
-          (nome_hospede, rg, cpf, data_nascimento, sexo, celular, email, CEP, Estado, cidade, bairro, rua, complemento, observacoes) 
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+          (nome_hospede, cpf, rg, data_nascimento, sexo, Profissao, observacoes, rua, numero, cidade, estado, cep, bairro, complemento, observacoes_endereco, email, celular) 
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     const params = [
       hospede.nome_hospede,
-      hospede.rg,
       hospede.cpf,
+      hospede.rg,
       hospede.data_nascimento,
       hospede.sexo,
-      hospede.celular,
-      hospede.email,
-      hospede.CEP,
-      hospede.Estado,
-      hospede.cidade,
-      hospede.bairro,
-      hospede.rua,
-      hospede.complemento,
+      hospede.profissao,
       hospede.observacoes,
+      hospede.rua,
+      hospede.numero, 
+      hospede.cidade,
+      hospede.estado, 
+      hospede.cep,
+      hospede.bairro,
+      hospede.complemento,
+      hospede.observacoes_endereco,
+      hospede.email,
+      hospede.celular,
     ];
-  
+
     try {
       const [retorno] = await conexao.query(sql, params);
       console.log('Hóspede Cadastrado');
