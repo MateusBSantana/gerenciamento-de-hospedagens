@@ -31,6 +31,7 @@ function TabelaFuncionarios() {
         throw new Error('Erro ao buscar funcionários');
       }
       const consulta = await resposta.json();
+      console.log("Dados recebidos no frontend:", consulta);
       setFuncionarios(consulta);
       setRemoveLoading(true);
     } catch (error) {
@@ -39,10 +40,10 @@ function TabelaFuncionarios() {
   }
 
   // Função para deletar um funcionário
-  const handleDelete = async (id) => {
-    const sucesso = await deletarFuncionario(id);
+  const handleDelete = async (id_funcionario) => {
+    const sucesso = await deletarFuncionario(id_funcionario);
     if (sucesso) {
-      setFuncionarios(funcionarios.filter((funcionario) => funcionario.id !== id));
+      setFuncionarios(funcionarios.filter((funcionario) => funcionario.id_funcionario !== id_funcionario));
     }
   };
 
@@ -53,14 +54,13 @@ function TabelaFuncionarios() {
 
   // Filtrando os funcionários com base no termo de pesquisa (nome ou CPF)
   const filteredFuncionarios = funcionarios.filter((funcionario) =>
-    funcionario.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    funcionario.nome_funcionario.toLowerCase().includes(searchTerm.toLowerCase()) ||
     funcionario.cpf.includes(searchTerm)
   );
 
   return (
-    <div className="flex-grow-1 p-3"> {/* O Menu Lateral foi removido aqui */}
+    <div className="flex-grow-1 p-3">
       <h2 className="text-center">Lista de Funcionários</h2>
-      {/* Campo de pesquisa e botão ao lado direito */}
       <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
         <input
           type="text"
@@ -74,7 +74,6 @@ function TabelaFuncionarios() {
           <button className="btn btn-primary">Novo Funcionário</button>
         </Link>
       </div>
-      {/* Mensagem de ausência de funcionários */}
       {removeLoading && filteredFuncionarios.length === 0 && (
         <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>Não há funcionários disponíveis</h1>
       )}
@@ -91,14 +90,14 @@ function TabelaFuncionarios() {
           </thead>
           <tbody>
             {filteredFuncionarios.map((funcionario) => (
-              <tr key={funcionario.id}>
-                <td>{funcionario.nome}</td>
+              <tr key={funcionario.id_funcionario}>
+                <td>{funcionario.nome_funcionario}</td>
                 <td>{funcionario.cpf}</td>
                 <td>{funcionario.telefone}</td>
                 <td>{funcionario.sexo}</td>
                 <td className="bg-light">
-                  <Link className="btn btn-primary btn-sm" to={`/editar_funcionario/${funcionario.id}`}>Editar</Link>
-                  <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(funcionario.id)}>Deletar</button>
+                  <Link className="btn btn-primary btn-sm" to={`/editar_funcionario/${funcionario.id_funcionario}`}>Editar</Link>
+                  <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(funcionario.id_funcionario)}>Deletar</button>
                 </td>
               </tr>
             ))}
