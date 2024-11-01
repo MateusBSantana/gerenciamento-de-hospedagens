@@ -462,6 +462,42 @@
         "entradaAcessivel": true,
         "estacionamentoAcessivel": false
       }
+    },
+    {
+      "id": "R4",
+      "nome": "WEQ EWQE",
+      "capacidade": "1",
+      "tipo": "domo",
+      "observacoes": "weq",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": false,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": false,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": false,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
+    },
+    {
+      "id": "P1",
+      "nome": "WEQ EWQE",
+      "capacidade": "1",
+      "tipo": "domo",
+      "observacoes": "",
+      "status": "disponivel",
+      "comodidades": {
+        "wifi": true,
+        "tv": false,
+        "arCondicionado": false,
+        "frigobar": true,
+        "banheirosAdaptados": false,
+        "sinalizacaoBraille": true,
+        "entradaAcessivel": false,
+        "estacionamentoAcessivel": false
+      }
     }
   ]
 }

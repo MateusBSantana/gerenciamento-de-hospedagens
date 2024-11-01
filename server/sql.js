@@ -59,4 +59,28 @@ CREATE TABLE funcionarios (
 );
 SELECT * FROM funcionarios;
 
+):
+CREATE DATABASE hospedagem;
+
+
+USE hospedagem;
+
+CREATE TABLE acomodacoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_acomodacao VARCHAR(255) NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL,
+    wifi BOOLEAN NOT NULL DEFAULT FALSE,
+    tv BOOLEAN NOT NULL DEFAULT FALSE,
+    ar_condicionado BOOLEAN NOT NULL DEFAULT FALSE,
+    frigobar BOOLEAN NOT NULL DEFAULT FALSE,
+    banheiros_adaptados BOOLEAN NOT NULL DEFAULT FALSE,
+    sinalizacao_braille BOOLEAN NOT NULL DEFAULT FALSE,
+    entrada_acessivel BOOLEAN NOT NULL DEFAULT FALSE,
+    estacionamento_acessivel BOOLEAN NOT NULL DEFAULT FALSE,
+    observacoes TEXT,
+    valor_diaria DECIMAL(10, 2) NOT NULL
+);
+
 */
+
