@@ -52,3 +52,19 @@ export async function createFuncionario(funcionario) {
     }
   }
   
+  // Lendo aulas
+  export async function readFuncionario() {
+    console.log("FuncionarioModel: readFuncionario");
+    const conexao = mysql.createPool(db);
+
+    const sql = 'SELECT * FROM funcionarios';
+
+    try {
+        const [retorno] = await conexao.query(sql);
+        console.log("Mostrando Funcionarios");
+        return [200, retorno];
+    } catch (error) {
+        console.log(error);
+        return [500, error];
+    }
+}
