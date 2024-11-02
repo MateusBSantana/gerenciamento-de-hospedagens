@@ -9,9 +9,9 @@ export async function cadastroHospede(req, res) {
   
     console.log('Dados recebidos do frontend:', hospede);
 
-    if (validateHospede(hospede)) {
-      res.status(400).json({ mensagem: 'Hóspede não pode ter campos vazios' });
-    } else {
+    //if (validateHospede(hospede)) {
+    //  res.status(400).json({ mensagem: 'Hóspede não pode ter campos vazios' });
+    //} else {
       try {
         const [status, resposta] = await createHospede(hospede);
         res.status(status).json(resposta);
@@ -19,7 +19,7 @@ export async function cadastroHospede(req, res) {
         console.log(error);
         res.status(500).json(error);
       }
-    }
+   // }
 }
 
 export async function mostrandoHospedes(req, res) {
