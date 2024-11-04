@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Tab } from "react-bootstrap";
 
 function FormFuncionario({ formData, handleChange, submit }) {
+  
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -22,8 +23,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formNome"
-                name="nome"
-                value={formData.nome}
+                name="nome_funcionario"
+                value={formData.nome_funcionario}
                 onChange={handleChange}
                 required
                 style={{ width: "400px" }}
@@ -185,7 +186,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formCep"
                 name="endereco.cep"
-                value={formData.endereco.cep}
+                value={formData.endereco?.cep || ''} 
                 onChange={handleChange}
                 required
                 style={{ width: "180px" }}
@@ -204,7 +205,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formEstado"
                 name="endereco.estado"
-                value={formData.endereco.estado}
+                value={formData.endereco?.estado || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
@@ -223,7 +224,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formCidade"
                 name="endereco.cidade"
-                value={formData.endereco.cidade}
+                value={formData.endereco?.cidade || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
@@ -242,7 +243,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formBairro"
                 name="endereco.bairro"
-                value={formData.endereco.bairro}
+                value={formData.endereco?.bairro || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
@@ -261,7 +262,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formLogradouro"
                 name="endereco.logradouro"
-                value={formData.endereco.logradouro}
+                value={formData.endereco?.logradouro || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "350px" }}
@@ -280,7 +281,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formNumero"
                 name="endereco.numero"
-                value={formData.endereco.numero}
+                value={formData.endereco?.numero || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "100px" }}
@@ -299,7 +300,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formComplemento"
                 name="endereco.complemento"
-                value={formData.endereco.complemento}
+                value={formData.endereco?.complemento || ''}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
@@ -317,7 +318,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 as="textarea"
                 id="formObservacaoendereco"
                 name="endereco.observacoesEndereco"
-                value={formData.endereco.observacoesEndereco}
+                value={formData.endereco?.observacoesEndereco || ''}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
@@ -335,7 +336,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                     as="select"
                     id="formCargo"
                     name="adicionais.cargo"
-                    value={formData.adicionais.cargo}
+                    value={formData.adicionais?.cargo || ''}
                     onChange={handleChange}
                     required
                     style={{ width: '200px' }} 
@@ -359,7 +360,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataAdmissao"
                 name="adicionais.dataAdmissao"
-                value={formData.adicionais.dataAdmissao}
+                value={formData.adicionais?.dataAdmissao || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -378,7 +379,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataEmissaoCarteira"
                 name="adicionais.dataEmissaoCarteira"
-                value={formData.adicionais.dataEmissaoCarteira}
+                value={formData.adicionais?.dataEmissaoCarteira || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -397,7 +398,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formBanco"
                 name="adicionais.banco"
-                value={formData.adicionais.banco}
+                value={formData.adicionais?.banco  || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
@@ -416,7 +417,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formAgencia"
                 name="adicionais.agencia"
-                value={formData.adicionais.agencia}
+                value={formData.adicionais?.agencia || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "150px" }}
@@ -435,7 +436,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formConta"
                 name="adicionais.conta"
-                value={formData.adicionais.conta}
+                value={formData.adicionais?.conta || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "150px" }}
@@ -454,7 +455,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 as="select"
                 id="formStatus"
                 name="adicionais.status"
-                value={formData.adicionais.status}
+                value={formData.adicionais?.status || ''}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -477,7 +478,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 as="textarea"
                 id="formObservacoesadicionais"
                 name="adicionais.observacoesAdicionais"
-                value={formData.adicionais.observacoesAdicionais}
+                value={formData.adicionais?.observacoesAdicionais || ''}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />

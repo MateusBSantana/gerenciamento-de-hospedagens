@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TabelaFuncionarios.module.css';
 import { Link } from 'react-router-dom';
-import { deletarFuncionario } from './deletarFuncionario';
 
 function TabelaFuncionarios() {
   // Estado para armazenar a lista de funcionários
@@ -39,73 +38,65 @@ function TabelaFuncionarios() {
     }
   }
 
-  // Função para deletar um funcionário
-  const handleDelete = async (id_funcionario) => {
-    const sucesso = await deletarFuncionario(id_funcionario);
-    if (sucesso) {
-      setFuncionarios(funcionarios.filter((funcionario) => funcionario.id_funcionario !== id_funcionario));
-    }
-  };
+
 
   // Função para atualizar o estado de pesquisa
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filtrando os funcionários com base no termo de pesquisa (nome ou CPF)
-  const filteredFuncionarios = funcionarios.filter((funcionario) =>
-    funcionario.nome_funcionario.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    funcionario.cpf.includes(searchTerm)
-  );
+  const filteredFuncionarios = funcionarios.filter((funcionario) => {
+    const nome = funcionario.nome_funcionario ? funcionario.nome_funcionario.toLowerCase() : '';
+    return nome.includes(searchTerm.toLowerCase()) || funcionario.cpf.includes(searchTerm); });
 
-  return (
-    <div className="flex-grow-1 p-3">
-      <h2 className="text-center">Lista de Funcionários</h2>
-      <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
-        <input
-          type="text"
-          placeholder="Pesquisar Funcionário por Nome ou CPF"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="form-control me-2"
-          style={{ flex: '1' }}
-        />
-        <Link to="/cadastro_funcionario">
-          <button className="btn btn-primary">Novo Funcionário</button>
-        </Link>
-      </div>
-      {removeLoading && filteredFuncionarios.length === 0 && (
-        <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>Não há funcionários disponíveis</h1>
-      )}
-      <div className={styles.Funcionarios}>
-        <table className={`${styles.TabelaFuncionarios} table-bordered mt-3`}>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>Telefone</th>
-              <th>Sexo</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredFuncionarios.map((funcionario) => (
-              <tr key={funcionario.id_funcionario}>
-                <td>{funcionario.nome_funcionario}</td>
-                <td>{funcionario.cpf}</td>
-                <td>{funcionario.telefone}</td>
-                <td>{funcionario.sexo}</td>
-                <td className="bg-light">
-                  <Link className="btn btn-primary btn-sm" to={`/editar_funcionario/${funcionario.id_funcionario}`}>Editar</Link>
-                  <button className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(funcionario.id_funcionario)}>Deletar</button>
-                </td>
+    return (
+      <div className="flex-grow-1 p-3">
+        <h2 className="text-center">Lista de Funcionários</h2>
+        <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
+          <input
+            type="text"
+            placeholder="Pesquisar Funcionário por Nome ou CPF"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="form-control me-2"
+            style={{ flex: '1' }}
+          />
+          <Link to="/cadastro_funcionario">
+            <button className="btn btn-primary">Novo Funcionário</button>
+          </Link>
+        </div>
+        {removeLoading && filteredFuncionarios.length === 0 && (
+          <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>Não há funcionários disponíveis</h1>
+        )}
+        <div className={styles.Funcionarios}>
+          <table className={`${styles.TabelaFuncionarios} table-bordered mt-3`}>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Sexo</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredFuncionarios.map((funcionario) => (
+                <tr key={funcionario.id_funcionario}>
+                  <td>{funcionario.nome_funcionario}</td>
+                  <td>{funcionario.cpf}</td>
+                  <td>{funcionario.telefone}</td>
+                  <td>{funcionario.sexo}</td>
+                  <td className="bg-light">
+                    <Link className="btn btn-primary btn-sm" to={`/editar_funcionario/${funcionario.id_funcionario}`}>Editar</Link>
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default TabelaFuncionarios;

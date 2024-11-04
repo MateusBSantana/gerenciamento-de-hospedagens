@@ -15,7 +15,7 @@ export async function createFuncionario(funcionario) {
           cargo, data_admissao, data_emissao_carteira, banco, agencia, conta, status_funcionario, observacoes_adicionais) 
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
     const params = [
-      funcionario.nome,
+      funcionario.nome_funcionario,
       funcionario.rg,
       funcionario.cpf,
       funcionario.dataNascimento,
@@ -67,4 +67,105 @@ export async function createFuncionario(funcionario) {
         console.log(error);
         return [500, error];
     }
+}
+
+
+// buscando um Funcionario
+export async function getOneFuncionario(id) {
+  console.log("FuncionarioModel: getOneFuncionario");
+  const conexao = mysql.createPool(db);
+  const sql = 'SELECT * FROM funcionarios WHERE id_funcionario = ?';
+  const params = [id];
+
+  try {
+      const [retorno] = await conexao.query(sql, params);
+      console.log("Mostrando Funcionario");
+      console.log(retorno);
+      if (retorno.length < 1) {
+          return [404, { mensagem: "Funcionario não encontrado" }];
+      }
+      
+      return [200, retorno[0]];
+  } catch (error) {
+      console.error(error);
+      return [500, error];
+  }
+}
+
+
+// Editando funcionario
+
+export async function updateFuncionario(funcionario, id) {
+  console.log("FuncionarioModel: updateFuncionario");
+  console.log('Dados recebidos para atualização:', funcionario);
+  const conexao = mysql.createPool(db);
+  
+  const sql = `UPDATE funcionarios SET 
+          nome_funcionario = ?, 
+          rg = ?, 
+          cpf = ?, 
+          data_nascimento = ?, 
+          sexo = ?, 
+          email = ?, 
+          telefone = ?, 
+          observacoes = ?, 
+          cep = ?, 
+          Estado = ?, 
+          cidade = ?, 
+          bairro = ?, 
+          logradouro = ?, 
+          numero = ?, 
+          complemento = ?, 
+          observacoes_endereco = ?, 
+          cargo = ?, 
+          data_admissao = ?, 
+          data_emissao_carteira = ?, 
+          banco = ?, 
+          agencia = ?, 
+          conta = ?, 
+          status_funcionario = ?, 
+          observacoes_adicionais = ? 
+          WHERE id_funcionario = ?`;
+
+  const params = [
+    funcionario.nome_funcionario,
+    funcionario.rg,
+    funcionario.cpf,
+    funcionario.dataNascimento,
+    funcionario.sexo,
+    funcionario.email,
+    funcionario.telefone,
+    funcionario.observacoes,
+    funcionario.endereco.cep,
+    funcionario.endereco.estado,
+    funcionario.endereco.cidade,
+    funcionario.endereco.bairro,
+    funcionario.endereco.logradouro,
+    funcionario.endereco.numero,
+    funcionario.endereco.complemento,
+    funcionario.endereco.observacoesEndereco,
+    funcionario.adicionais.cargo,
+    funcionario.adicionais.dataAdmissao,
+    funcionario.adicionais.dataEmissaoCarteira,
+    funcionario.adicionais.banco,
+    funcionario.adicionais.agencia,
+    funcionario.adicionais.conta,
+    funcionario.adicionais.status,
+    funcionario.adicionais.observacoesAdicionais,
+    id,
+  ];
+
+  try {
+      const [retorno] = await conexao.query(sql, params);
+      console.log("Atualizando Funcionario");
+      
+      if (retorno.affectedRows < 1) {
+          return [404, { mensagem: "Funcionario não encontrado" }];
+      }
+      
+      return [200, { mensagem: "Funcionario atualizado" }];
+  } catch (error) {
+      console.error(error);
+      return [500, error];
+  }
 }

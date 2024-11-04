@@ -17,14 +17,14 @@ function EdtFuncionario() {
     telefone: '',
     observacoes: '',
     endereco: {
-      rua: '',
-      numero: '',
-      cidade: '',
-      estado: '',
       cep: '',
+      estado: '',
+      cidade: '',
       bairro: '',
+      logradouro: '',
+      numero: '',
       complemento: '',
-      observacoes: '',
+      observacoesEndereco: '',
     },
     adicionais: {
       cargo: '',
@@ -34,7 +34,7 @@ function EdtFuncionario() {
       agencia: '',
       conta: '',
       status: '',
-      observacoes: '',
+      observacoesAdicionais: '',
     },
   });
   const [loading, setLoading] = useState(true); // Para mostrar o status de carregamento
