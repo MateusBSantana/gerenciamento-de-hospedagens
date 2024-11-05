@@ -33,7 +33,11 @@ const CadastroAcomodacao = () => {
   const fetchAcomodacaoById = async (id) => {
     try {
       const response = await api.get(`/acomodacoes/${id}`);
-      setFormData(response.data);
+      console.log('Dados da acomodação:', response.data); // Logar os dados recebidos
+      setFormData((prevData) => ({
+        ...prevData,
+        ...response.data, // Assumindo que response.data é a estrutura correta
+      }));
     } catch (error) {
       console.error('Erro ao buscar acomodação:', error);
     }
@@ -67,7 +71,7 @@ const CadastroAcomodacao = () => {
     }
   };
 
-  const handleContinue = async (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
     setActiveTab('comodidades'); // Alterna para a aba de Comodidades
   };

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import './ListaAcomodacoes.css'; // Importa o CSS
 
-
 const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
   const [acomodacoes, setAcomodacoes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +67,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
       </Row>
 
       <Table striped bordered hover>
-        <thead className="table-header"> {/* Adicione a classe aqui */}
+        <thead className="table-header">
           <tr>
             <th>ID</th>
             <th>Nome</th>
