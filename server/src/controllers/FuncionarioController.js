@@ -60,7 +60,7 @@ export async function atualizandoFuncionario(req, res) {
 
   const { id } = req.params;
   const funcionario = req.body;
-
+  console.log ("function atualizandoFuncionario",funcionario)
   // Verifique se o corpo da requisição não está indefinido
   if (!funcionario || typeof funcionario !== 'object' || Array.isArray(funcionario)) {
     return res.status(400).json({ mensagem: 'Dados do funcionário não estão válidos' });
