@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes } from './controllers/HospedeController.js'; 
+import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes,mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 
 const app = express();
@@ -16,7 +16,8 @@ app.get('/', (req, res) => {
 // Rotas de CRUD de hospedes
 app.post('/hospede',cadastroHospede);
 app.get('/hospede', mostrandoHospedes);
-app.put('/hospede/:id', atualizandoHospede);
+app.get('/hospedes/:id', mostrandoUmHospede)
+app.put('/hospedes/:id', atualizandoHospede);
 app.delete('/hospede/:id', excluindoHospede);
 
 

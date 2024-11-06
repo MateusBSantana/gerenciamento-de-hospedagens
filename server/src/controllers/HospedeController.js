@@ -1,5 +1,5 @@
 
-import { createHospede, updateHospede, deleteHospede, readHospedes } from "../models/HospedeModel.js";
+import { createHospede, updateHospede, deleteHospede, readHospedes, getOneHospede } from "../models/HospedeModel.js";
 import { isNullOrEmpty, validateHospede } from "../validations/HospedeValidations.js";
 
 
@@ -34,11 +34,29 @@ export async function mostrandoHospedes(req, res) {
   }
 }
 
+export async function mostrandoUmHospede(req, res) {
+  console.log('HospedeController mostrandoUmHospede');
+  const { id } = req.params;
+
+  if (isNullOrEmpty(id)) {
+      return res.status(400).json({ mensagem: 'O ID deve ser preenchido' });
+  } 
+
+  try {
+      const [status, resposta] = await getOneHospede(id);
+      return res.status(status).json(resposta);
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ mensagem: 'Erro ao buscar hóspede', error });
+  }
+}
+
 
 export async function atualizandoHospede(req, res) {
   console.log('HospedeController AtulizandoHospede');
   const { id } = req.params;
   const hospede = req.body;
+  console.log(hospede);
 
   if(validateHospede(hospede) || isNullOrEmpty(id)){
     res.status(400).json({message:'Hospede não pode ter campos vazios'})

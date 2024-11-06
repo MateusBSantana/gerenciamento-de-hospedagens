@@ -56,37 +56,37 @@ function EditarHospede() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('endereco')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        endereco: {
-          ...prevState.endereco,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    try {
-      const resposta = await fetch(`http://localhost:5000/hospedes/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), // Envia os dados atualizados
-      });
+    if (activeTab === 'adicionais') {
+      // Última aba, envia o formulário
+      try {
+        const resposta = await fetch(`http://localhost:5000/hospedes/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData), // Envia os dados atualizados
+        });
 
-      if (!resposta.ok) {
-        throw new Error('Erro ao atualizar hóspede');
+        if (!resposta.ok) {
+          throw new Error('Erro ao atualizar hóspede');
+        }
+
+        navigate('/Tabela_Hospedes'); // Redireciona para a tabela de hóspedes após salvar
+      } catch (error) {
+        console.error('Erro ao atualizar hóspede', error);
       }
-
-      navigate('/Tabela_Hospedes'); // Redireciona para a tabela de hóspedes após salvar
-    } catch (error) {
-      console.error('Erro ao atualizar hóspede', error);
+    } else {
+      // Muda para a próxima aba
+      if (activeTab === 'informacoes') {
+        setActiveTab('endereco');
+      } else if (activeTab === 'endereco') {
+        setActiveTab('adicionais');
+      }
     }
   };
 
@@ -94,11 +94,9 @@ function EditarHospede() {
     navigate('/Tabela_Hospedes'); // Redireciona para a página TabelaHóspedes
   };
 
-  /* 
   if (loading) {
     return <p>Carregando...</p>; // Exibe uma mensagem de carregamento
   }
-  */
 
   return (
     <div className="container mt-4">
@@ -111,6 +109,9 @@ function EditarHospede() {
           </Nav.Item>
           <Nav.Item>
             <Nav.Link eventKey="endereco">Endereço</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="adicionais">Adicionais</Nav.Link>
           </Nav.Item>
         </Nav>
 
@@ -131,12 +132,12 @@ function EditarHospede() {
           Cancelar
         </Button>
         <Button
-          variant="primary"
+          variant="primary" // Botão de salvar ou continuar
           className="mt-2"
           type="submit"
-          onClick={handleSubmit} // Chama handleSubmit ao clicar em "Salvar"
+          onClick={submit}
         >
-          {activeTab === 'endereco' ? 'Salvar' : 'Continuar'}
+          {activeTab === 'adicionais' ? 'Salvar' : 'Continuar'}
         </Button>
       </div>
     </div>

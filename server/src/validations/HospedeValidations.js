@@ -4,7 +4,7 @@ const params = [
     'rg',
     'data_nascimento',
     'sexo',
-    'Profissao',
+    'profissao',
     'observacoes',
     'rua',
     'numero',  
