@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario } from './controllers/FuncionarioController.js'; 
-import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao } from './controllers/acomodacoesController.js'; 
+import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId } from './controllers/acomodacoesController.js'; 
 
 const app = express();
 const porta = 5000;
@@ -24,10 +24,11 @@ app.delete('/hospede/:id', excluindoHospede);
 app.post('/funcionario', cadastroFuncionario);
 
 // Rotas de CRUD de acomodações
-app.post('/acomodacao', cadastroAcomodacao);
-app.get('/acomodacao', mostrandoAcomodacoes);
-app.put('/acomodacao/:id', atualizandoAcomodacao);
-app.delete('/acomodacao/:id', excluindoAcomodacao);
+app.post('/acomodacoes', cadastroAcomodacao);
+app.get('/acomodacoes', mostrandoAcomodacoes);
+app.get('/acomodacoes/:id', mostrandoAcomodacaoPorId); // Adicionando a rota para pegar uma acomodação específica pelo id
+app.put('/acomodacoes/:id', atualizandoAcomodacao);
+app.delete('/acomodacoes/:id', excluindoAcomodacao);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

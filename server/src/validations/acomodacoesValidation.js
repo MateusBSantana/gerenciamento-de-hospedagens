@@ -1,19 +1,14 @@
-// acomodacaoValidations.js
-import { body, validationResult } from 'express-validator';
+// Validando Acomodação
+export function validarAcomodacao(acomodacao) {
+    // Verifique as regras de validação necessárias
+    return true; // ou false se a validação falhar
+}
 
-const validarAcomodacao = [
-    body('nome').notEmpty().withMessage('O nome é obrigatório'),
-    body('capacidade').isInt().withMessage('A capacidade deve ser um número inteiro'),
-    body('tipo').notEmpty().withMessage('O tipo é obrigatório'),
-    // Adicione outras validações conforme necessário
-];
-
-const verificarErros = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() });
+// Verificando Erros
+export function verificarErros(req, res) {
+    // Aqui você pode implementar a lógica de validação
+    if (!validarAcomodacao(req.body)) {
+        return res.status(400).json({ success: false, message: 'Dados da acomodação inválidos' });
     }
-    next();
-};
-
-export { validarAcomodacao, verificarErros };
+    return null; // Sem erros
+}

@@ -1,69 +1,72 @@
-// acomodacoesController.js
-import { createAcomodacao, updateAcomodacao, deleteAcomodacao, readAcomodacoes } from '../models/acomodacaoModel.js';
-import { validarAcomodacao, verificarErros } from '../validations/acomodacoesValidation.js';
+// controllers/acomodacoesController.js
 
+import {
+    createAcomodacao,
+    mostrandoAcomodacoes as mostrandoAcomodacoesModel,
+    atualizandoAcomodacao as atualizandoAcomodacaoModel,
+    excluindoAcomodacao as excluindoAcomodacaoModel,
+    mostrandoAcomodacaoPorId as mostrandoAcomodacaoPorIdModel // Adiciona o import do método
+} from '../models/acomodacaoModel.js';
+
+// Cadastrando Acomodação
 export async function cadastroAcomodacao(req, res) {
-    console.log('AcomodacoesController cadastroAcomodacao');
     const acomodacao = req.body;
-
-    console.log('Dados recebidos do frontend:', acomodacao);
-
-    const validationErrors = verificarErros(req, res);
-    if (validationErrors) return validationErrors;
-
     try {
-        const [status, resposta] = await createAcomodacao(acomodacao);
-        res.status(status).json({ success: true, data: resposta });
+        const resultado = await createAcomodacao(acomodacao);
+        res.status(resultado[0]).json({ message: "Acomodação cadastrada com sucesso!", id: resultado[1].insertId });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Erro ao cadastrar a acomodação', error });
+        console.error(error);
+        res.status(500).json({ message: "Erro ao cadastrar a acomodação." });
     }
 }
 
+// Mostrando Acomodação por ID
+export async function mostrandoAcomodacaoPorId(req, res) {
+    const { id } = req.params; // Pegando o id da requisição
+    try {
+        const acomodacao = await mostrandoAcomodacaoPorIdModel(id); // Chama o model para pegar a acomodação por ID
+        if (!acomodacao) {
+            return res.status(404).json({ message: "Acomodação não encontrada." });
+        }
+        res.status(200).json(acomodacao); // Retorna a acomodação encontrada
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao buscar acomodação." });
+    }
+}
+
+// Mostrando Acomodação
 export async function mostrandoAcomodacoes(req, res) {
-    console.log('AcomodacoesController mostrandoAcomodacoes');
-
     try {
-        const [status, resposta] = await readAcomodacoes();
-        res.status(status).json({ success: true, data: resposta });
+        const acomodacoes = await mostrandoAcomodacoesModel();
+        res.status(200).json(acomodacoes);
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Erro ao recuperar acomodações', error });
+        console.error(error);
+        res.status(500).json({ message: "Erro ao listar as acomodações." });
     }
 }
 
+// Atualizando Acomodação
 export async function atualizandoAcomodacao(req, res) {
-    console.log('AcomodacoesController atualizandoAcomodacao');
     const { id } = req.params;
     const acomodacao = req.body;
-
-    const validationErrors = verificarErros(req, res);
-    if (validationErrors || !id) {
-        return res.status(400).json({ success: false, message: 'Acomodação não pode ter campos vazios' });
-    }
-
     try {
-        const [status, resposta] = await updateAcomodacao(acomodacao, id);
-        res.status(status).json({ success: true, data: resposta });
+        const resultado = await atualizandoAcomodacaoModel(id, acomodacao);
+        res.status(resultado[0]).json({ message: "Acomodação atualizada com sucesso!" });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Erro ao atualizar a acomodação', error });
+        console.error(error);
+        res.status(500).json({ message: "Erro ao atualizar a acomodação." });
     }
 }
 
+// Excluindo Acomodação
 export async function excluindoAcomodacao(req, res) {
-    console.log('AcomodacoesController excluindoAcomodacao');
     const { id } = req.params;
-
-    if (!id) {
-        return res.status(400).json({ success: false, message: 'O id deve ser preenchido!' });
-    }
-
     try {
-        const [status, resposta] = await deleteAcomodacao(id);
-        res.status(status).json({ success: true, data: resposta });
+        const resultado = await excluindoAcomodacaoModel(id);
+        res.status(resultado[0]).json({ message: "Acomodação excluída com sucesso!" });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: 'Erro ao excluir a acomodação', error });
+        console.error(error);
+        res.status(500).json({ message: "Erro ao excluir a acomodação." });
     }
 }

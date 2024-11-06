@@ -1,63 +1,93 @@
-// acomodacaoModel.js
+// models/acomodacaoModel.js
+
 import mysql from 'mysql2/promise';
 import db from '../conexao.js';
 
-// Função para criar uma acomodação
+// Cadastrando Acomodação
 export async function createAcomodacao(acomodacao) {
     const conexao = mysql.createPool(db);
-    const sql = `INSERT INTO acomodacoes (nome, capacidade, tipo) VALUES (?, ?, ?)`;
-    const params = [acomodacao.nome, acomodacao.capacidade, acomodacao.tipo];
+    const sql = `INSERT INTO acomodacoes 
+        (Nome, Capacidade, Tipo, Observacoes, Status) 
+        VALUES (?, ?, ?, ?, ?)`;
+    const params = [
+        acomodacao.nome,
+        acomodacao.capacidade,
+        acomodacao.tipo,
+        acomodacao.observacoes,
+        acomodacao.status,
+    ];
 
     try {
         const [retorno] = await conexao.query(sql, params);
-        console.log('Acomodação Cadastrada');
         return [201, retorno];
-    } catch (mensagem) {
-        console.log(mensagem);
-        return [500, mensagem];
+    } catch (error) {
+        console.error('Erro ao cadastrar acomodação:', error);
+        throw error;
     }
 }
 
-// Funções para atualizar, deletar e ler acomodações (exemplos simplificados)
-export async function updateAcomodacao(acomodacao, id) {
+// Mostrando Acomodação
+export async function mostrandoAcomodacoes() {
     const conexao = mysql.createPool(db);
-    const sql = `UPDATE acomodacoes SET nome = ?, capacidade = ?, tipo = ? WHERE id = ?`;
-    const params = [acomodacao.nome, acomodacao.capacidade, acomodacao.tipo, id];
+    const sql = `SELECT * FROM acomodacoes`;
+
+    try {
+        const [acomodacoes] = await conexao.query(sql);
+        return acomodacoes;
+    } catch (error) {
+        console.error('Erro ao listar acomodações:', error);
+        throw error;
+    }
+}
+
+// Mostrando Acomodação por ID
+export async function mostrandoAcomodacaoPorId(id) {
+    const conexao = mysql.createPool(db);
+    const sql = `SELECT * FROM acomodacoes WHERE id = ?`;
+
+    try {
+        const [acomodacao] = await conexao.query(sql, [id]);
+        return acomodacao[0]; // Retorna a acomodação ou undefined se não encontrada
+    } catch (error) {
+        console.error('Erro ao buscar acomodação por ID:', error);
+        throw error;
+    }
+}
+
+// Atualizando Acomodação
+export async function atualizandoAcomodacao(id, acomodacao) {
+    const conexao = mysql.createPool(db);
+    const sql = `UPDATE acomodacoes SET 
+        Nome = ?, Capacidade = ?, Tipo = ?, Observacoes = ?, Status = ?
+        WHERE id = ?`;
+    const params = [
+        acomodacao.nome,
+        acomodacao.capacidade,
+        acomodacao.tipo,
+        acomodacao.observacoes,
+        acomodacao.status,
+        id,
+    ];
 
     try {
         const [retorno] = await conexao.query(sql, params);
-        console.log('Acomodação Atualizada');
         return [200, retorno];
-    } catch (mensagem) {
-        console.log(mensagem);
-        return [500, mensagem];
+    } catch (error) {
+        console.error('Erro ao atualizar acomodação:', error);
+        throw error;
     }
 }
 
-export async function deleteAcomodacao(id) {
+// Excluindo Acomodação
+export async function excluindoAcomodacao(id) {
     const conexao = mysql.createPool(db);
     const sql = `DELETE FROM acomodacoes WHERE id = ?`;
     
     try {
         const [retorno] = await conexao.query(sql, [id]);
-        console.log('Acomodação Excluída');
         return [200, retorno];
-    } catch (mensagem) {
-        console.log(mensagem);
-        return [500, mensagem];
-    }
-}
-
-export async function readAcomodacoes() {
-    const conexao = mysql.createPool(db);
-    const sql = `SELECT * FROM acomodacoes`;
-    
-    try {
-        const [rows] = await conexao.query(sql);
-        console.log('Acomodações Recuperadas');
-        return [200, rows];
-    } catch (mensagem) {
-        console.log(mensagem);
-        return [500, mensagem];
+    } catch (error) {
+        console.error('Erro ao excluir acomodação:', error);
+        throw error;
     }
 }

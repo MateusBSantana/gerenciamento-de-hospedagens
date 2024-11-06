@@ -1,10 +1,10 @@
 /*
-
 DROP DATABASE IF EXISTS hospedagem; 
 CREATE DATABASE hospedagem;
 
 USE hospedagem;
 
+-- Tabela 'hospedes'
 CREATE TABLE hospedes (
     id_hospede INT AUTO_INCREMENT UNIQUE,
     nome_hospede VARCHAR(40),
@@ -12,7 +12,7 @@ CREATE TABLE hospedes (
     rg VARCHAR(10),
     data_nascimento DATE,
     sexo VARCHAR(20),
-    Profissao VARCHAR(50), 
+    profissao VARCHAR(50), 
     observacoes VARCHAR(500),
     rua VARCHAR(50),
     numero VARCHAR(10), 
@@ -27,8 +27,10 @@ CREATE TABLE hospedes (
     PRIMARY KEY (id_hospede)
 );
 
-SELECT * FROM hospedes;
+-- Exibindo os registros da tabela 'hospedes'
+-- SELECT * FROM hospedes;
 
+-- Tabela 'funcionarios'
 CREATE TABLE funcionarios (
     id_funcionario INT AUTO_INCREMENT UNIQUE,
     nome_funcionario VARCHAR(40),
@@ -57,30 +59,20 @@ CREATE TABLE funcionarios (
     observacoes_adicionais VARCHAR(500),  
     PRIMARY KEY (id_funcionario)
 );
-SELECT * FROM funcionarios;
 
-):
-CREATE DATABASE hospedagem;
+-- Exibindo os registros da tabela 'funcionarios'
+-- SELECT * FROM funcionarios;
 
-
-USE hospedagem;
-
+-- Tabela 'acomodacoes' com 'tipo' como ENUM
 CREATE TABLE acomodacoes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome_acomodacao VARCHAR(255) NOT NULL,
-    tipo VARCHAR(100) NOT NULL,
-    capacidade INT NOT NULL,
-    wifi BOOLEAN NOT NULL DEFAULT FALSE,
-    tv BOOLEAN NOT NULL DEFAULT FALSE,
-    ar_condicionado BOOLEAN NOT NULL DEFAULT FALSE,
-    frigobar BOOLEAN NOT NULL DEFAULT FALSE,
-    banheiros_adaptados BOOLEAN NOT NULL DEFAULT FALSE,
-    sinalizacao_braille BOOLEAN NOT NULL DEFAULT FALSE,
-    entrada_acessivel BOOLEAN NOT NULL DEFAULT FALSE,
-    estacionamento_acessivel BOOLEAN NOT NULL DEFAULT FALSE,
+    id INT AUTO_INCREMENT PRIMARY KEY,  
+    nome VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL CHECK (capacidade > 0),
+    tipo ENUM('Simples', 'Luxo', 'Suíte') NOT NULL,
     observacoes TEXT,
-    valor_diaria DECIMAL(10, 2) NOT NULL
+    status ENUM('Disponível', 'Indisponível') DEFAULT 'Disponível'
 );
 
+-- Exibindo os registros da tabela 'acomodacoes'
+-- SELECT * FROM acomodacoes;
 */
-
