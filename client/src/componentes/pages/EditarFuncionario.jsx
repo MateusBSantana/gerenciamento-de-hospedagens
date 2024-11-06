@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Button } from 'react-bootstrap';
 import FormFuncionario from '../Funcionarios/FormCadFuncionario/FormFuncionario';
-import MenuLateral from '../layout/MenuLateral/MenuLateral';
+
 
 function EditarFuncionario() {
   const { id } = useParams(); // Captura o ID do funcionário da URL
   const navigate = useNavigate(); // Função para navegação entre páginas
   const [activeTab, setActiveTab] = useState('informacoes'); // Controla a aba ativa
   const [formData, setFormData] = useState({
-    // Estado inicial do formulário com dados do funcionário
-    nome: '',
+    nome_funcionario: '',
     cpf: '',
     rg: '',
     dataNascimento: '',
@@ -19,14 +18,14 @@ function EditarFuncionario() {
     telefone: '',
     observacoes: '',
     endereco: {
-      rua: '',
-      numero: '',
-      cidade: '',
-      estado: '',
       cep: '',
+      estado: '',
+      cidade: '',
       bairro: '',
+      logradouro: '',
+      numero: '',
       complemento: '',
-      observacoes: '',
+      observacoesEndereco: '',
     },
     adicionais: {
       cargo: '',
@@ -36,7 +35,7 @@ function EditarFuncionario() {
       agencia: '',
       conta: '',
       status: '',
-      observacoes: '',
+      observacoesAdicionais: '',
     },
   });
   const [loading, setLoading] = useState(true); // Estado de carregamento enquanto os dados são buscados
@@ -58,6 +57,7 @@ function EditarFuncionario() {
 
         const dadosFuncionario = await resposta.json();
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
+        console.log(dadosFuncionario)
         setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
         console.error('Erro ao buscar funcionário', error);
@@ -107,7 +107,9 @@ function EditarFuncionario() {
         });
 
         if (!resposta.ok) {
-          throw new Error('Erro ao atualizar funcionário');
+          const errorData = await resposta.json();
+          console.error('Erro ao atualizar funcionário:', errorData || 'Erro desconhecido');
+          throw new Error(errorData.message || 'Erro desconhecido');
         }
 
         navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
