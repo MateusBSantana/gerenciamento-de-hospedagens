@@ -40,8 +40,8 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
   };
 
   const filteredHospedes = hospedes.filter((hospede) =>
-    hospede.nome_hospede.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hospede.cpf.includes(searchTerm)
+    hospede.nome_hospede?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    hospede.cpf?.toString().includes(searchTerm)
   );
 
   return (
