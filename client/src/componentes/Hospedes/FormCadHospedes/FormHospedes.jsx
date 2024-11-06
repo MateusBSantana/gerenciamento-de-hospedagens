@@ -22,8 +22,8 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formNome"
-                name="nome"
-                value={formData.nome}
+                name="nome_hospede"
+                value={formData.nome_hospede}
                 onChange={handleChange}
                 required
                 style={{ width: "400px" }}
@@ -79,8 +79,8 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataNascimento"
-                name="dataNascimento"
-                value={formData.dataNascimento}
+                name="data_nascimento"
+                value={formData.data_nascimento}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -297,8 +297,8 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 as="textarea"
                 id="formObservacaoendereco"
-                name="endereco.observacoes"
-                value={formData.endereco.observacoes}
+                name="endereco.observacoes_endereco"
+                value={formData.endereco.observacoes_endereco}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
@@ -340,8 +340,8 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="tel"
                 id="formTelefone"
-                name="telefone"
-                value={formData.telefone}
+                name="celular"
+                value={formData.celular}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
