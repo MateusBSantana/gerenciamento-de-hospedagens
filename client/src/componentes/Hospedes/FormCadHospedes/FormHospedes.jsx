@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Tab } from "react-bootstrap";
+import AbreviaData from "../../layout/AbreviaData";
 
 function FormHospede({ formData, handleChange, submit }) {
+  // useEffect(()=>{
+  //   formData.data_nascimento = AbreviaData(formData.data_nascimento);
+  //   console.log(formData.data_nascimento);
+    
+  // },[])
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -11,6 +17,7 @@ function FormHospede({ formData, handleChange, submit }) {
           style={{ textAlign: "left" }}
         >
           <div className="mx-auto">
+            {/* Nome Completo */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -22,14 +29,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formNome"
-                name="nome"
-                value={formData.nome}
+                name="nome_hospede"
+                value={formData.nome_hospede}
                 onChange={handleChange}
                 required
                 style={{ width: "400px" }}
               />
             </div>
 
+            {/* CPF */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -49,6 +57,7 @@ function FormHospede({ formData, handleChange, submit }) {
               />
             </div>
 
+            {/* RG */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -68,6 +77,7 @@ function FormHospede({ formData, handleChange, submit }) {
               />
             </div>
 
+            {/* Data de Nascimento */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -79,14 +89,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataNascimento"
-                name="dataNascimento"
-                value={formData.dataNascimento}
+                name="data_nascimento"
+                value={formData.data_nascimento}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
               />
             </div>
 
+            {/* Sexo */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -111,10 +122,11 @@ function FormHospede({ formData, handleChange, submit }) {
               </Form.Control>
             </div>
 
+            {/* Profissão */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formEmail"
+                htmlFor="formProfissao"
                 style={{ width: "160px" }}
               >
                 Profissão:
@@ -122,14 +134,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formProfissao"
-                name="Profissao"
-                value={formData.Profissao}
+                name="profissao"
+                value={formData.profissao}
                 onChange={handleChange}
                 required
                 style={{ width: "400px" }}
               />
             </div>
 
+            {/* Observações */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -154,6 +167,7 @@ function FormHospede({ formData, handleChange, submit }) {
       <Tab.Pane eventKey="endereco">
         <Form onSubmit={submit} className="border rounded p-3">
           <div className="mx-auto">
+            {/* Endereço - CEP */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -165,14 +179,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formCep"
-                name="endereco.cep"
-                value={formData.endereco.cep}
+                name="cep"
+                value={formData.cep}
                 onChange={handleChange}
                 required
                 style={{ width: "180px" }}
               />
             </div>
 
+            {/* Endereço - Estado */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -184,14 +199,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formEstado"
-                name="endereco.estado"
-                value={formData.endereco.estado}
+                name="estado"
+                value={formData.estado}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
               />
             </div>
 
+            {/* Endereço - Cidade */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -203,14 +219,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formCidade"
-                name="endereco.cidade"
-                value={formData.endereco.cidade}
+                name="cidade"
+                value={formData.cidade}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
               />
             </div>
 
+            {/* Endereço - Bairro */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -222,33 +239,35 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBairro"
-                name="endereco.bairro"
-                value={formData.endereco.bairro}
+                name="bairro"
+                value={formData.bairro}
                 onChange={handleChange}
                 required
                 style={{ width: "250px" }}
               />
             </div>
 
+            {/* Endereço - Rua */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
                 htmlFor="formRua"
                 style={{ width: "160px" }}
               >
-                Endereço:
+                Rua:
               </Form.Label>
               <Form.Control
                 type="text"
                 id="formRua"
-                name="endereco.rua"
-                value={formData.endereco.rua}
+                name="rua"
+                value={formData.rua}
                 onChange={handleChange}
                 required
                 style={{ width: "350px" }}
               />
             </div>
 
+            {/* Endereço - Número */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -260,14 +279,15 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formNumero"
-                name="endereco.numero"
-                value={formData.endereco.numero}
+                name="numero"
+                value={formData.numero}
                 onChange={handleChange}
                 required
                 style={{ width: "100px" }}
               />
             </div>
 
+            {/* Endereço - Complemento */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -279,26 +299,27 @@ function FormHospede({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formComplemento"
-                name="endereco.complemento"
-                value={formData.endereco.complemento}
+                name="complemento"
+                value={formData.complemento}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
             </div>
 
+            {/* Endereço - Observações */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formObservacaoendereco"
+                htmlFor="formObservacoes_endereco"
                 style={{ width: "160px" }}
               >
                 Observações:
               </Form.Label>
               <Form.Control
                 as="textarea"
-                id="formObservacaoendereco"
-                name="endereco.observacoes"
-                value={formData.endereco.observacoes}
+                id="formObservacoes_endereco"
+                name="observacoes_endereco"
+                value={formData.observacoes_endereco}
                 onChange={handleChange}
                 style={{ width: "350px" }}
               />
@@ -310,7 +331,8 @@ function FormHospede({ formData, handleChange, submit }) {
       <Tab.Pane eventKey="adicionais">
         <Form onSubmit={submit} className="border rounded p-3">
           <div className="mx-auto">
-          <div className="mb-3 d-flex align-items-center">
+            {/* Email */}
+            <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
                 htmlFor="formEmail"
@@ -329,25 +351,25 @@ function FormHospede({ formData, handleChange, submit }) {
               />
             </div>
 
+            {/* celular */}
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formTelefone"
+                htmlFor="formCelular"
                 style={{ width: "160px" }}
               >
-                Número de Telefone:
+                Número do Celular:
               </Form.Label>
               <Form.Control
                 type="tel"
-                id="formTelefone"
-                name="telefone"
-                value={formData.telefone}
+                id="formCelular"
+                name="celular"
+                value={formData.celular}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
               />
             </div>
-
           </div>
         </Form>
       </Tab.Pane>

@@ -9,14 +9,13 @@ function FormCadHospede({ handleSubmit }) {
   const navigate = useNavigate(); // Navegação entre páginas
   const [activeTab, setActiveTab] = useState('informacoes'); // Aba ativa
   const [formData, setFormData] = useState({
-    nome: '',
-    cpf: '',
-    rg: '',
-    dataNascimento: '',
-    sexo: '',
-    Profissao: '',
-    observacoes: '',
-    endereco: {
+      nome_hospede: '',
+      cpf: '',
+      rg: '',
+      data_nascimento: '',
+      sexo: '',
+      profissao: '',
+      observacoes: '',
       rua: '',
       numero: '',
       cidade: '',
@@ -24,16 +23,13 @@ function FormCadHospede({ handleSubmit }) {
       cep: '',
       bairro: '',
       complemento: '',
-      observacoes: '',
-    },
-    contato: {
+      observacoes_endereco: '',  
       email: '',
-      telefone: '',
-    },
+      celular: '',  
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target; // Captura o nome e valor do campo
+    const { name, value } = e.target; // Captura o nome_hospede e valor do campo
 
     // Atualiza os dados do formulário com base no campo modificado
     if (name.startsWith('endereco')) {

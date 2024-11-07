@@ -1,8 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes } from './controllers/HospedeController.js'; 
-import { cadastroFuncionario } from './controllers/FuncionarioController.js'; 
+
+
 import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId } from './controllers/acomodacoesController.js'; 
+
+import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes,mostrandoUmHospede } from './controllers/HospedeController.js'; 
+import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
+ 
 
 const app = express();
 const porta = 5000;
@@ -17,11 +21,19 @@ app.get('/', (req, res) => {
 // Rotas de CRUD de hóspedes
 app.post('/hospede', cadastroHospede);
 app.get('/hospede', mostrandoHospedes);
-app.put('/hospede/:id', atualizandoHospede);
+app.get('/hospedes/:id', mostrandoUmHospede)
+app.put('/hospedes/:id', atualizandoHospede);
 app.delete('/hospede/:id', excluindoHospede);
 
-// Rotas de CRUD de funcionários
+
+// Rotas de CRUD de funcionario
+
 app.post('/funcionario', cadastroFuncionario);
+app.get('/funcionario', mostrandoFuncionarios);
+app.get('/funcionario/:id', mostrandoUmFuncionario);
+app.put('/funcionario/:id', atualizandoFuncionario);
+
+
 
 // Rotas de CRUD de acomodações
 app.post('/acomodacoes', cadastroAcomodacao);

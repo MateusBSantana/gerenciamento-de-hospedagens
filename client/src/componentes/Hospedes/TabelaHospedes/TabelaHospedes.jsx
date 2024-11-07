@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TabelaHospede.module.css';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-
-
-function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHospede }) {  // Recebe a prop exibirAcoes
+function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHospede }) {
   const [hospedes, setHospedes] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [hospedeId, setHospedeId] = useState(null);
-  const [hospedeNome, setHospedeNome] = useState('');
-  const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
 
-
-
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,6 +27,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
         throw new Error('Erro ao buscar Hóspedes');
       }
       const consulta = await resposta.json();
+      console.log("Dados recebidos do frontend: ", consulta);
       setHospedes(consulta);
       setRemoveLoading(true);
     } catch (error) {
@@ -46,8 +40,8 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
   };
 
   const filteredHospedes = hospedes.filter((hospede) =>
-    hospede.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hospede.cpf.includes(searchTerm)
+    hospede.nome_hospede?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    hospede.cpf?.toString().includes(searchTerm)
   );
 
   return (
@@ -89,10 +83,10 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
               </thead>
               <tbody>
                 {filteredHospedes.map((hospede) => (
-                  <tr key={hospede.id}>
-                    <td>{hospede.nome}</td>
+                  <tr key={hospede.id_hospede}>
+                    <td>{hospede.nome_hospede}</td>
                     <td>{hospede.cpf}</td>
-                    <td>{hospede.telefone}</td>
+                    <td>{hospede.celular}</td>
                     <td>{hospede.sexo}</td>
                     {exibirAcoes && (
                       <td className="bg-light">
@@ -102,7 +96,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
                             if (textoBotao === 'Hospedar') {
                               onSelectHospede(hospede); // Passe os dados do hóspede selecionado
                             } else if (textoBotao === 'Editar') {
-                              Navigate(`/editar_hospede/${hospede.id}`);
+                              navigate(`/editar_hospede/${hospede.id_hospede}`);
                             }
                           }}
                         >
@@ -110,7 +104,6 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
                         </button>
                       </td>
                     )}
-
                   </tr>
                 ))}
               </tbody>
