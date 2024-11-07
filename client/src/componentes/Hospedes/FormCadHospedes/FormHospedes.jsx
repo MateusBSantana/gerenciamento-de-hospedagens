@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Tab } from "react-bootstrap";
+import AbreviaData from "../../layout/AbreviaData";
 
 function FormHospede({ formData, handleChange, submit }) {
+  // useEffect(()=>{
+  //   formData.data_nascimento = AbreviaData(formData.data_nascimento);
+  //   console.log(formData.data_nascimento);
+    
+  // },[])
   return (
     <>
       <Tab.Pane eventKey="informacoes">
-        <Form onSubmit={submit} className="border rounded pt-3" style={{ textAlign: "left" }}>
+        <Form
+          onSubmit={submit}
+          className="border rounded pt-3"
+          style={{ textAlign: "left" }}
+        >
           <div className="mx-auto">
             {/* Nome Completo */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formNome" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formNome"
+                style={{ width: "160px" }}
+              >
                 Nome Completo:
               </Form.Label>
               <Form.Control
@@ -25,7 +39,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* CPF */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formCpf" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formCpf"
+                style={{ width: "160px" }}
+              >
                 CPF:
               </Form.Label>
               <Form.Control
@@ -41,7 +59,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* RG */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formRg" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formRg"
+                style={{ width: "160px" }}
+              >
                 RG:
               </Form.Label>
               <Form.Control
@@ -57,7 +79,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Data de Nascimento */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formDataNascimento" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formDataNascimento"
+                style={{ width: "160px" }}
+              >
                 Data de Nascimento:
               </Form.Label>
               <Form.Control
@@ -73,7 +99,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Sexo */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formSexo" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formSexo"
+                style={{ width: "160px" }}
+              >
                 Sexo:
               </Form.Label>
               <Form.Control
@@ -94,7 +124,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Profissão */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formProfissao" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formProfissao"
+                style={{ width: "160px" }}
+              >
                 Profissão:
               </Form.Label>
               <Form.Control
@@ -110,7 +144,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Observações */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formObservacoes" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formObservacoes"
+                style={{ width: "160px" }}
+              >
                 Observações:
               </Form.Label>
               <Form.Control
@@ -131,7 +169,11 @@ function FormHospede({ formData, handleChange, submit }) {
           <div className="mx-auto">
             {/* Endereço - CEP */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formCep" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formCep"
+                style={{ width: "160px" }}
+              >
                 CEP:
               </Form.Label>
               <Form.Control
@@ -147,7 +189,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Estado */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formEstado" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formEstado"
+                style={{ width: "160px" }}
+              >
                 Estado:
               </Form.Label>
               <Form.Control
@@ -163,7 +209,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Cidade */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formCidade" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formCidade"
+                style={{ width: "160px" }}
+              >
                 Cidade:
               </Form.Label>
               <Form.Control
@@ -179,7 +229,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Bairro */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formBairro" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formBairro"
+                style={{ width: "160px" }}
+              >
                 Bairro:
               </Form.Label>
               <Form.Control
@@ -195,7 +249,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Rua */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formRua" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formRua"
+                style={{ width: "160px" }}
+              >
                 Rua:
               </Form.Label>
               <Form.Control
@@ -211,7 +269,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Número */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formNumero" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formNumero"
+                style={{ width: "160px" }}
+              >
                 Número:
               </Form.Label>
               <Form.Control
@@ -227,7 +289,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Complemento */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formComplemento" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formComplemento"
+                style={{ width: "160px" }}
+              >
                 Complemento:
               </Form.Label>
               <Form.Control
@@ -242,7 +308,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* Endereço - Observações */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formObservacoes_endereco" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formObservacoes_endereco"
+                style={{ width: "160px" }}
+              >
                 Observações:
               </Form.Label>
               <Form.Control
@@ -263,7 +333,11 @@ function FormHospede({ formData, handleChange, submit }) {
           <div className="mx-auto">
             {/* Email */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formEmail" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formEmail"
+                style={{ width: "160px" }}
+              >
                 E-mail:
               </Form.Label>
               <Form.Control
@@ -279,7 +353,11 @@ function FormHospede({ formData, handleChange, submit }) {
 
             {/* celular */}
             <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formCelular" style={{ width: "160px" }}>
+              <Form.Label
+                className="me-2 text-end"
+                htmlFor="formCelular"
+                style={{ width: "160px" }}
+              >
                 Número do Celular:
               </Form.Label>
               <Form.Control

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Button } from 'react-bootstrap';
 import FormHospede from '../Hospedes/FormCadHospedes/FormHospedes';
+import AbreviaData from '../layout/AbreviaData';
 
 function EditarHospede() {
   const { id } = useParams(); // Captura o ID do hóspede da URL
@@ -45,6 +46,10 @@ function EditarHospede() {
 
         const dadosHospede = await resposta.json();
         setFormData(dadosHospede); // Preenche os dados do hóspede no formulário
+
+        // formData.data_nascimento = AbreviaData(formData.data_nascimento);
+        // console.log(formData.data_nascimento);
+
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar hóspede', error);
