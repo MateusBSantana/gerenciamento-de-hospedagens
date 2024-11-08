@@ -7,7 +7,7 @@ function CadastroReserva() {
   // Função assíncrona para cadastrar uma nova reserva
   async function cadastrarReserva(infoReserva) {
     try {
-      const resposta = await fetch('http://localhost:5000/reserva', {
+      const resposta = await fetch('http://localhost:5000/reservas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

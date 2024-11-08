@@ -80,8 +80,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataNascimento"
-                name="dataNascimento"
-                value={formData.dataNascimento}
+                name="data_nascimento"
+                value={formData.data_nascimento}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -185,7 +185,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formCep"
-                name="endereco.cep"
+                name="cep"
                 value={formData.cep} 
                 onChange={handleChange}
                 required
@@ -204,7 +204,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formEstado"
-                name="endereco.estado"
+                name="estado"
                 value={formData.estado}
                 onChange={handleChange}
                 required
@@ -223,7 +223,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formCidade"
-                name="endereco.cidade"
+                name="cidade"
                 value={formData.cidade}
                 onChange={handleChange}
                 required
@@ -242,7 +242,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBairro"
-                name="endereco.bairro"
+                name="bairro"
                 value={formData.bairro}
                 onChange={handleChange}
                 required
@@ -261,7 +261,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formLogradouro"
-                name="endereco.logradouro"
+                name="logradouro"
                 value={formData.logradouro}
                 onChange={handleChange}
                 required
@@ -280,7 +280,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formNumero"
-                name="endereco.numero"
+                name="numero"
                 value={formData.numero}
                 onChange={handleChange}
                 required
@@ -299,7 +299,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formComplemento"
-                name="endereco.complemento"
+                name="complemento"
                 value={formData.complemento}
                 onChange={handleChange}
                 style={{ width: "350px" }}
@@ -317,7 +317,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="textarea"
                 id="formObservacaoendereco"
-                name="endereco.observacoesEndereco"
+                name="observacoes_endereco"
                 value={formData.observacoes_endereco}
                 onChange={handleChange}
                 style={{ width: "350px" }}
@@ -335,7 +335,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                   <Form.Control
                     as="select"
                     id="formCargo"
-                    name="adicionais.cargo"
+                    name="cargo"
                     value={formData.cargo}
                     onChange={handleChange}
                     required
@@ -359,8 +359,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataAdmissao"
-                name="adicionais.dataAdmissao"
-                value={formData.dataAdmissao}
+                name="data_admissao"
+                value={formData.data_admissao}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -378,8 +378,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataEmissaoCarteira"
-                name="adicionais.dataEmissaoCarteira"
-                value={formData.dataEmissaoCarteira}
+                name="data_emissao_carteira"
+                value={formData.data_emissao_carteira}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -397,7 +397,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBanco"
-                name="adicionais.banco"
+                name="banco"
                 value={formData.banco}
                 onChange={handleChange}
                 required
@@ -416,7 +416,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formAgencia"
-                name="adicionais.agencia"
+                name="agencia"
                 value={formData.agencia}
                 onChange={handleChange}
                 required
@@ -435,7 +435,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formConta"
-                name="adicionais.conta"
+                name="conta"
                 value={formData.conta}
                 onChange={handleChange}
                 required
@@ -454,7 +454,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="select"
                 id="formStatus"
-                name="adicionais.status"
+                name="status_funcionario"
                 value={formData.status_funcionario}
                 onChange={handleChange}
                 required
@@ -477,7 +477,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="textarea"
                 id="formObservacoesadicionais"
-                name="adicionais.observacoesAdicionais"
+                name="observacoes_adicionais"
                 value={formData.observacoes_adicionais}
                 onChange={handleChange}
                 style={{ width: "350px" }}

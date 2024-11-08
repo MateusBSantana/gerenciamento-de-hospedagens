@@ -30,13 +30,13 @@ function MenuLateral() {
             </Link>
           </li>
           <li className="nav-item side-item w-100">
-            <Link to="/reservas" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
+            <Link to="/tabela_reserva" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
               <FontAwesomeIcon icon={faCalendar} style={{ fontSize: '25px', color: '#ffffff', paddingRight: '12px' }} />
               <span className="item-description text-white">Reservas</span>
             </Link>
           </li>
           <li className="nav-item side-item w-100">
-            <Link to="/hospedes" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
+            <Link to="/tabela_hospedes" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
               <FontAwesomeIcon icon={faUserGroup} style={{ fontSize: '25px', color: '#ffffff', paddingRight: '12px' }} />
               <span className="item-description text-white">Hóspedes</span>
             </Link>

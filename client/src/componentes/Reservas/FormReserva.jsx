@@ -14,17 +14,33 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
   const InfHospede = () => setMostrarTabelaHospedes(true);
 
+
+  const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
   const handleSelectHospede = (hospede) => {
-    handleChange({ target: { name: 'hospede', value: hospede.nome } });
+    // Define o id do hospede como o valor que será enviado para o banco
+    handleChange({ target: { name: 'hospede', value: hospede.id_hospede } });
+
+    // Exibe o nome do hospede para o usuário enquanto guarda o ID
+    setNomeHospedeExibido(hospede.nome_hospede);
+
     setMostrarTabelaHospedes(false);
   };
 
+  const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState('');
+
+
   const handleSelectAcomodacao = (acomodacao) => {
-    const concatenatedValue = `(${acomodacao.id}) ${acomodacao.nome}`; // Concatena nome e ID
-    handleChange({ target: { name: 'acomodacao', value: concatenatedValue } });
+    // Armazena apenas o ID da acomodação no estado de reserva
+    handleChange({ target: { name: 'acomodacao', value: acomodacao.id } });
+    
+    // Atualiza o nome exibido da acomodação para o usuário
+    setNomeAcomodacaoExibida(acomodacao.nome);
+    
     setMostrarTabelaAcomodacoes(false);
   };
   
+  
+
 
   useEffect(() => {
 
@@ -50,46 +66,46 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
           </div>
         </div>
 
-        
-          {/* Campo Hóspede */}
-          <div className="mb-3 d-flex align-items-center">
-            <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
-            <div className="d-flex align-items-center" style={{ width: "400px" }}>
-              <input
-                type="text"
-                name="hospedeNome"
-                className="form-control"
-                onChange={handleChange}
-                value={hospedeNome}
-                placeholder="Selecione um hóspede ->"
-              />
+
+        {/* Campo Hóspede */}
+        <div className="mb-3 d-flex align-items-center">
+          <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
+          <div className="d-flex align-items-center" style={{ width: "400px" }}>
+            <input
+              type="text"
+              name="hospedeNome"
+              className="form-control"
+              value={nomeHospedeExibido}
+              onChange={(e) => handleSelectHospede(e.target.value)}
+              placeholder="Selecione um hóspede ->"
+            />
+            <button
+              type="button"
+              className="btn btn-primary ms-2"
+              onClick={InfHospede}
+            >
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </div>
+        </div>
+
+        {/* Renderização condicional da tabela em overlay */}
+        {mostrarTabelaHospedes && (
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50" style={{ zIndex: 400 }} >
+            <div className="bg-white p-4 rounded shadow-sm w-75 h-75 overflow-auto">
+              <TabelaHospede exibirAcoes={true} textoBotao="Hospedar" onSelectHospede={handleSelectHospede} />
               <button
                 type="button"
-                className="btn btn-primary ms-2"
-                onClick={InfHospede}
+                className="btn btn-secondary mt-3"
+                onClick={() => setMostrarTabelaHospedes(false)}
               >
-                <FontAwesomeIcon icon={faSearch} />
+                Fechar
               </button>
             </div>
           </div>
+        )}
 
-          {/* Renderização condicional da tabela em overlay */}
-          {mostrarTabelaHospedes && (
-            <div
-              className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50" style={{ zIndex: 400 }} >
-              <div className="bg-white p-4 rounded shadow-sm w-75 h-75 overflow-auto">
-                <TabelaHospede exibirAcoes={true} textoBotao="Hospedar" onSelectHospede={handleSelectHospede} />
-                <button
-                  type="button"
-                  className="btn btn-secondary mt-3"
-                  onClick={() => setMostrarTabelaHospedes(false)}
-                >
-                  Fechar
-                </button>
-              </div>
-            </div>
-          )}
-        
 
         {/* Campo Data de Entrada */}
         <div className="mb-3 d-flex align-items-center">
@@ -127,8 +143,8 @@ function FormReserva({ formData, handleChange, hospedeNome, acomodacaoNome }) {
               type="text"
               name="acomodacaoNome"
               className="form-control"
-              onChange={handleChange}
-              value={acomodacaoNome}
+              value={nomeAcomodacaoExibida} 
+              onChange={(e) => handleSelectAcomodacao(e.target.value)} 
               placeholder="Selecione uma acomodação ->"
             />
             <button

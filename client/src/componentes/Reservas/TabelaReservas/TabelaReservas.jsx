@@ -16,7 +16,7 @@ function TabelaReservas() {
 
   async function carregarReservas() {
     try {
-      const resposta = await fetch('http://localhost:5000/reserva', {
+      const resposta = await fetch('http://localhost:5000/reservas', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -26,6 +26,7 @@ function TabelaReservas() {
         throw new Error('Erro ao buscar Reservas');
       }
       const consulta = await resposta.json();
+      console.log("Dados recebidos da API:", consulta);
       setReservas(consulta);
       setRemoveLoading(true);
     } catch (error) {
@@ -38,20 +39,21 @@ function TabelaReservas() {
     setSearchTerm(e.target.value);
   };
 
-  // Filtrando reservas
+  // Filtrando reservas por número da reserva ou CPF
   const filteredReservas = reservas.filter((reserva) =>
-    reserva.id.toString().includes(searchTerm) // Pesquisa pelo ID da reserva
+    (reserva.id_reserva && reserva.id_reserva.toString().includes(searchTerm)) ||
+    (reserva.cpf && reserva.cpf.includes(searchTerm))
   );
 
   return (
     <div className="d-flex">
-      <div className="flex-grow-1 p-3">
+      <div className="flex-grow-1 p-">
         <h2 className="text-center">Lista de Reservas</h2>
 
         <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
           <input
             type="text"
-            placeholder="Pesquisar Reserva pelo Número"
+            placeholder="Pesquisar Reserva pelo Número ou CPF do Hóspede"
             value={searchTerm}
             onChange={handleSearchChange}
             className="form-control me-2"
@@ -62,7 +64,7 @@ function TabelaReservas() {
           </Link>
         </div>
 
-        {removeLoading && filteredReservas.length === 0 && (
+        {removeLoading && reservas.length > 0 && filteredReservas.length === 0 && (
           <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>
             Não há reservas disponíveis
           </h1>
@@ -74,6 +76,7 @@ function TabelaReservas() {
               <tr>
                 <th>Número da Reserva</th>
                 <th>Hóspede</th>
+                <th>CPF</th>
                 <th>Data Entrada</th>
                 <th>Data Saída</th>
                 <th>Situação</th>
@@ -82,14 +85,15 @@ function TabelaReservas() {
             </thead>
             <tbody>
               {filteredReservas.map((reserva) => (
-                <tr key={reserva.id}>
-                  <td>{reserva.id}</td>
-                  <td>{reserva.hospede}</td>
-                  <td>{reserva.dataEntrada}</td>
-                  <td>{reserva.dataSaida}</td>
-                  <td>{reserva.situacao}</td>
+                <tr key={reserva.id_reserva}>
+                  <td>{reserva.id_reserva}</td>
+                  <td>{reserva.nome_hospede}</td>
+                  <td>{reserva.cpf}</td>
+                  <td>{reserva.data_checkin}</td>
+                  <td>{reserva.data_checkout}</td>
+                  <td>{reserva.status_reserva}</td>
                   <td className="bg-light">
-                    <Link className="btn btn-primary btn-sm" to={`/cadastro_reserva/${reserva.id}`}>
+                    <Link className="btn btn-primary btn-sm" to={`/cadastro_reserva/${reserva.id_reserva}`}>
                       Editar
                     </Link>
                   </td>
