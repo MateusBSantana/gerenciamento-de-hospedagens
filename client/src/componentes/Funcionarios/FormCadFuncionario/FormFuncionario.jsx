@@ -81,7 +81,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataNascimento"
                 name="dataNascimento"
-                value={new Date(formData.dataNascimento).getDate()}
+                value={formData.dataNascimento}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
