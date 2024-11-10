@@ -1,14 +1,14 @@
 const params = [
-    'hospede',
-    'acomodacao',
-    'dataEntrada',
-    'dataSaida',
-    'valorDiaria',
-    'numAdultos',
-    'numCriancas',
+    'fk_hospede',
+    'fk_acomodacao',
+    'data_checkin',
+    'data_checkout',
+    'valor_diaria',
+    'numero_adulto',
+    'numero_crianca',
     'pago',
     'observacoes',
-    'situacao'
+    'status_reserva'
 ];
 
 export function isNullOrEmpty(value) {

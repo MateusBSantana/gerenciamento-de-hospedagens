@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Tab } from "react-bootstrap";
 
 function FormFuncionario({ formData, handleChange, submit }) {
-  
+
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -81,12 +81,13 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataNascimento"
                 name="data_nascimento"
-                value={formData.data_nascimento}
+                value={formData.data_nascimento ? formData.data_nascimento.split('T')[0] : ''} // Garantir o formato correto
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
               />
             </div>
+
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
@@ -186,7 +187,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formCep"
                 name="cep"
-                value={formData.cep} 
+                value={formData.cep}
                 onChange={handleChange}
                 required
                 style={{ width: "180px" }}
@@ -327,26 +328,26 @@ function FormFuncionario({ formData, handleChange, submit }) {
         </Form>
       </Tab.Pane>
 
-          <Tab.Pane eventKey="adicionais">
-            <Form onSubmit={submit} className="border rounded p-3">
-              <div className="mx-auto">
-                <div className="mb-3 d-flex align-items-center">
-                  <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
-                  <Form.Control
-                    as="select"
-                    id="formCargo"
-                    name="cargo"
-                    value={formData.cargo}
-                    onChange={handleChange}
-                    required
-                    style={{ width: '200px' }} 
-                    >
-                    <option value="">Por favor selecione</option>
-                    <option value="administrador">Administrador</option> 
-                    <option value="recepcionista">Recepcionista</option>
-                    <option value="camareira">Camareira</option>
-                    </Form.Control>
-                </div>
+      <Tab.Pane eventKey="adicionais">
+        <Form onSubmit={submit} className="border rounded p-3">
+          <div className="mx-auto">
+            <div className="mb-3 d-flex align-items-center">
+              <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
+              <Form.Control
+                as="select"
+                id="formCargo"
+                name="cargo"
+                value={formData.cargo}
+                onChange={handleChange}
+                required
+                style={{ width: '200px' }}
+              >
+                <option value="">Por favor selecione</option>
+                <option value="administrador">Administrador</option>
+                <option value="recepcionista">Recepcionista</option>
+                <option value="camareira">Camareira</option>
+              </Form.Control>
+            </div>
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
@@ -360,7 +361,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataAdmissao"
                 name="data_admissao"
-                value={formData.data_admissao}
+                value={formData.data_admissao ? formData.data_admissao.split('T')[0] : ''}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -379,12 +380,13 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataEmissaoCarteira"
                 name="data_emissao_carteira"
-                value={formData.data_emissao_carteira}
+                value={formData.data_emissao_carteira ? formData.data_emissao_carteira.split('T')[0] : ''}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
               />
             </div>
+
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label

@@ -8,65 +8,72 @@ function FormCadReserva({ handleSubmit }) {
   const navigate = useNavigate();
   const { id } = useParams(); // Obtém o ID da reserva da URL
   const [formData, setFormData] = useState({
-    situacao: '',
-    hospede: '',
-    dataEntrada: '',
-    dataSaida: '',
-    acomodacao: '',
-    numAdultos: '',
-    numCriancas: '0',
-    valorDiaria: '',
-    pago: '',
+    status_reserva: '',
+    fk_hospede: '',
+    data_checkin: '',
+    data_checkout: '',
+    fk_acomodacao: '',
+    numero_adulto: '',
+    numero_crianca: '0',
+    valor_diaria: '',
+    pago: 'não',
     observacoes: ''
   });
 
   useEffect(() => {
     if (id) {
-        fetch(`http://localhost:5000/reserva/${id}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erro: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                setFormData(data);
-            })
-            .catch(error => {
-                console.error('Erro ao buscar a reserva:', error);
-            });
+      fetch(`http://localhost:5000/reservas/${id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Dados da reserva recebidos do backend:', data);
+          setFormData(data);
+        })
+        .catch(error => {
+          console.error('Erro ao buscar a reserva:', error);
+        });
     }
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    //console.log(`Mudança detectada: ${name} = ${value}`); // Verificação de mudança
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+  
 
   const submit = (e) => {
     e.preventDefault();
 
     if (id) {
       // Se o ID estiver presente, atualiza a reserva
-      fetch(`http://localhost:5000/reserva/${id}`, {
-        method: 'PUT', 
+      fetch(`http://localhost:5000/reservas/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData), // Envia os dados atualizados
       })
-      .then(response => {
+        .then(response => {
           if (!response.ok) {
-              throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+            throw new Error(`Erro: ${response.status} - ${response.statusText}`);
           }
           return response.json();
-      })
-      .then(data => {
+        })
+        .then(data => {
+          console.log('Dados da reserva recebidos:', data);
           navigate('/tabela_reserva'); // Navegação após atualização
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.error('Erro ao atualizar a reserva:', error);
-      });
+        });
     } else {
       // Se não houver ID, cria uma nova reserva
       handleSubmit(formData);
@@ -81,8 +88,8 @@ function FormCadReserva({ handleSubmit }) {
         <FormReserva
           formData={formData}
           handleChange={handleChange}
-          hospedeNome={formData.hospede} 
-          acomodacaoNome={formData.acomodacao}
+          fk_hospede={formData.fk_hospede}
+          acomodacaoNome={formData.fk_acomodacao}
         />
 
         <div className="text-center mt-4">

@@ -3,7 +3,6 @@ import styles from './TabelaReserva.module.css';
 import { Link } from 'react-router-dom';
 
 function TabelaReservas() {
-  // Estado para armazenar a lista de reservas
   const [reservas, setReservas] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,16 +33,22 @@ function TabelaReservas() {
     }
   }
 
-  // Atualizando a pesquisa
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Filtrando reservas por número da reserva ou CPF
   const filteredReservas = reservas.filter((reserva) =>
     (reserva.id_reserva && reserva.id_reserva.toString().includes(searchTerm)) ||
     (reserva.cpf && reserva.cpf.includes(searchTerm))
   );
+
+  function formatDateToDash(isoString) {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
   return (
     <div className="d-flex">
@@ -89,8 +94,8 @@ function TabelaReservas() {
                   <td>{reserva.id_reserva}</td>
                   <td>{reserva.nome_hospede}</td>
                   <td>{reserva.cpf}</td>
-                  <td>{reserva.data_checkin}</td>
-                  <td>{reserva.data_checkout}</td>
+                  <td>{formatDateToDash(reserva.data_checkin)}</td>
+                  <td>{formatDateToDash(reserva.data_checkout)}</td>
                   <td>{reserva.status_reserva}</td>
                   <td className="bg-light">
                     <Link className="btn btn-primary btn-sm" to={`/cadastro_reserva/${reserva.id_reserva}`}>

@@ -2,13 +2,17 @@ import express from 'express';
 import cors from 'cors';
 
 
+
 import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId } from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes,mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
-import { cadastroReserva, mostrandoReservas } from './controllers/reservaController.js';
+import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva } from './controllers/reservaController.js';
+
 
  
 
+
+  
 const app = express();
 const porta = 5000;
 
@@ -43,6 +47,8 @@ app.delete('/acomodacoes/:id', excluindoAcomodacao);
 // Rotas de CRUD de Reserva
 app.post('/reservas', cadastroReserva);
 app.get('/reservas', mostrandoReservas);
+app.get('/reservas/:id', mostrandoUmaReserva);
+app.put('/reservas/:id', atualizandoReserva);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

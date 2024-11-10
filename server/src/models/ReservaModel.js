@@ -12,14 +12,14 @@ export async function createReserva(reserva) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const params = [
-    reserva.situacao,           
-    reserva.hospede,            
-    reserva.acomodacao,      
-    reserva.dataEntrada,       
-    reserva.dataSaida,          
-    reserva.valorDiaria,        
-    reserva.numAdultos,         
-    reserva.numCriancas,        
+    reserva.status_reserva,           
+    reserva.fk_hospede,            
+    reserva.fk_acomodacao,      
+    reserva.data_checkin,       
+    reserva.data_checkin,          
+    reserva.valor_diaria,        
+    reserva.numero_adulto,         
+    reserva.numero_crianca,        
     reserva.observacoes,
     reserva.pago      
     
@@ -73,3 +73,53 @@ export async function getOneReserva(id) {
     return [500, error];
   }
 }
+
+
+export async function updateReserva(reserva, id) {
+  console.log("ReservaModel: updateReserva");
+  console.log('Dados recebidos para atualização:', reserva);
+  const conexao = mysql.createPool(db);
+  
+  const sql = `UPDATE reservas SET 
+      status_reserva = ?, 
+      fk_hospede = ?, 
+      fk_acomodacao = ?, 
+      data_checkin = ?, 
+      data_checkout = ?, 
+      valor_diaria = ?, 
+      numero_adulto = ?, 
+      numero_crianca = ?, 
+      observacoes = ?, 
+      pago = ?
+      WHERE id_reserva = ?`;
+
+  const params = [
+    reserva.status_reserva,           
+    reserva.fk_hospede,            
+    reserva.fk_acomodacao,      
+    reserva.data_checkin,       
+    reserva.data_checkout,          
+    reserva.valor_diaria,        
+    reserva.numero_adulto,         
+    reserva.numero_crianca,        
+    reserva.observacoes,
+    reserva.pago,
+    id
+  ];
+
+  try {
+      const [retorno] = await conexao.query(sql, params);
+      console.log("Atualizando Reserva");
+      
+      if (retorno.affectedRows < 1) {
+          return [404, { mensagem: "Reserva não encontrada" }];
+      }
+      
+      return [200, { mensagem: "Reserva atualizada" }];
+  } catch (error) {
+      console.error(error);
+      return [500, error];
+  }
+}
+
+
