@@ -4,7 +4,6 @@ CREATE DATABASE hospedagem;
 
 USE hospedagem;
 
--- Tabela 'hospedes'
 CREATE TABLE hospedes (
     id_hospede INT AUTO_INCREMENT UNIQUE,
     nome_hospede VARCHAR(40),
@@ -12,7 +11,7 @@ CREATE TABLE hospedes (
     rg VARCHAR(10),
     data_nascimento DATE,
     sexo VARCHAR(20),
-    profissao VARCHAR(50), 
+    Profissao VARCHAR(50), 
     observacoes VARCHAR(500),
     rua VARCHAR(50),
     numero VARCHAR(10), 
@@ -27,15 +26,13 @@ CREATE TABLE hospedes (
     PRIMARY KEY (id_hospede)
 );
 
--- Exibindo os registros da tabela 'hospedes'
--- SELECT * FROM hospedes;
+SELECT * FROM hospedes;
 
--- Tabela 'funcionarios'
 CREATE TABLE funcionarios (
     id_funcionario INT AUTO_INCREMENT UNIQUE,
     nome_funcionario VARCHAR(40),
+	cpf VARCHAR(11) UNIQUE,
     rg VARCHAR(10),
-    cpf VARCHAR(11) UNIQUE,
     data_nascimento DATE,
     sexo VARCHAR(20),
     email VARCHAR(40),
@@ -60,9 +57,6 @@ CREATE TABLE funcionarios (
     PRIMARY KEY (id_funcionario)
 );
 
--- Exibindo os registros da tabela 'funcionarios'
--- SELECT * FROM funcionarios;
-
 -- Tabela 'acomodacoes' com 'tipo' como ENUM
 CREATE TABLE acomodacoes (
     id INT AUTO_INCREMENT PRIMARY KEY,  
@@ -70,9 +64,57 @@ CREATE TABLE acomodacoes (
     capacidade INT NOT NULL CHECK (capacidade > 0),
     tipo ENUM('Simples', 'Luxo', 'Suíte') NOT NULL,
     observacoes TEXT,
-    status ENUM('Disponível', 'Indisponível') DEFAULT 'Disponível'
+    status ENUM('disponível', 'indisponível') DEFAULT 'disponível'
 );
 
--- Exibindo os registros da tabela 'acomodacoes'
--- SELECT * FROM acomodacoes;
+
+CREATE TABLE reservas (
+    id_reserva INT AUTO_INCREMENT UNIQUE,
+    fk_hospede INT,
+    fk_acomodacao INT,
+    data_checkin DATE,
+    data_checkout DATE,
+    valor_diaria FLOAT,
+    numero_adulto INTEGER,
+    numero_crianca INTEGER,
+    observacoes VARCHAR(200),
+    status_reserva VARCHAR(40),
+    pago ENUM('sim', 'não') DEFAULT 'não',
+    data_criacao_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (fk_hospede) REFERENCES hospedes(id_hospede) ON UPDATE CASCADE,
+    FOREIGN KEY (fk_acomodacao) REFERENCES acomodacoes(id) ON UPDATE CASCADE
+);
+ 
+CREATE VIEW view_informacoes_reserva AS
+SELECT 
+    r.id_reserva,
+    r.fk_hospede,
+    h.nome_hospede,
+    h.cpf,
+    r.data_criacao_reserva,
+    r.data_checkin,
+    r.data_checkout,
+    r.valor_diaria,
+    r.numero_adulto,
+    r.numero_crianca,
+    r.observacoes,
+    r.status_reserva,
+    r.fk_acomodacao,
+    a.nome AS nome_acomodacao,  
+    a.tipo AS tipo_acomodacao 
+FROM reservas r
+INNER JOIN hospedes h ON r.fk_hospede = h.id_hospede
+INNER JOIN acomodacoes a ON r.fk_acomodacao = a.id
+;
+
+SELECT * FROM funcionarios;
+SELECT * FROM hospedes;
+SELECT * FROM acomodacoes;
+SELECT * FROM reservas;
+SELECT * FROM view_informacoes_reserva;
+
+-- TRUNCATE TABLE reservas;
+
+
+
 */

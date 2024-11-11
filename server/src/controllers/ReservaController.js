@@ -1,4 +1,4 @@
-import { createReserva, readReservas,  getOneReserva, updateReserva} from "../models/reservaModel.js";
+import { createReserva, readReservas,  getOneReserva, updateReserva, updateStatusReserva} from "../models/reservaModel.js";
 import { isNullOrEmpty, validateReserva } from "../validations/ReservaValidation.js";
 
 
@@ -91,4 +91,24 @@ export async function atualizandoReserva(req, res) {
   }
 }
 
+  // Atualizando o status de uma reserva para "cancelado" ou "finalizado"
+  export async function alterarStatusReserva(req, res) {
+    const { id } = req.params;
+    const { novoStatus } = req.body;
   
+    if (!['cancelado', 'finalizado'].includes(novoStatus)) {
+      return res.status(400).json({ mensagem: 'Status inválido. Use "cancelado" ou "finalizado".' });
+    }
+  
+    try {
+      const [status, resposta] = await updateStatusReserva(id, novoStatus);
+      res.status(status).json(resposta);
+    } catch (error) {
+      console.error('Erro ao alterar o status da reserva:', error);
+      res.status(500).json({ mensagem: 'Erro ao alterar o status da reserva', erro: error.message });
+    }
+  }
+
+
+
+
