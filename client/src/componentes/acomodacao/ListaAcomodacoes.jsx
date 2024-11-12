@@ -19,15 +19,6 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
     }
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await api.delete(`/acomodacoes/${id}`);
-      fetchAcomodacoes();
-    } catch (error) {
-      console.error('Erro ao deletar acomodação:', error);
-    }
-  };
-
   useEffect(() => {
     fetchAcomodacoes();
   }, []);
@@ -40,6 +31,19 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
         acomodacao.tipo.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
+
+  const getComodidades = (acomodacao) => {
+    const comodidades = [];
+    if (acomodacao.wifi) comodidades.push('Wi-Fi');
+    if (acomodacao.tv) comodidades.push('TV');
+    if (acomodacao.ar_condicionado) comodidades.push('Ar-condicionado');
+    if (acomodacao.frigobar) comodidades.push('Frigobar');
+    if (acomodacao.banheiros_adaptados) comodidades.push('Banheiros Adaptados');
+    if (acomodacao.sinalizacao_em_braille) comodidades.push('Sinalização Braille');
+    if (acomodacao.entrada_acessivel) comodidades.push('Entrada Acessível');
+    if (acomodacao.estacionamento_acessivel) comodidades.push('Estacionamento Acessível');
+    return comodidades.length > 0 ? comodidades.join(', ') : 'Sem comodidades';
+  };
 
   return (
     <Container className="mt-5">
@@ -75,6 +79,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
             <th>Tipo</th>
             <th>Observações</th>
             <th>Status</th>
+            <th>Comodidades</th> {/* Nova coluna para as comodidades */}
             <th>Ações</th>
           </tr>
         </thead>
@@ -87,6 +92,10 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
               <td>{acomodacao.tipo}</td>
               <td>{acomodacao.observacoes}</td>
               <td>{acomodacao.status}</td>
+              <td>
+                {/* Exibe as comodidades associadas a cada acomodação */}
+                {getComodidades(acomodacao)}
+              </td>
               <td>
                 <Button
                   variant="primary"
@@ -101,14 +110,6 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
                   className="me-2"
                 >
                   {textoBotao}
-                </Button>
-
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleDelete(acomodacao.id)}
-                >
-                  Deletar
                 </Button>
               </td>
             </tr>

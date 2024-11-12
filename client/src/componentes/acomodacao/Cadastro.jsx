@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import api from '../../services/api'; // Importando o serviço da API
-import Comodidades from './Comodidades'; // Importando o componente Comodidades
-import './Cadastro.css'; // Importando o CSS
+import api from '../../services/api'; // Serviço de API
+import './Cadastro.css'; // Estilo CSS
+import { v4 as uuidv4 } from 'uuid'; // Função para gerar IDs únicos
 
 const CadastroAcomodacao = () => {
   const [formData, setFormData] = useState({
-    id: '', // Inicializando ID como string vazia
+    id: '',
     nome: '',
     capacidade: '',
     tipo: '',
     observacoes: '',
-    status: 'disponivel', // Campo de status
+    status: 'disponivel',
     comodidades: {
       wifi: false,
       tv: false,
@@ -25,77 +25,92 @@ const CadastroAcomodacao = () => {
     }
   });
 
-  const [activeTab, setActiveTab] = useState('acomodacao'); // Controle das abas
+  const [activeTab, setActiveTab] = useState('acomodacao'); // Controle de abas
   const navigate = useNavigate();
-  const { id } = useParams(); // Pega o ID da URL
+  const { id } = useParams(); // Pega o ID da URL, se existir
 
-  // Função para buscar os dados da acomodação pelo ID (para edição)
+  // Função para buscar a acomodação no backend pelo ID
   const fetchAcomodacaoById = async (id) => {
     try {
       const response = await api.get(`/acomodacoes/${id}`);
-      console.log('Dados da acomodação:', response.data); // Logar os dados recebidos
-      setFormData((prevData) => ({
-        ...prevData,
-        ...response.data, // Assumindo que response.data é a estrutura correta
-      }));
+      const data = response.data;
+
+      setFormData({
+        id: data.id,
+        nome: data.nome,
+        capacidade: data.capacidade,
+        tipo: data.tipo,
+        observacoes: data.observacoes,
+        status: data.status,
+        comodidades: { ...data.comodidades }
+      });
     } catch (error) {
       console.error('Erro ao buscar acomodação:', error);
     }
   };
 
+  // Ao carregar o componente ou quando o ID mudar, buscar a acomodação para editar
   useEffect(() => {
     if (id) {
-      fetchAcomodacaoById(id); // Se houver ID, busca a acomodação para editar
+      fetchAcomodacaoById(id); // Buscar os dados se ID estiver presente na URL
     }
   }, [id]);
 
+  // Função para atualizar o estado ao mudar os campos do formulário
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const updatedValue = type === 'checkbox' ? checked : value;
 
     if (name in formData.comodidades) {
-      // Atualizando comodidades
       setFormData((prevData) => ({
         ...prevData,
         comodidades: {
           ...prevData.comodidades,
-          [name]: updatedValue
-        }
+          [name]: updatedValue,
+        },
       }));
     } else {
-      // Atualizando os outros campos
       setFormData((prevData) => ({
         ...prevData,
-        [name]: updatedValue
+        [name]: updatedValue,
       }));
     }
   };
 
+  // Função para continuar para a aba de comodidades
   const handleContinue = (e) => {
     e.preventDefault();
-    setActiveTab('comodidades'); // Alterna para a aba de Comodidades
+
+    // Validação dos campos obrigatórios antes de continuar
+    if (!formData.nome || !formData.capacidade || !formData.tipo) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    setActiveTab('comodidades'); // Mudar para a aba de comodidades
   };
 
-  // Função para gerar um ID único com letra e número
-  const generateUniqueId = () => {
-    const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Gera uma letra de A a Z
-    const number = Math.floor(Math.random() * 10); // Gera um número entre 0 e 9
-    return `${letter}${number}`; // Retorna a combinação letra + número
-  };
-
+  // Função para finalizar o cadastro ou edição
   const handleFinalizarCadastro = async (e) => {
     e.preventDefault();
 
+    // Validação para garantir que os campos obrigatórios estejam preenchidos
+    if (!formData.nome || !formData.capacidade || !formData.tipo) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
     try {
       if (id) {
-        // Atualiza a acomodação existente
+        // Atualiza acomodação existente
         await api.put(`/acomodacoes/${id}`, formData);
       } else {
-        // Cria uma nova acomodação com ID gerado
-        const newAcomodacao = { ...formData, id: generateUniqueId() }; // ID com letra e número
+        // Cria uma nova acomodação com um novo ID
+        const newAcomodacao = { ...formData, id: uuidv4() }; // Gerar um ID único para nova acomodação
         await api.post('/acomodacoes', newAcomodacao);
       }
-      navigate('/listagem_acomodacoes'); // Redireciona para a listagem de acomodações
+      // Redireciona para a lista de acomodações
+      navigate('/listagem_acomodacoes');
     } catch (error) {
       console.error('Erro ao salvar a acomodação:', error);
     }
@@ -115,7 +130,7 @@ const CadastroAcomodacao = () => {
       </Row>
       <Tabs activeKey={activeTab} onSelect={(tab) => setActiveTab(tab)} className="mb-3">
         <Tab eventKey="acomodacao" title="Acomodação">
-          <div className="form-container"> {/* Div para aplicar a borda ao formulário */}
+          <div className="form-container">
             <Form onSubmit={handleContinue}>
               <Form.Group controlId="nome">
                 <Form.Label>Nome da Acomodação</Form.Label>
@@ -180,11 +195,85 @@ const CadastroAcomodacao = () => {
             </Form>
           </div>
         </Tab>
+
         <Tab eventKey="comodidades" title="Comodidades">
-          <Comodidades formData={formData} handleChange={handleChange} />
-          <Button variant="success" className="mt-3" onClick={handleFinalizarCadastro}>
-            {id ? 'Salvar Alterações' : 'Finalizar Cadastro'}
-          </Button>
+          <div>
+            <h5>Comodidades</h5>
+            <Row>
+              <Col>
+                <Form.Check
+                  type="checkbox"
+                  label="Wi-Fi"
+                  name="wifi"
+                  checked={formData.comodidades.wifi}
+                  onChange={handleChange}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="TV"
+                  name="tv"
+                  checked={formData.comodidades.tv}
+                  onChange={handleChange}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type="checkbox"
+                  label="Ar-condicionado"
+                  name="arCondicionado"
+                  checked={formData.comodidades.arCondicionado}
+                  onChange={handleChange}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Frigobar"
+                  name="frigobar"
+                  checked={formData.comodidades.frigobar}
+                  onChange={handleChange}
+                />
+              </Col>
+            </Row>
+
+            <h5 className="mt-4">Acessibilidade</h5>
+            <Row>
+              <Col>
+                <Form.Check
+                  type="checkbox"
+                  label="Banheiros Adaptados"
+                  name="banheirosAdaptados"
+                  checked={formData.comodidades.banheirosAdaptados}
+                  onChange={handleChange}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Sinalização Braille"
+                  name="sinalizacaoBraille"
+                  checked={formData.comodidades.sinalizacaoBraille}
+                  onChange={handleChange}
+                />
+              </Col>
+              <Col>
+                <Form.Check
+                  type="checkbox"
+                  label="Entrada Acessível"
+                  name="entradaAcessivel"
+                  checked={formData.comodidades.entradaAcessivel}
+                  onChange={handleChange}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Estacionamento Acessível"
+                  name="estacionamentoAcessivel"
+                  checked={formData.comodidades.estacionamentoAcessivel}
+                  onChange={handleChange}
+                />
+              </Col>
+            </Row>
+
+            <Button variant="primary" onClick={handleFinalizarCadastro} className="mt-3">
+              Finalizar Cadastro
+            </Button>
+          </div>
         </Tab>
       </Tabs>
     </Container>
