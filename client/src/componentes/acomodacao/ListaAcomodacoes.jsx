@@ -9,9 +9,11 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  // Função para buscar as acomodações
   const fetchAcomodacoes = async () => {
     try {
       const response = await api.get('/acomodacoes');
+      console.log('Resposta da API:', response.data); // Verificando o retorno da API
       const validAcomodacoes = response.data.filter(Boolean); // Remove nulos
       setAcomodacoes(validAcomodacoes);
     } catch (error) {
@@ -19,10 +21,12 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
     }
   };
 
+  // Hook que carrega as acomodações quando o componente é montado
   useEffect(() => {
     fetchAcomodacoes();
   }, []);
 
+  // Função para filtrar as acomodações conforme o termo de pesquisa
   const filteredAcomodacoes = acomodacoes.filter((acomodacao) => {
     return (
       acomodacao &&
@@ -32,8 +36,11 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
     );
   });
 
+  // Função para listar todas as comodidades possíveis de uma acomodação
   const getComodidades = (acomodacao) => {
+    // Verifica se a acomodação contém comodidades
     const comodidades = [];
+
     if (acomodacao.wifi) comodidades.push('Wi-Fi');
     if (acomodacao.tv) comodidades.push('TV');
     if (acomodacao.ar_condicionado) comodidades.push('Ar-condicionado');
@@ -42,6 +49,8 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
     if (acomodacao.sinalizacao_em_braille) comodidades.push('Sinalização Braille');
     if (acomodacao.entrada_acessivel) comodidades.push('Entrada Acessível');
     if (acomodacao.estacionamento_acessivel) comodidades.push('Estacionamento Acessível');
+
+    // Caso não tenha nenhuma comodidade marcada
     return comodidades.length > 0 ? comodidades.join(', ') : 'Sem comodidades';
   };
 
@@ -84,36 +93,44 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredAcomodacoes.map((acomodacao) => (
-            <tr key={acomodacao.id}>
-              <td>{acomodacao.id}</td>
-              <td>{acomodacao.nome}</td>
-              <td>{acomodacao.capacidade}</td>
-              <td>{acomodacao.tipo}</td>
-              <td>{acomodacao.observacoes}</td>
-              <td>{acomodacao.status}</td>
-              <td>
-                {/* Exibe as comodidades associadas a cada acomodação */}
-                {getComodidades(acomodacao)}
-              </td>
-              <td>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => {
-                    if (textoBotao === 'Selecionar') {
-                      onSelectAcomodacao(acomodacao); // Chama a função onSelectAcomodacao com a acomodação selecionada
-                    } else if (textoBotao === 'Editar') {
-                      navigate(`/editar_acomodacao/${acomodacao.id}`); // Navega para a página de edição de acomodação
-                    }
-                  }}
-                  className="me-2"
-                >
-                  {textoBotao}
-                </Button>
+          {filteredAcomodacoes.length > 0 ? 
+            filteredAcomodacoes.map((acomodacao) => (
+              <tr key={acomodacao.id}>
+                <td>{acomodacao.id}</td>
+                <td>{acomodacao.nome}</td>
+                <td>{acomodacao.capacidade}</td>
+                <td>{acomodacao.tipo}</td>
+                <td>{acomodacao.observacoes}</td>
+                <td>{acomodacao.status}</td>
+                <td>
+                  {/* Exibe todas as comodidades associadas a cada acomodação */}
+                  {getComodidades(acomodacao)}
+                </td>
+                <td>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      if (textoBotao === 'Selecionar') {
+                        onSelectAcomodacao(acomodacao); // Chama a função onSelectAcomodacao com a acomodação selecionada
+                      } else if (textoBotao === 'Editar') {
+                        navigate(`/editar_acomodacao/${acomodacao.id}`); // Navega para a página de edição de acomodação
+                      }
+                    }}
+                    className="me-2"
+                  >
+                    {textoBotao}
+                  </Button>
+                </td>
+              </tr>
+            ))
+           : (
+            <tr>
+              <td colSpan="8" className="text-center">
+                Nenhuma acomodação encontrada.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
     </Container>

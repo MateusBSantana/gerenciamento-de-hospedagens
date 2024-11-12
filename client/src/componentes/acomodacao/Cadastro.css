@@ -7,15 +7,16 @@
 
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 30px;
+  margin: 10px auto 0; /* Diminui a margem superior para aproximar o conteúdo do topo */
+  padding: 20px; /* Reduz o padding para ter mais controle */
 }
 
 .content {
   background-color: white;
   border-radius: 8px;
-  padding: 30px;
+  padding: 20px; /* Reduz o padding para aproximar o conteúdo das bordas */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px; /* Reduz a margem superior para o conteúdo ficar mais próximo */
 }
 
 .header h1 {
