@@ -10,12 +10,14 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEditing }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
-
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
   const InfHospede = () => setMostrarTabelaHospedes(true);
-
-
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
+
+  const [dataEntrada, setDataEntrada] = useState('');
+  const [dataSaida, setDataSaida] = useState('');
+  
+  
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
     handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
@@ -41,6 +43,15 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
   useEffect(() => {
 
   }, [formData]);
+
+  useEffect(() => {
+    setDataEntrada(formData.data_checkin || '');
+    setDataSaida(formData.data_checkout || '');
+
+   // console.log("Data de Entrada:", dataEntrada);
+    //console.log("Data de Saída:", dataSaida);
+  }, [formData.data_checkin, formData.data_checkout]);
+
 
   const isDatasPreenchidas = () => {
     return formData.data_checkin && formData.data_checkout;

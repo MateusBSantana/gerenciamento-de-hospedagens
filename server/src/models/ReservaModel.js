@@ -16,7 +16,7 @@ export async function createReserva(reserva) {
     reserva.fk_hospede,            
     reserva.fk_acomodacao,      
     reserva.data_checkin,       
-    reserva.data_checkin,          
+    reserva.data_checkout,          
     reserva.valor_diaria,        
     reserva.numero_adulto,         
     reserva.numero_crianca,        

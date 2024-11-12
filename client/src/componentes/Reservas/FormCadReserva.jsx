@@ -21,6 +21,8 @@ function FormCadReserva({ handleSubmit }) {
     observacoes: ''
   });
   const [acomodacoesDisponiveis, setAcomodacoesDisponiveis] = useState([]);
+  const [dataInicio, setDataInicio] = useState('');
+  const [dataFim, setDataFim] = useState('');
 
   const isDataValida = () => {
     if (formData.data_checkin && formData.data_checkout) {
@@ -44,7 +46,7 @@ function FormCadReserva({ handleSubmit }) {
       return formData.data_checkin && formData.data_checkout;
     };
 
-    const buscarAcomodacoesDisponiveis = () => {
+    const validarDatas = () => {
       if (!isDatasPreenchidas()) {
         alert("Por favor, preencha as datas de entrada e saída antes de buscar acomodações.");
         return;
@@ -54,19 +56,16 @@ function FormCadReserva({ handleSubmit }) {
         return;
       }
 
-      const dataInicio = formData.data_checkin;
-      const dataFim = formData.data_checkout;
+      setDataInicio(formData.data_checkin);
+      setDataFim(formData.data_checkout);
+      console.log('data inicio:', formData.data_checkin);
+      console.log('data fim:', formData.data_checkout);
 
-      fetch(`http://localhost:5000/api/acomodacoes?dataInicio=${dataInicio}&dataFim=${dataFim}`)
-        .then(response => response.json())
-        .then(acomodacoes => {
-          setAcomodacoesDisponiveis(acomodacoes);
-        })
-        .catch(error => console.error('Erro ao buscar acomodações:', error));
     };
 
+
     if (formData.data_checkin && formData.data_checkout) {
-      buscarAcomodacoesDisponiveis();
+      validarDatas();
     }
 
     if (isEditing) {
