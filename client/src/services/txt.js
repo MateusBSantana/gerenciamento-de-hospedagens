@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver';
+
 export const txtHospede = (hospedeData) => {
     const hospedeText = `
   ===============================
@@ -36,5 +38,4 @@ export const txtHospede = (hospedeData) => {
     
     const blob = new Blob([hospedeText], { type: 'text/plain;charset=utf-8' });
     saveAs(blob, `${hospedeData.nome_hospede}_dados_hospedagem.txt`); // Nome do arquivo com o nome do hóspede
-  };
-  
+};
