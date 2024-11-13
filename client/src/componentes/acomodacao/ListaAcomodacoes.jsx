@@ -4,10 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import './ListaAcomodacoes.css'; // Importa o CSS
 
-const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
+const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataInicio, dataFim}) => {
   const [acomodacoes, setAcomodacoes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Data Início lista:', dataInicio);
+    console.log('Data Fim lista:', dataFim);
+  }, [dataInicio, dataFim]);
+  
 
   const fetchAcomodacoes = async () => {
     try {

@@ -23,6 +23,11 @@ function FormCadReserva({ handleSubmit }) {
   const [acomodacoesDisponiveis, setAcomodacoesDisponiveis] = useState([]);
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
+  useEffect(() => {
+    console.log('Data Início cad:', dataInicio);
+    console.log('Data Fim cad:', dataFim);
+  }, [dataInicio, dataFim]);
+
 
   const isDataValida = () => {
     if (formData.data_checkin && formData.data_checkout) {
@@ -159,6 +164,8 @@ function FormCadReserva({ handleSubmit }) {
           formData={formData}
           handleChange={handleChange}
           isEditing={isEditing}
+          dataInicio={dataInicio}
+          dataFim={dataFim}
         />
 
         <div className="text-center mt-4">

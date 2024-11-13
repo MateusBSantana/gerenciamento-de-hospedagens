@@ -7,17 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
-function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEditing }) {
+function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
   const InfHospede = () => setMostrarTabelaHospedes(true);
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
 
-  const [dataEntrada, setDataEntrada] = useState('');
-  const [dataSaida, setDataSaida] = useState('');
-  
-  
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
     handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
@@ -45,12 +41,9 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
   }, [formData]);
 
   useEffect(() => {
-    setDataEntrada(formData.data_checkin || '');
-    setDataSaida(formData.data_checkout || '');
-
-   // console.log("Data de Entrada:", dataEntrada);
-    //console.log("Data de Saída:", dataSaida);
-  }, [formData.data_checkin, formData.data_checkout]);
+    console.log('Data Inícioooooo:', dataInicio);
+    console.log('Data Fimmmmm:', dataFim);
+  }, [dataInicio, dataFim]);
 
 
   const isDatasPreenchidas = () => {
@@ -96,7 +89,6 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
           </div>
         </div>
 
-
         {/* Campo Hóspede */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
@@ -120,7 +112,6 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
             </button>
           </div>
         </div>
-
 
         {/* Renderização condicional da tabela em overlay */}
         {mostrarTabelaHospedes && (
@@ -157,7 +148,6 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleChange}
             required
-            
             style={{ width: "200px" }}
           />
         </div>
@@ -172,12 +162,9 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
             value={formData.data_checkout ? formData.data_checkout.split('T')[0] : ''}
             onChange={handleChange}
             required
-            
             style={{ width: "200px" }}
           />
         </div>
-
-
 
         {/* Campo Acomodação */}
         <div className="mb-3 d-flex align-items-center">
@@ -211,8 +198,6 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
           </div>
         </div>
 
-
-
         {mostrarTabelaAcomodacoes && (
           <div
             className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50"
@@ -222,6 +207,8 @@ function FormReserva({ formData, handleChange, fk_hospede, acomodacaoNome, isEdi
               <ListagemAcomodacoes
                 textoBotao="Selecionar"
                 onSelectAcomodacao={handleSelectAcomodacao}
+                dataInicio={dataInicio}
+                dataFim={dataFim}
               />
 
               {/* Botão de Fechar posicionado no canto superior direito e cor vermelha */}
