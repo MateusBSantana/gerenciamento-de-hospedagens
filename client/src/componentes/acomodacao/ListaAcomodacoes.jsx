@@ -4,20 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import './ListaAcomodacoes.css'; // Importa o CSS
 
-const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataInicio, dataFim}) => {
+const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataInicio, dataFim }) => {
   const [acomodacoes, setAcomodacoes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log('Data Início lista:', dataInicio);
-    console.log('Data Fim lista:', dataFim);
-  }, [dataInicio, dataFim]);
-  
-
   const fetchAcomodacoes = async () => {
     try {
-      const response = await api.get('/acomodacoes');
+      let response;
+      // Verifica se dataInicio e dataFim estão preenchidos
+      if (dataInicio && dataFim) {
+        // Requisição com dataInicio e dataFim embutidos na URL
+        console.log('tem data')
+        response = await api.get(`/acomodacoes/disponiveis/${dataInicio}/${dataFim}`);
+      } else {
+        // Requisição padrão sem filtros de data
+        console.log('nâo tem datata')
+        response = await api.get('/acomodacoes');
+      }
+      
       const validAcomodacoes = response.data.filter(Boolean); // Remove nulos
       setAcomodacoes(validAcomodacoes);
     } catch (error) {
@@ -36,7 +41,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
 
   useEffect(() => {
     fetchAcomodacoes();
-  }, []);
+  }, [dataInicio, dataFim]); // Reexecuta a busca se dataInicio ou dataFim mudarem
 
   const filteredAcomodacoes = acomodacoes.filter((acomodacao) => {
     return (

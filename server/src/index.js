@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId } from './controllers/acomodacoesController.js'; 
+import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva, alterarStatusReserva } from './controllers/reservaController.js';
@@ -35,6 +35,8 @@ app.get('/acomodacoes', mostrandoAcomodacoes);  // Lista todas as acomodações
 app.get('/acomodacoes/:id', mostrandoAcomodacaoPorId);
 app.put('/acomodacoes/:id', atualizandoAcomodacao);
 app.delete('/acomodacoes/:id', excluindoAcomodacao);
+app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDisponiveis);
+
 
 // Rotas de CRUD de reserva
 app.post('/reservas', cadastroReserva);
