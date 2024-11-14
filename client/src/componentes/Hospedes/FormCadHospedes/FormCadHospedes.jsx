@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tab, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { txtHospede } from '../../../services/txt.js'; // Corrigido: importar a função certa
+import { txtHospede } from '../../../services/txt.js'; 
 import './FormCadHospedes.css';
 import FormHospede from './FormHospedes';
 
@@ -61,12 +61,12 @@ function FormCadHospede({ handleSubmit }) {
         console.error('Erro ao consultar o CEP:', error);
     }
   };
-
+  
   const submit = (e) => {
     e.preventDefault();
     if (activeTab === 'adicionais') {
       handleSubmit(formData);
-      txtHospede(formData); // Corrigido: Chama a função txtHospede para gerar o arquivo .txt
+      txtHospede(formData); 
       navigate('/tabela_hospedes');
     } else {
       if (activeTab === 'informacoes') {
