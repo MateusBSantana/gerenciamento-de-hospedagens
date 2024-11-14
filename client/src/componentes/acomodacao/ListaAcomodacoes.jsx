@@ -7,8 +7,9 @@ import './ListaAcomodacoes.css'; // Importa o CSS
 const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
   const [acomodacoes, setAcomodacoes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedAcomodacao, setSelectedAcomodacao] = useState(null); // Adicionando estado para acomodação selecionada
   const navigate = useNavigate();
-
+   
   // Função para buscar as acomodações
   const fetchAcomodacoes = async () => {
     try {
@@ -38,7 +39,6 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
 
   // Função para listar todas as comodidades possíveis de uma acomodação
   const getComodidades = (acomodacao) => {
-    // Verifica se a acomodação contém comodidades
     const comodidades = [];
 
     if (acomodacao.wifi) comodidades.push('Wi-Fi');
@@ -50,8 +50,71 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
     if (acomodacao.entrada_acessivel) comodidades.push('Entrada Acessível');
     if (acomodacao.estacionamento_acessivel) comodidades.push('Estacionamento Acessível');
 
-    // Caso não tenha nenhuma comodidade marcada
     return comodidades.length > 0 ? comodidades.join(', ') : 'Sem comodidades';
+  };
+
+  // Função para criar os checkboxes no formulário de edição
+  const renderComodidadesCheckboxes = () => {
+    return (
+      <div>
+        <Form.Check 
+          type="checkbox"
+          label="Wi-Fi"
+          checked={selectedAcomodacao?.wifi || false}
+          onChange={() => handleComodidadeChange('wifi')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="TV"
+          checked={selectedAcomodacao?.tv || false}
+          onChange={() => handleComodidadeChange('tv')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Ar-condicionado"
+          checked={selectedAcomodacao?.ar_condicionado || false}
+          onChange={() => handleComodidadeChange('ar_condicionado')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Frigobar"
+          checked={selectedAcomodacao?.frigobar || false}
+          onChange={() => handleComodidadeChange('frigobar')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Banheiros Adaptados"
+          checked={selectedAcomodacao?.banheiros_adaptados || false}
+          onChange={() => handleComodidadeChange('banheiros_adaptados')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Sinalização Braille"
+          checked={selectedAcomodacao?.sinalizacao_em_braille || false}
+          onChange={() => handleComodidadeChange('sinalizacao_em_braille')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Entrada Acessível"
+          checked={selectedAcomodacao?.entrada_acessivel || false}
+          onChange={() => handleComodidadeChange('entrada_acessivel')}
+        />
+        <Form.Check 
+          type="checkbox"
+          label="Estacionamento Acessível"
+          checked={selectedAcomodacao?.estacionamento_acessivel || false}
+          onChange={() => handleComodidadeChange('estacionamento_acessivel')}
+        />
+      </div>
+    );
+  };
+
+  // Função para lidar com a mudança de estado dos checkboxes durante a edição
+  const handleComodidadeChange = (comodidade) => {
+    setSelectedAcomodacao((prevAcomodacao) => ({
+      ...prevAcomodacao,
+      [comodidade]: !prevAcomodacao[comodidade], // Inverte o valor da comodidade
+    }));
   };
 
   return (
@@ -88,7 +151,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
             <th>Tipo</th>
             <th>Observações</th>
             <th>Status</th>
-            <th>Comodidades</th> {/* Nova coluna para as comodidades */}
+            <th>Comodidades</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -103,7 +166,6 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
                 <td>{acomodacao.observacoes}</td>
                 <td>{acomodacao.status}</td>
                 <td>
-                  {/* Exibe todas as comodidades associadas a cada acomodação */}
                   {getComodidades(acomodacao)}
                 </td>
                 <td>
@@ -112,9 +174,10 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
                     size="sm"
                     onClick={() => {
                       if (textoBotao === 'Selecionar') {
-                        onSelectAcomodacao(acomodacao); // Chama a função onSelectAcomodacao com a acomodação selecionada
+                        onSelectAcomodacao(acomodacao);
                       } else if (textoBotao === 'Editar') {
-                        navigate(`/editar_acomodacao/${acomodacao.id}`); // Navega para a página de edição de acomodação
+                        setSelectedAcomodacao(acomodacao); // Definir a acomodação selecionada para edição
+                        navigate(`/editar_acomodacao/${acomodacao.id}`);
                       }
                     }}
                     className="me-2"
@@ -133,6 +196,14 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
           )}
         </tbody>
       </Table>
+
+      {/* Exibe os checkboxes para edição, caso uma acomodação tenha sido selecionada */}
+      {selectedAcomodacao && (
+        <div>
+          <h3>Editar Comodidades</h3>
+          {renderComodidadesCheckboxes()}
+        </div>
+      )}
     </Container>
   );
 };
