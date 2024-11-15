@@ -71,7 +71,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao }) => {
         />
         <Form.Check 
           type="checkbox"
-          label="Ar-condicionado"
+          label="Ar Condicionado"
           checked={selectedAcomodacao?.ar_condicionado || false}
           onChange={() => handleComodidadeChange('ar_condicionado')}
         />

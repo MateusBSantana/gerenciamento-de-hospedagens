@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Form, Button, Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../services/api'; // Serviço de API
@@ -22,7 +22,7 @@ const CadastroAcomodacao = () => {
       sinalizacaoBraille: false,
       entradaAcessivel: false,
       estacionamentoAcessivel: false,
-    }
+    },
   });
 
   const [activeTab, setActiveTab] = useState('acomodacao'); // Controle de abas
@@ -30,10 +30,16 @@ const CadastroAcomodacao = () => {
   const { id } = useParams(); // Pega o ID da URL, se existir
 
   // Função para buscar a acomodação no backend pelo ID
-  const fetchAcomodacaoById = async (id) => {
+  const fetchAcomodacaoById = useCallback(async (id) => {
     try {
       const response = await api.get(`/acomodacoes/${id}`);
       const data = response.data;
+
+      if (response.status !== 200) {
+        alert('Acomodação não encontrada.');
+        navigate('/listagem_acomodacoes');
+        return;
+      }
 
       setFormData({
         id: data.id,
@@ -42,19 +48,22 @@ const CadastroAcomodacao = () => {
         tipo: data.tipo,
         observacoes: data.observacoes,
         status: data.status,
-        comodidades: { ...data.comodidades }
+        wifi: data.wifi,
+        comodidades: { ...data.comodidades },
       });
     } catch (error) {
       console.error('Erro ao buscar acomodação:', error);
+      alert('Erro ao carregar dados da acomodação.');
+      navigate('/listagem_acomodacoes');
     }
-  };
+  }, [navigate]);
 
   // Ao carregar o componente ou quando o ID mudar, buscar a acomodação para editar
   useEffect(() => {
     if (id) {
       fetchAcomodacaoById(id); // Buscar os dados se ID estiver presente na URL
     }
-  }, [id]);
+  }, [id, fetchAcomodacaoById]);
 
   // Função para atualizar o estado ao mudar os campos do formulário
   const handleChange = (e) => {
@@ -113,6 +122,7 @@ const CadastroAcomodacao = () => {
       navigate('/listagem_acomodacoes');
     } catch (error) {
       console.error('Erro ao salvar a acomodação:', error);
+      alert('Erro ao salvar a acomodação. Tente novamente.');
     }
   };
 
@@ -205,7 +215,7 @@ const CadastroAcomodacao = () => {
                   type="checkbox"
                   label="Wi-Fi"
                   name="wifi"
-                  checked={formData.comodidades.wifi}
+                  checked={formData.wifi}
                   onChange={handleChange}
                 />
                 <Form.Check
@@ -246,7 +256,7 @@ const CadastroAcomodacao = () => {
                 />
                 <Form.Check
                   type="checkbox"
-                  label="Sinalização Braille"
+                  label="Sinalização em Braille"
                   name="sinalizacaoBraille"
                   checked={formData.comodidades.sinalizacaoBraille}
                   onChange={handleChange}
