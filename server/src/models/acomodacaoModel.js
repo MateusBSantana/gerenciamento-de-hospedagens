@@ -98,19 +98,20 @@ export async function getAcomodacoesDisponiveis(dataInicio, dataFim) {
     
     // A consulta
     const sql = `
-      SELECT a.*
-      FROM acomodacoes a
-      WHERE NOT EXISTS (
-          SELECT 1
-          FROM reservas r
-          WHERE r.fk_acomodacao = a.id
-          AND (
-              (r.data_checkin BETWEEN ? AND ?) OR
-              (r.data_checkout BETWEEN ? AND ?) OR
-              (? BETWEEN r.data_checkin AND r.data_checkout) OR
-              (? BETWEEN r.data_checkin AND r.data_checkout)
-          )
-      )
+    SELECT a.*
+FROM acomodacoes a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM reservas r
+    WHERE r.fk_acomodacao = a.id
+    AND (
+        -- Verificar se há sobreposição completa das datas
+        (? < r.data_checkout AND ? > r.data_checkin) OR
+        (? < r.data_checkout AND ? > r.data_checkin)
+    )
+    AND r.status_reserva IN ('reservado', 'hospedado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
+)
+
     `;
 
     // Parâmetros para as datas
