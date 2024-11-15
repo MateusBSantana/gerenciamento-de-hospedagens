@@ -11,24 +11,25 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
 
   const fetchAcomodacoes = async () => {
     try {
+      // Verifique as datas
+      console.log('Data Início:', dataInicio, 'Data Fim:', dataFim);
+
       let response;
-      // Verifica se dataInicio e dataFim estão preenchidos
       if (dataInicio && dataFim) {
-        // Requisição com dataInicio e dataFim embutidos na URL
-        console.log('tem data')
+        console.log('Tem data');
         response = await api.get(`/acomodacoes/disponiveis/${dataInicio}/${dataFim}`);
       } else {
-        // Requisição padrão sem filtros de data
-        console.log('nâo tem datata')
+        console.log('Não tem data');
         response = await api.get('/acomodacoes');
       }
       
-      const validAcomodacoes = response.data.filter(Boolean); // Remove nulos
+      const validAcomodacoes = response.data.filter(Boolean);
       setAcomodacoes(validAcomodacoes);
     } catch (error) {
       console.error('Erro ao buscar acomodações:', error);
     }
-  };
+};
+
 
   const handleDelete = async (id) => {
     try {

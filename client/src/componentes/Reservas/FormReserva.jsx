@@ -131,7 +131,7 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
 
               <TabelaHospede
                 exibirAcoes={true}
-                textoBotao="Hospedar"
+                textoBotao="Selecionar"
                 onSelectHospede={handleSelectHospede} // Passa a função para selecionar o hóspede
               />
             </div>

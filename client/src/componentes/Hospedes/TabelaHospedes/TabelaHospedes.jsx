@@ -93,7 +93,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
                         <button
                           className="btn btn-primary btn-sm"
                           onClick={() => {
-                            if (textoBotao === 'Hospedar') {
+                            if (textoBotao === 'Selecionar') {
                               onSelectHospede(hospede); // Passe os dados do hóspede selecionado
                             } else if (textoBotao === 'Editar') {
                               navigate(`/editar_hospede/${hospede.id_hospede}`);

@@ -25,16 +25,46 @@ function TabelaReservas() {
         throw new Error('Erro ao buscar Reservas');
       }
       const consulta = await resposta.json();
-      console.log("Dados recebidos da API:", consulta);
       setReservas(consulta);
       setRemoveLoading(true);
     } catch (error) {
-      console.log('erro ao buscar Reservas', error);
+      console.log('Erro ao buscar Reservas', error);
     }
   }
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleStatusAction = async (id, statusAtual) => {
+    // Determina o novo status baseado no atual
+    let novoStatus;
+    if (statusAtual === 'reservado') {
+      novoStatus = 'cancelada';
+    } else if (statusAtual === 'hospedado') {
+      novoStatus = 'finalizada';
+    } else {
+      return; // Caso nenhum dos estados seja aplicável, não faz nada
+    }
+
+    try {
+      const resposta = await fetch(`http://localhost:5000/reservas/${id}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ novoStatus }),
+      });
+
+      if (!resposta.ok) {
+        throw new Error(`Erro ao atualizar status da reserva ${id}`);
+      }
+
+      // Atualize a lista de reservas após a alteração
+      carregarReservas();
+    } catch (error) {
+      console.error(`Erro ao atualizar status da reserva ${id}:`, error);
+    }
   };
 
   const filteredReservas = reservas.filter((reserva) =>
@@ -98,9 +128,30 @@ function TabelaReservas() {
                   <td>{formatDateToDash(reserva.data_checkout)}</td>
                   <td>{reserva.status_reserva}</td>
                   <td className="bg-light">
-                    <Link className="btn btn-primary btn-sm" to={`/cadastro_reserva/${reserva.id_reserva}`}>
-                      Editar
+                    <Link
+                      className="btn btn-primary btn-sm me-2"
+                      to={`/cadastro_reserva/${reserva.id_reserva}`}
+                    >
+                      {reserva.status_reserva === 'cancelada' || reserva.status_reserva === 'finalizada'
+                        ? 'Visualizar Reserva'
+                        : 'Editar'}
                     </Link>
+                    {reserva.status_reserva === 'reservado' && (
+                      <button
+                        className="btn btn-sm btn-warning"
+                        onClick={() => handleStatusAction(reserva.id_reserva, reserva.status_reserva)}
+                      >
+                        Cancelar Reserva
+                      </button>
+                    )}
+                    {reserva.status_reserva === 'hospedado' && (
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleStatusAction(reserva.id_reserva, reserva.status_reserva)}
+                      >
+                        Finalizar Reserva
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
