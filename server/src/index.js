@@ -6,6 +6,7 @@ import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, exclui
 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes,mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
+import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
  
 
 const app = express();
@@ -41,6 +42,15 @@ app.get('/acomodacoes', mostrandoAcomodacoes);
 app.get('/acomodacoes/:id', mostrandoAcomodacaoPorId); // Adicionando a rota para pegar uma acomodação específica pelo id
 app.put('/acomodacoes/:id', atualizandoAcomodacao);
 app.delete('/acomodacoes/:id', excluindoAcomodacao);
+
+//CRUD Usuario
+app.post('/usuario/', criarUsuario);
+app.get('/usuario/', mostrarUsuario);
+app.get('/usuario/:id_usuario',mostrarUmUsuario);
+app.put('/usuario/:id_usuario',atualizarUsuario);
+
+//Rota para Logar
+app.post('/logar/',logarUsuario);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

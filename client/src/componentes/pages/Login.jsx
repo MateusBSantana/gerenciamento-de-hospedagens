@@ -2,21 +2,19 @@ import React, { useState } from "react";
 import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
 
 function Login() {
-  const [formData, setFormData] = useState({
-    login: "",
-    password: ""
-  });
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({ login: '', senha: '' });
+  const [errors, setErrors] = useState({ login: '', senha: '' });
   const [showAlert, setShowAlert] = useState(false);
+  const [authError, setAuthError] = useState('');
 
-  // Validação básica dos campos
+  // Função para validar os campos
   const validateField = (name, value) => {
-    let errorMsg = "";
+    let errorMsg = '';
 
-    if (name === "login" && value.trim() === "") {
-      errorMsg = "Login é obrigatório.";
-    } else if (name === "password" && value.length < 6) {
-      errorMsg = "A senha deve ter pelo menos 6 caracteres.";
+    if (name === 'login' && value.trim() === '') {
+      errorMsg = 'Login é obrigatório.';
+    } else if (name === 'senha' && value.length < 6) {
+      errorMsg = 'A senha deve ter pelo menos 6 caracteres.';
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
@@ -29,15 +27,42 @@ function Login() {
     validateField(name, value);
   };
 
+  // Função para efetuar login
+  async function efetuarLogin() {
+    const { login, senha } = formData;
+
+    try {
+      const resposta = await fetch('http://localhost:5000/usuario', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ login, senha }),
+      });
+
+      if (!resposta.ok) {
+        const errorData = await resposta.json();
+        throw new Error(errorData.message || 'Erro ao efetuar login');
+      }
+
+      setShowAlert(true);
+      setAuthError(''); // Limpa o erro de autenticação
+      console.log("Login bem-sucedido com:", formData);
+      window.location.href = "http://localhost:3000"; // Redireciona após login bem-sucedido
+    } catch (error) {
+      console.log("Erro ao efetuar login:", error);
+      setShowAlert(false);
+      setAuthError('Login ou senha incorretos.'); // Define uma mensagem de erro
+    }
+  }
+
   // Manipulador de submissão de formulário
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!errors.login && !errors.password && formData.login && formData.password) {
-      setShowAlert(true);
-      console.log("Login bem-sucedido com:", formData);
-      // Redirecionamento para localhost:3000
-      window.location.href = "http://localhost:3000"; // Isso irá redirecionar para a página desejada
+    // Verifica se há erros antes de enviar o formulário
+    if (!errors.login && !errors.senha && formData.login && formData.senha) {
+      efetuarLogin();
     } else {
       setShowAlert(false);
     }
@@ -50,6 +75,7 @@ function Login() {
           <h3 className="text-center mb-4">Login</h3>
 
           {showAlert && <Alert variant="success">Login realizado com sucesso!</Alert>}
+          {authError && <Alert variant="danger">{authError}</Alert>} {/* Exibe o erro de autenticação */}
 
           <Form onSubmit={handleSubmit} className="border p-4 shadow rounded">
             <Form.Group className="mb-3" controlId="formLogin">
@@ -66,18 +92,18 @@ function Login() {
               <Form.Control.Feedback type="invalid">{errors.login}</Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Group className="mb-3" controlId="formSenha">
               <Form.Label>Senha</Form.Label>
               <Form.Control
                 type="password"
-                name="password"
-                value={formData.password}
+                name="senha"
+                value={formData.senha}
                 onChange={handleChange}
-                isInvalid={!!errors.password}
+                isInvalid={!!errors.senha}
                 placeholder="Digite sua senha"
                 required
               />
-              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{errors.senha}</Form.Control.Feedback>
             </Form.Group>
 
             <Button variant="primary" type="submit" className="w-100">
