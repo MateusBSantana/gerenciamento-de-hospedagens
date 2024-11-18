@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
-function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing }) {
+function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
@@ -17,43 +17,83 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
     handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
-
     // Exibe o nome do hospede para o usuário enquanto guarda o ID
     setNomeHospedeExibido(fk_hospede.nome_hospede);
     setMostrarTabelaHospedes(false);
   };
-
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState('');
-
+  const [capacidade, setCapacidade] = useState("");
 
   const handleSelectAcomodacao = (fk_acomodacao) => {
-    // Armazena apenas o ID da acomodação no estado de reserva
-    handleChange({ target: { name: 'fk_acomodacao', value: fk_acomodacao.id } });
+    console.log("Dados da acomodação selecionada:", fk_acomodacao);
+    // Salva a capacidade no estado
+    setCapacidade(fk_acomodacao.capacidade);
 
-    // Atualiza o nome exibido da acomodação para o usuário
+    // Outras ações
+    handleChange({ target: { name: "fk_acomodacao", value: fk_acomodacao.id } });
     setNomeAcomodacaoExibida(fk_acomodacao.nome);
-
     setMostrarTabelaAcomodacoes(false);
   };
 
-  useEffect(() => {
 
-  }, [formData]);
+  // Executa quando capacidade é atualizada
+  useEffect(() => {
+    if (capacidade !== "") {
+      console.log("Capacidade atualizada:", capacidade);
+    }
+  }, [capacidade]); // Escuta mudanças na variável `capacidade`
+
+  const totalPessoas = parseInt(formData.numero_adulto || 0) + parseInt(formData.numero_crianca || 0);
+  useEffect(() => {
+    if (capacidade && totalPessoas > capacidade) {
+      alert(`A capacidade máxima da acomodação selecionada é ${capacidade} pessoas.`);
+      setFormData({
+        ...formData,
+        numero_adulto: '',
+        numero_crianca: '0',
+      });
+    }
+  }, [capacidade, totalPessoas, formData]);
+
+  const isDatasPreenchidas = () => {
+    return formData.data_checkin && formData.data_checkout;
+  };
+
+  const handleValorDiariaChange = (e) => {
+    let value = e.target.value;
+
+    // Remove tudo o que não é número
+    value = value.replace(/\D/g, '');
+
+    // Limita a entrada a no máximo 10 dígitos
+    if (value.length > 10) {
+      value = value.slice(0, 10);
+    }
+
+    // Adiciona o formato de moeda com vírgula
+    value = new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value / 100); // Divide por 100 para simular os centavos
+
+
+    setFormData({  // Atualiza o estado com o valor formatado
+      ...formData,
+      valor_diaria: value
+    });
+  };
 
   useEffect(() => {
     console.log('Data Inícioooooo:', dataInicio);
     console.log('Data Fimmmmm:', dataFim);
   }, [dataInicio, dataFim]);
 
-
-  const isDatasPreenchidas = () => {
-    return formData.data_checkin && formData.data_checkout;
-  };
+  useEffect(() => {
+  }, [formData]);
 
   return (
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
-      <h4>Informações da Reserva</h4>
-
+      <h4 style={{ marginLeft: '40px' }}>Informações da Reserva</h4>
       <div className="mx-auto">
         {/* Campo Situação */}
         <div className="mb-3 d-flex align-items-center">
@@ -99,6 +139,7 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
               className="form-control"
               value={nomeHospedeExibido} // Exibe o nome do hóspede selecionado
               onChange={(e) => handleSelectHospede(e.target.value)} // Atualiza com a seleção
+              required
               placeholder="Selecione um hóspede ->"
               readOnly // Torna o campo somente leitura
               style={{ pointerEvents: 'none' }} // Desabilita interações com o campo
@@ -147,10 +188,11 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
             name="data_checkin"
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleChange}
-            required
             style={{ width: "200px" }}
+            min={new Date().toISOString().split('T')[0]} // Data mínima garantida como hoje
           />
         </div>
+
 
         {/* Campo Data de Saída */}
         <div className="mb-3 d-flex align-items-center">
@@ -161,7 +203,6 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
             name="data_checkout"
             value={formData.data_checkout ? formData.data_checkout.split('T')[0] : ''}
             onChange={handleChange}
-            required
             style={{ width: "200px" }}
           />
         </div>
@@ -227,29 +268,57 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Nº de Adultos:</label>
           <input
-            type="number"
+            type="text"
             className="form-control"
             name="numero_adulto"
-            value={formData.numero_adulto}
-            onChange={handleChange}
-            required
+            value={formData.numero_adulto || ''}
+            onChange={(e) => {
+              // Verifica se o valor inserido é um número inteiro
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                handleChange(e); // Apenas permite a mudança se for um número inteiro válido
+              }
+            }}
+            onFocus={() => {
+              if (!nomeAcomodacaoExibida) {
+                alert("Por favor, selecione uma acomodação antes de preencher este campo.");
+                document.activeElement.blur(); // Remove o foco do campo
+              }
+            }}
+            min="1"
+            max="100"
             style={{ width: "200px" }}
           />
         </div>
+
 
         {/* Campo Número de Crianças */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Nº de Crianças:</label>
           <input
-            type="number"
+            type="text"
             className="form-control"
             name="numero_crianca"
-            value={formData.numero_crianca}
-            onChange={handleChange}
-            required
+            value={formData.numero_crianca || ''}
+            onChange={(e) => {
+              // Verifica se o valor inserido é um número inteiro
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) {
+                handleChange(e); // Apenas permite a mudança se for um número inteiro válido
+              }
+            }}
+            onFocus={() => {
+              if (!nomeAcomodacaoExibida) {
+                alert("Por favor, selecione uma acomodação antes de preencher este campo.");
+                document.activeElement.blur(); // Remove o foco do campo
+              }
+            }}
+            min="0"
+            max="100"
             style={{ width: "200px" }}
           />
         </div>
+
 
         {/* Campo Valor da Diária */}
         <div className="mb-3 d-flex align-items-center">
@@ -259,9 +328,9 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
             className="form-control"
             name="valor_diaria"
             value={formData.valor_diaria}
-            onChange={handleChange}
-            required
+            onChange={(e) => handleValorDiariaChange(e)}
             style={{ width: "200px" }}
+            maxLength="12" // Limita a quantidade de caracteres para permitir valores como "999999,99"
           />
         </div>
 
@@ -280,8 +349,6 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
           </div>
         </div>
 
-
-
         {/* Campo Observações */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Observações:</label>
@@ -291,8 +358,10 @@ function FormReserva({ formData, handleChange, dataInicio, dataFim, isEditing })
             value={formData.observacoes}
             onChange={handleChange}
             style={{ width: "400px" }}
+            maxLength="200"
           ></textarea>
         </div>
+
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ function FormCadReserva({ handleSubmit }) {
     pago: 'não',
     observacoes: ''
   });
-  const [acomodacoesDisponiveis, setAcomodacoesDisponiveis] = useState([]);
+
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
   useEffect(() => {
@@ -60,14 +60,12 @@ function FormCadReserva({ handleSubmit }) {
       if (!isDataValida()) {
         return;
       }
-
       setDataInicio(formData.data_checkin);
       setDataFim(formData.data_checkout);
       console.log('data inicio:', formData.data_checkin);
       console.log('data fim:', formData.data_checkout);
 
     };
-
 
     if (formData.data_checkin && formData.data_checkout) {
       validarDatas();
@@ -92,16 +90,64 @@ function FormCadReserva({ handleSubmit }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
+    setFormData({
+      ...formData,
       [name]: value
-    }));
+    });
   };
+
 
   const submit = (e) => {
     e.preventDefault();
 
     if (!isDataValida()) {
+      return;
+    }
+    const { name, value } = e.target;
+    const today = new Date().toISOString().split('T')[0];
+    if (name === "data_checkin" && value < today) {
+      alert("A data de entrada não pode ser anterior a hoje!");
+      return;
+    }
+
+    if (!formData.status_reserva) { // Validação do campo "Situação"
+      alert("O campo Situação é obrigatório.");
+      return;
+    }
+
+    if (!formData.fk_hospede) { // Validação do campo "Hospede"
+      alert("O campo Hóspede é obrigatório.");
+      return;
+    }
+
+    if (!formData.data_checkin) { // Validação do campo "Data de Entrada"
+      alert("O campo Data de Entrada é obrigatório.");
+      return;
+    }
+
+    if (!formData.data_checkout) { // Validação do campo "Data de Saida"
+      alert("O campo Data de Saida é obrigatório.");
+      return;
+    }
+
+    if (!formData.fk_acomodacao) {// Validação do campo "Acomodação"
+      alert("O campo Acomodação é obrigatório.");
+      return;
+    }
+
+    if (!formData.numero_adulto || parseInt(formData.numero_adulto) < 1) {// Validação do campo "Número de Adultos"
+      alert("O campo Nº de Adultos é obrigatório e deve ser maior que 0.");
+      return;
+    }
+
+    const numeroCrianca = parseInt(formData.numero_crianca);// Validação adicional (se necessário): Verificar valores numéricos
+    if (isNaN(numeroCrianca) || numeroCrianca < 0) {
+      alert("O campo Nº de Crianças deve ser um número válido maior ou igual a 0.");
+      return;
+    }
+
+    if (formData.valor_diaria === "" || isNaN(parseFloat(formData.valor_diaria.replace(',', '.')))) { // Validação do campo "Valor da Diária"
+      alert("O campo Valor da Diária é obrigatório e deve ser um número válido.");
       return;
     }
 
@@ -131,14 +177,13 @@ function FormCadReserva({ handleSubmit }) {
     }
   };
 
- 
-
   return (
     <div className="container mt-4">
-      <h2>{isEditing ? 'Editar Reserva' : 'Nova Reserva'}</h2>
+      <h2 style={{ marginLeft: '40px' }}>{isEditing ? 'Editar Reserva' : 'Nova Reserva'}</h2>
       <Form onSubmit={submit}>
         <FormReserva
           formData={formData}
+          setFormData={setFormData}
           handleChange={handleChange}
           isEditing={isEditing}
           dataInicio={dataInicio}
