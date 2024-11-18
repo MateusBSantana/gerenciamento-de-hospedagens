@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Alert, Container, Row, Col, Spinner, InputGroup } from "react-bootstrap";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importa os ícones de olho
 
 function Login() {
   const [formData, setFormData] = useState({ login: '', senha: '' });
   const [errors, setErrors] = useState({ login: '', senha: '' });
   const [showAlert, setShowAlert] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
 
   // Função para validar os campos
   const validateField = (name, value) => {
@@ -20,6 +23,12 @@ function Login() {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
   };
 
+  // Função para validar o formulário
+  const validateForm = () => {
+    const { login, senha } = formData;
+    return login.trim() && senha.length >= 6 && !errors.login && !errors.senha;
+  };
+
   // Manipulador de mudança de entrada
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,6 +39,7 @@ function Login() {
   // Função para efetuar login
   async function efetuarLogin() {
     const { login, senha } = formData;
+    setIsLoading(true); // Inicia o estado de carregamento
 
     try {
       const resposta = await fetch('http://localhost:5000/usuario', {
@@ -46,13 +56,15 @@ function Login() {
       }
 
       setShowAlert(true);
-      setAuthError(''); // Limpa o erro de autenticação
+      setAuthError('');
       console.log("Login bem-sucedido com:", formData);
-      window.location.href = "http://localhost:3000"; // Redireciona após login bem-sucedido
+      window.location.href = "http://localhost:3000"; 
     } catch (error) {
       console.log("Erro ao efetuar login:", error);
       setShowAlert(false);
-      setAuthError('Login ou senha incorretos.'); // Define uma mensagem de erro
+      setAuthError('Login ou senha incorretos.');
+    } finally {
+      setIsLoading(false); // Finaliza o estado de carregamento
     }
   }
 
@@ -60,8 +72,7 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Verifica se há erros antes de enviar o formulário
-    if (!errors.login && !errors.senha && formData.login && formData.senha) {
+    if (validateForm()) {
       efetuarLogin();
     } else {
       setShowAlert(false);
@@ -75,7 +86,7 @@ function Login() {
           <h3 className="text-center mb-4">Login</h3>
 
           {showAlert && <Alert variant="success">Login realizado com sucesso!</Alert>}
-          {authError && <Alert variant="danger">{authError}</Alert>} {/* Exibe o erro de autenticação */}
+          {authError && <Alert variant="danger">{authError}</Alert>}
 
           <Form onSubmit={handleSubmit} className="border p-4 shadow rounded">
             <Form.Group className="mb-3" controlId="formLogin">
@@ -94,20 +105,28 @@ function Login() {
 
             <Form.Group className="mb-3" controlId="formSenha">
               <Form.Label>Senha</Form.Label>
-              <Form.Control
-                type="password"
-                name="senha"
-                value={formData.senha}
-                onChange={handleChange}
-                isInvalid={!!errors.senha}
-                placeholder="Digite sua senha"
-                required
-              />
-              <Form.Control.Feedback type="invalid">{errors.senha}</Form.Control.Feedback>
+              <InputGroup>
+                <Form.Control
+                  type={showPassword ? "text" : "password"} // Alterna entre "text" e "password"
+                  name="senha"
+                  value={formData.senha}
+                  onChange={handleChange}
+                  isInvalid={!!errors.senha}
+                  placeholder="Digite sua senha"
+                  required
+                />
+                <Button
+                  variant="outline-secondary"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Ícone de olho */}
+                </Button>
+                <Form.Control.Feedback type="invalid">{errors.senha}</Form.Control.Feedback>
+              </InputGroup>
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="w-100">
-              Entrar
+            <Button variant="primary" type="submit" className="w-100" disabled={isLoading}>
+              {isLoading ? <Spinner animation="border" size="sm" /> : "Entrar"}
             </Button>
           </Form>
         </Col>
