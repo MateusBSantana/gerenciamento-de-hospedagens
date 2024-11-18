@@ -88,19 +88,23 @@ export async function deletarUsuario(req, res) {
   }
 }
 
+
+// Controlador (UsuarioController.js)
 export async function logarUsuario(req, res) {
   console.log("UsuarioController :: logarUsuario");
   const { login, senha } = req.body;
 
+  // Verifica se login ou senha não foram informados
   if (!login || !senha) {
-    res.status(400).json({ message: "Login e senha devem ser informados" });
-  } else {
-    try {
-      const [status, resposta] = await getUserByLoginPassword(login, senha);
-      res.status(status).json(resposta);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Erro ao realizar login" });
-    }
+    return res.status(400).json({ message: "Login e senha devem ser informados" });
+  }
+
+  try {
+    // Chama o modelo para autenticar o usuário
+    const [status, resposta] = await getUserByLoginPassword(login, senha);
+    return res.status(status).json(resposta);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Erro ao realizar login" });
   }
 }

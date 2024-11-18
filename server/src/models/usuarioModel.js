@@ -29,17 +29,18 @@ export async function createUsuario(req, res) {
   }
 }
 
-export async function readUsuario(req, res) {
-  console.log('UsuarioController : readUsuario');
+
+export async function readUsuario() {
+  console.log('UsuarioModel : readUsuario');
   const conexao = mysql.createPool(db);
   const sql = 'SELECT * FROM usuarios';
 
   try {
     const [resposta] = await conexao.query(sql);
-    return res.status(200).json(resposta);
+    return [200, resposta]; // Retorna o status e a resposta para o controlador
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Erro ao Exibir Usuários', details: error.message });
+    return [500, { message: 'Erro ao Exibir Usuários', details: error.message }]; // Retorna o status e a mensagem de erro
   }
 }
 
@@ -108,10 +109,8 @@ export async function deleteUsuario(req, res) {
   }
 }
 
-export async function getUserByLoginPassword(req, res) {
+export async function getUserByLoginPassword(login, senha) {
   console.log('UsuarioController :: getUserByLoginPassword');
-  const { login, senha } = req.body;
-
   try {
     const conexao = mysql.createPool(db);
     const sql = 'SELECT id_usuario, senha FROM usuarios WHERE login = ?';
@@ -120,19 +119,20 @@ export async function getUserByLoginPassword(req, res) {
     const [resposta] = await conexao.query(sql, params);
 
     if (resposta.length < 1) {
-      return res.status(401).json({ message: 'Usuário não encontrado' });
+      return [401, { message: 'Usuário não encontrado' }];
     }
 
-    // Verificar a senha com o bcrypt
-    const match = await bcrypt.compare(senha, resposta[0].senha);
+    console.log('Senha informada:', senha);
+    console.log('Senha armazenada:', resposta[0].senha);
 
-    if (!match) {
-      return res.status(401).json({ message: 'Senha incorreta' });
+    if (senha !== resposta[0].senha) {
+      return [401, { message: 'Senha incorreta' }];
     }
 
-    return res.status(200).json({ id_usuario: resposta[0].id_usuario });
+    return [200, { id_usuario: resposta[0].id_usuario }];
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Erro ao realizar login', details: error.message });
+    return [500, { message: 'Erro ao realizar login', details: error.message }];
   }
 }
+
