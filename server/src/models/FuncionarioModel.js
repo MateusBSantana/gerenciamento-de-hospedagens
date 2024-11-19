@@ -9,48 +9,79 @@ import db from '../conexao.js';
 //Cadastrando Funcionario
 export async function createFuncionario(funcionario) {
     const conexao = mysql.createPool(db);
-    const sql = `INSERT INTO funcionarios 
+
+    const sqlFuncionario = `INSERT INTO funcionarios 
           (nome_funcionario, rg, cpf, data_nascimento, sexo, email, telefone, observacoes, 
           cep, Estado, cidade, bairro, logradouro, numero, complemento, observacoes_endereco,
           cargo, data_admissao, data_emissao_carteira, banco, agencia, conta, status_funcionario, observacoes_adicionais) 
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-    const params = [
-      funcionario.nome_funcionario,
-      funcionario.rg,
-      funcionario.cpf,
-      funcionario.dataNascimento,
-      funcionario.sexo,
-      funcionario.email,
-      funcionario.telefone,
-      funcionario.observacoes,
-      funcionario.endereco.cep,
-      funcionario.endereco.estado,
-      funcionario.endereco.cidade,
-      funcionario.endereco.bairro,
-      funcionario.endereco.logradouro,
-      funcionario.endereco.numero,
-      funcionario.endereco.complemento,
-      funcionario.endereco.observacoesEndereco,
-      funcionario.adicionais.cargo,
-      funcionario.adicionais.dataAdmissao,
-      funcionario.adicionais.dataEmissaoCarteira,
-      funcionario.adicionais.banco,
-      funcionario.adicionais.agencia,
-      funcionario.adicionais.conta,
-      funcionario.adicionais.status,
-      funcionario.adicionais.observacoesAdicionais,
+
+    const paramsFuncionario = [
+        funcionario.nome_funcionario,
+        funcionario.rg,
+        funcionario.cpf,
+        funcionario.dataNascimento,
+        funcionario.sexo,
+        funcionario.email,
+        funcionario.telefone,
+        funcionario.observacoes,
+        funcionario.cep,
+        funcionario.estado,
+        funcionario.cidade,
+        funcionario.bairro,
+        funcionario.logradouro,
+        funcionario.numero,
+        funcionario.complemento,
+        funcionario.observacoesEndereco,
+        funcionario.cargo,
+        funcionario.dataAdmissao,
+        funcionario.dataEmissaoCarteira,
+        funcionario.banco,
+        funcionario.agencia,
+        funcionario.conta,
+        funcionario.status,
+        funcionario.observacoesAdicionais,
     ];
-  
+
     try {
-      const [retorno] = await conexao.query(sql, params);
-      console.log('Funcionario Cadastrado');
-      return [201, retorno];
+        console.log('Inserindo funcionário com os seguintes dados:', paramsFuncionario);
+
+        const connection = await conexao.getConnection();
+        try {
+            await connection.beginTransaction(); // Inicia a transação
+            
+            // Insere o funcionário na tabela
+            const [resultadoFuncionario] = await connection.query(sqlFuncionario, paramsFuncionario);
+            const idFuncionario = resultadoFuncionario.insertId;
+
+            // Gera login e senha com base no CPF (ou outra lógica que você preferir)
+            const login = funcionario.cpf; // Login será o CPF
+            const senha = funcionario.cpf.slice(0, 6); // Os 6 primeiros dígitos do CPF como senha inicial
+
+            const sqlUsuario = `INSERT INTO usuarios (id_usuario, login, senha) VALUES (?, ?, ?)`;
+            const paramsUsuario = [idFuncionario, login, senha];
+
+            // Insere o usuário na tabela
+            await connection.query(sqlUsuario, paramsUsuario);
+
+            await connection.commit(); // Confirma a transação
+
+            console.log('Funcionário e usuário cadastrados com sucesso');
+            return [201, { mensagem: 'Funcionário e usuário cadastrados com sucesso' }];
+        } catch (error) {
+            await connection.rollback(); // Reverte a transação em caso de erro
+            console.error('Erro ao cadastrar funcionário e usuário:', error);
+            throw error; // Retorna o erro para ser tratado em outro lugar
+        } finally {
+            connection.release(); // Libera a conexão
+        }
     } catch (mensagem) {
-      console.log(mensagem);
-      console.log('erro banco');
-      return [500, mensagem];
+        console.log('Erro no banco:', mensagem);
+        return [500, { mensagem: 'Erro interno ao processar cadastro' }];
     }
-  }
+}
+
+
   
   // Lendo aulas
   export async function readFuncionario() {
@@ -131,27 +162,27 @@ export async function updateFuncionario(funcionario, id) {
     funcionario.nome_funcionario,
     funcionario.rg,
     funcionario.cpf,
-    funcionario.dataNascimento,
+    funcionario.data_nascimento,
     funcionario.sexo,
     funcionario.email,
     funcionario.telefone,
     funcionario.observacoes,
-    funcionario.endereco.cep,
-    funcionario.endereco.estado,
-    funcionario.endereco.cidade,
-    funcionario.endereco.bairro,
-    funcionario.endereco.logradouro,
-    funcionario.endereco.numero,
-    funcionario.endereco.complemento,
-    funcionario.endereco.observacoesEndereco,
-    funcionario.adicionais.cargo,
-    funcionario.adicionais.dataAdmissao,
-    funcionario.adicionais.dataEmissaoCarteira,
-    funcionario.adicionais.banco,
-    funcionario.adicionais.agencia,
-    funcionario.adicionais.conta,
-    funcionario.adicionais.status,
-    funcionario.adicionais.observacoesAdicionais,
+    funcionario.cep,
+    funcionario.estado,
+    funcionario.cidade,
+    funcionario.bairro,
+    funcionario.logradouro,
+    funcionario.numero,
+    funcionario.complemento,
+    funcionario.observacoesEndereco,
+    funcionario.cargo,
+    funcionario.dataAdmissao,
+    funcionario.dataEmissaoCarteira,
+    funcionario.banco,
+    funcionario.agencia,
+    funcionario.conta,
+    funcionario.status,
+    funcionario.observacoesAdicionais,
     id,
   ];
 

@@ -248,7 +248,7 @@ function FormHospede({ formData, handleChange, submit }) {
                 htmlFor="formRua"
                 style={{ width: "160px" }}
               >
-                Rua:
+                Logradouro:
               </Form.Label>
               <Form.Control
                 type="text"

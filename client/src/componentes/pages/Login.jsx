@@ -42,7 +42,7 @@ function Login() {
     setIsLoading(true); // Inicia o estado de carregamento
 
     try {
-      const resposta = await fetch('http://localhost:5000/usuario', {
+      const resposta = await fetch('http://localhost:5000/logar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
