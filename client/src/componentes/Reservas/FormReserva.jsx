@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
+
+
 function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
