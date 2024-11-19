@@ -29,12 +29,33 @@ function FormCadReserva({ handleSubmit }) {
     console.log("Data Fim cad:", dataFim);
   }, [dataInicio, dataFim]);
 
+  function showAlert(message, type = "warning") { // função para mostar mensagens de alerta
+    const alertContainer = document.getElementById("alert-container");
+    const alertId = `alert-${Date.now()}`; // Gerar um ID único para o alerta
+  
+    alertContainer.innerHTML = `
+      <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show alert-overlay" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    `;
+  
+    // Configurar o tempo para remover o alerta
+    setTimeout(() => {
+      const alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        alertElement.classList.remove("show"); // Adiciona a transição do Bootstrap
+        setTimeout(() => alertElement.remove(), 150); // Espera o tempo da animação do Bootstrap antes de remover
+      }
+    }, 5000); // 5 segundos
+  }
+
   const isDataValida = () => {
     if (formData.data_checkin && formData.data_checkout) {
       const dataInicio = new Date(formData.data_checkin);
       const dataFim = new Date(formData.data_checkout);
       if (dataInicio > dataFim) {
-        alert("A data de saída não pode ser anterior à data de entrada.");
+        showAlert("A data de saída não pode ser anterior à data de entrada.", "danger");
         setFormData((prevState) => ({
           ...prevState,
           data_checkin: "",
@@ -52,12 +73,6 @@ function FormCadReserva({ handleSubmit }) {
     };
 
     const validarDatas = () => {
-      if (!isDatasPreenchidas()) {
-        alert(
-          "Por favor, preencha as datas de entrada e saída antes de buscar acomodações."
-        );
-        return;
-      }
 
       if (!isDataValida()) {
         return;
@@ -102,26 +117,7 @@ function FormCadReserva({ handleSubmit }) {
   const submit = (e) => {
     e.preventDefault();
 
-    function showAlert(message, type = "warning") {
-      const alertContainer = document.getElementById("alert-container");
-      const alertId = `alert-${Date.now()}`; // Gerar um ID único para o alerta
     
-      alertContainer.innerHTML = `
-        <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show alert-overlay" role="alert">
-          ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      `;
-    
-      // Configurar o tempo para remover o alerta
-      setTimeout(() => {
-        const alertElement = document.getElementById(alertId);
-        if (alertElement) {
-          alertElement.classList.remove("show"); // Adiciona a transição do Bootstrap
-          setTimeout(() => alertElement.remove(), 150); // Espera o tempo da animação do Bootstrap antes de remover
-        }
-      }, 3000); // 5 segundos
-    }
     
     
     if (!isDataValida()) {
@@ -130,49 +126,49 @@ function FormCadReserva({ handleSubmit }) {
     const { name, value } = e.target;
     const today = new Date().toISOString().split("T")[0];
     if (name === "data_checkin" && value < today) {
-      alert("A data de entrada não pode ser anterior a hoje!");
+      showAlert("A data de entrada não pode ser anterior a hoje!.", "danger");
       return;
     }
 
     if (!formData.status_reserva) {
       // Validação do campo "Situação"
-      showAlert("O campo Situação é obrigatório.", "warning");
+      showAlert("O campo Situação é obrigatório.", "danger");
       return;
     }
 
     if (!formData.fk_hospede) {
       // Validação do campo "Hospede"
-      showAlert("O campo Hóspede é obrigatório.", "warning");
+      showAlert("O campo Hóspede é obrigatório.", "danger");
       return;
     }
 
     if (!formData.data_checkin) {
       // Validação do campo "Data de Entrada"
-      showAlert("O campo Data de Entrada é obrigatório.", "warning");
+      showAlert("O campo Data de Entrada é obrigatório.", "danger");
       return;
     }
 
     if (!formData.data_checkout) {
       // Validação do campo "Data de Saida"
-      showAlert("O campo Data de Saida é obrigatório.", "warning");
+      showAlert("O campo Data de Saida é obrigatório.", "danger");
       return;
     }
 
     if (!formData.fk_acomodacao) {
       // Validação do campo "Acomodação"
-      showAlert("O campo Acomodação é obrigatório.", "warning");
+      showAlert("O campo Acomodação é obrigatório.", "danger");
       return;
     }
 
     if (!formData.numero_adulto || parseInt(formData.numero_adulto) < 1) {
       // Validação do campo "Número de Adultos"
-      showAlert("O campo Nº de Adultos é obrigatório e deve ser maior que 0.", "warning");
+      showAlert("O campo Nº de Adultos é obrigatório e deve ser maior que 0.", "danger");
       return;
     }
 
     const numeroCrianca = parseInt(formData.numero_crianca); // Validação adicional (se necessário): Verificar valores numéricos
     if (isNaN(numeroCrianca) || numeroCrianca < 0) {
-      showAlert("O campo Nº de Crianças deve ser um número válido maior ou igual a 0.", "warning");
+      showAlert("O campo Nº de Crianças deve ser um número válido maior ou igual a 0.", "danger");
       return;
     }
 
@@ -181,7 +177,7 @@ function FormCadReserva({ handleSubmit }) {
       isNaN(parseFloat(formData.valor_diaria.replace(",", ".")))
     ) {
       // Validação do campo "Valor da Diária"
-      showAlert("O campo Valor da Diária é obrigatório e deve ser um número válido.", "warning");
+      showAlert("O campo Valor da Diária é obrigatório e deve ser um número válido.", "danger");
       return;
     }
 

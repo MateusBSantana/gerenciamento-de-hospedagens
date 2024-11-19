@@ -6,6 +6,7 @@ import ListagemAcomodacoes from '../acomodacao/ListaAcomodacoes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
+import { Alert } from 'react-bootstrap';
 
 
 
@@ -16,6 +17,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const InfHospede = () => setMostrarTabelaHospedes(true);
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
 
+  const [alerta, setAlerta] = useState({ show: false, message: '', variant: 'danger' });
+  setTimeout(() => { setAlerta({ ...alerta, show: false }); }, 6000);// Definir um temporizador para esconder o alerta após 6 segundos
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
     handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
@@ -48,13 +51,14 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const totalPessoas = parseInt(formData.numero_adulto || 0) + parseInt(formData.numero_crianca || 0);
   useEffect(() => {
     if (capacidade && totalPessoas > capacidade) {
-      alert(`A capacidade máxima da acomodação selecionada é ${capacidade} pessoas.`);
+      setAlerta({ show: true, message: `A quantidade de hóspedes informada excede a capacidade máxima da acomodação selecionada.`, variant: 'danger' });
       setFormData({
         ...formData,
         numero_adulto: '',
         numero_crianca: '0',
       });
     }
+
   }, [capacidade, totalPessoas, formData]);
 
   const isDatasPreenchidas = () => {
@@ -93,9 +97,49 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   useEffect(() => {
   }, [formData]);
 
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+
+    // Atualiza a data no estado e reseta os campos relacionados
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+      fk_acomodacao: "", // Limpa o ID da acomodação
+      numero_adulto: "", // Limpa o número de adultos
+      numero_crianca: "0", // Limpa o número de crianças
+    }));
+
+    // Limpa o nome da acomodação exibida
+    setNomeAcomodacaoExibida("");
+  };
+
+
   return (
+
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
-      <h4 style={{ marginLeft: '40px' }}>Informações da Reserva</h4>
+      <h4 style={{ marginLeft: '40px', position: 'relative', zIndex: 1 }}>Informações da Reserva</h4>
+      {
+        alerta.show && (
+          <Alert
+            variant={alerta.variant}
+            style={{
+              position: 'absolute', // Permite sobreposição
+              top: '10px',          // Ajusta a posição vertical
+              left: '50%',          // Centraliza horizontalmente
+              transform: 'translateX(-50%)', // Corrige o alinhamento central
+              height: '50px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              zIndex: 10, // Garante que o alerta esteja acima de outros elementos
+            }}
+          >
+            {alerta.message}
+          </Alert>
+        )
+      }
+
       <div className="mx-auto">
         {/* Campo Situação */}
         <div className="mb-3 d-flex align-items-center">
@@ -189,7 +233,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             className="form-control"
             name="data_checkin"
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
-            onChange={handleChange}
+            onChange={handleDateChange}
             style={{ width: "200px" }}
             min={new Date().toISOString().split('T')[0]} // Data mínima garantida como hoje
           />
@@ -204,7 +248,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             className="form-control"
             name="data_checkout"
             value={formData.data_checkout ? formData.data_checkout.split('T')[0] : ''}
-            onChange={handleChange}
+            onChange={handleDateChange}
             style={{ width: "200px" }}
           />
         </div>
@@ -217,9 +261,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               type="text"
               name="fk_acomodacao"
               className="form-control"
-              value={nomeAcomodacaoExibida}
-              onChange={(e) => handleSelectAcomodacao(e.target.value)}
-              placeholder="Selecione uma acomodação ->"
+              value={nomeAcomodacaoExibida || "Selecione uma acomodação ->"}
               readOnly // Torna o campo somente leitura
               style={{ pointerEvents: 'none' }} // Desabilita interações com o campo
             />
@@ -229,12 +271,14 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               onClick={() => {
                 // Verificar se as datas estão preenchidas antes de executar a ação
                 if (!isDatasPreenchidas()) {
-                  alert("As datas devem ser preenchidas antes de selecionar uma acomodação.");
+                  //alert("As datas devem ser preenchidas antes de selecionar uma acomodação.");
+                  setAlerta({ show: true, message: `As datas devem ser preenchidas antes de selecionar uma acomodação.`, variant: 'danger' });
+                  //setTimeout(() => { setAlerta({ ...alerta, show: false }); }, 6000);// Definir um temporizador para esconder o alerta após 6 segundos 
+
                 } else {
                   InfAcomodacao(); // Chama a função para selecionar a acomodação
                 }
               }}
-            //disabled={!isDatasPreenchidas()} // Desabilita o botão enquanto as datas não forem informadas
             >
               <FontAwesomeIcon icon={faSearch} />
             </button>
@@ -291,8 +335,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             max="100"
             style={{ width: "200px" }}
           />
-        </div>
 
+        </div>
 
         {/* Campo Número de Crianças */}
         <div className="mb-3 d-flex align-items-center">
