@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-bootstrap'; // Certifique-se de ter o react-bootstrap instalado
+import { Alert } from 'react-bootstrap';
 
-function Alertas({ show, variant, message, onClose }) {
-  if (!show) return null; // Não renderiza o alerta se "show" for falso
+function Alertas({
+  show = false, // Valor padrão
+  variant = 'primary', // Valor padrão
+  message = '', // Valor padrão
+  onClose = null, // Valor padrão
+  duration = null, // Valor padrão
+}) {
+  // Gerencia o fechamento automático
+  useEffect(() => {
+    if (show && duration) {
+      const timer = setTimeout(() => {
+        if (onClose) onClose();
+      }, duration);
+      return () => clearTimeout(timer); // Limpa o timer quando o componente for desmontado
+    }
+  }, [show, duration, onClose]);
+
+  if (!show) return null;
 
   return (
     <Alert
       variant={variant}
       style={{
-        position: 'absolute', // Permite sobreposição
-        top: '10px',          // Ajusta a posição vertical
-        left: '50%',          // Centraliza horizontalmente
-        transform: 'translateX(-50%)', // Corrige o alinhamento central
+        position: 'absolute',
+        top: '10px',
+        left: '50%',
+        transform: 'translateX(-50%)',
         height: '50px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        zIndex: 10, // Garante que o alerta esteja acima de outros elementos
+        zIndex: 10,
       }}
       onClose={onClose}
-      dismissible={!!onClose} // Exibe o botão de fechar apenas se "onClose" for fornecido
+      dismissible={!!onClose}
     >
       {message}
     </Alert>
@@ -29,15 +45,11 @@ function Alertas({ show, variant, message, onClose }) {
 }
 
 Alertas.propTypes = {
-  show: PropTypes.bool.isRequired, // Define se o alerta será exibido
-  variant: PropTypes.string,       // Tipo de alerta (ex.: "success", "danger")
-  message: PropTypes.string.isRequired, // Mensagem do alerta
-  onClose: PropTypes.func,         // Função para fechar o alerta
-};
-
-Alertas.defaultProps = {
-  variant: 'primary', // Variante padrão
-  onClose: null,      // Alerta sem botão de fechamento por padrão
+  show: PropTypes.bool.isRequired,
+  variant: PropTypes.string,
+  message: PropTypes.string.isRequired,
+  onClose: PropTypes.func,
+  duration: PropTypes.number, // Tempo de exibição em milissegundos
 };
 
 export default Alertas;

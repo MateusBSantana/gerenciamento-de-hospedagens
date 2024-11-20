@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TabelaHospede from '../Hospedes/TabelaHospedes/TabelaHospedes';
 import ListagemAcomodacoes from '../acomodacao/ListaAcomodacoes';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
-import { Alert } from 'react-bootstrap';
-
-import Alertas from '../layout/Alertas'
-
+import Alertas from '../layout/Alertas';
 
 
 function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing }) {
@@ -19,10 +14,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const InfHospede = () => setMostrarTabelaHospedes(true);
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
 
-  const [alerta, setAlerta] = useState({ show: false, message: '', variant: 'danger' });
-  setTimeout(() => { setAlerta({ ...alerta, show: false }); }, 6000);// Definir um temporizador para esconder o alerta após 6 segundos
-  
-  
   
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
@@ -34,6 +25,19 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState('');
   const [capacidade, setCapacidade] = useState("");
 
+  // Estado para configurar as mensagens de alerta
+  const [alertProps, setAlertProps] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
+
+  // Função para exibir alertas com mensagem e estilo
+  const showAlert = (message, variant) => {
+    setAlertProps({ show: true, message, variant });
+    // Oculta o alerta automaticamente após 5 segundos
+    setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
+  };
 
 
 
@@ -59,11 +63,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const totalPessoas = parseInt(formData.numero_adulto || 0) + parseInt(formData.numero_crianca || 0);
   useEffect(() => {
     if (capacidade && totalPessoas > capacidade) {
-      setAlerta({
-        show: true,
-        message: "A quantidade de hóspedes informada excede a capacidade máxima da acomodação selecionada.",
-        variant: "danger"
-      });
+      showAlert(
+        "A quantidade de hóspedes informada excede a capacidade máxima da acomodação selecionada.",
+        "danger"
+      );
       setFormData({
         ...formData,
         numero_adulto: '',
@@ -130,15 +133,13 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
 
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
       <h4 style={{ marginLeft: '40px', position: 'relative', zIndex: 1 }}>Informações da Reserva</h4>
-      {alerta.show && (
+      {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
       <Alertas
-        show={alerta.show}
-        variant={alerta.variant}
-        message={alerta.message}
-        onClose={() => setAlerta({ ...alerta, show: false })}
+        show={alertProps.show}
+        variant={alertProps.variant}
+        message={alertProps.message}
+        onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
       />
-    )}
-      
       <div className="mx-auto">
         {/* Campo Situação */}
         <div className="mb-3 d-flex align-items-center">
@@ -270,10 +271,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               onClick={() => {
                 // Verificar se as datas estão preenchidas antes de executar a ação
                 if (!isDatasPreenchidas()) {
-                  //alert("As datas devem ser preenchidas antes de selecionar uma acomodação.");
-                  setAlerta({ show: true, message: `As datas devem ser preenchidas antes de selecionar uma acomodação.`, variant: 'danger' });
-                  //setTimeout(() => { setAlerta({ ...alerta, show: false }); }, 6000);// Definir um temporizador para esconder o alerta após 6 segundos 
-
+                  showAlert(
+                    "As datas devem ser preenchidas antes de selecionar uma acomodação.",
+                    "danger"
+                  );
                 } else {
                   InfAcomodacao(); // Chama a função para selecionar a acomodação
                 }
@@ -326,7 +327,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             }}
             onFocus={() => {
               if (!nomeAcomodacaoExibida) {
-                alert("Por favor, selecione uma acomodação antes de preencher este campo.");
+                showAlert(
+                  "Por favor, selecione uma acomodação antes de preencher este campo.",
+                  "danger"
+                );
                 document.activeElement.blur(); // Remove o foco do campo
               }
             }}
@@ -354,7 +358,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             }}
             onFocus={() => {
               if (!nomeAcomodacaoExibida) {
-                alert("Por favor, selecione uma acomodação antes de preencher este campo.");
+                showAlert(
+                  "Por favor, selecione uma acomodação antes de preencher este campo.",
+                  "danger"
+                );
                 document.activeElement.blur(); // Remove o foco do campo
               }
             }}
