@@ -8,6 +8,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { Alert } from 'react-bootstrap';
 
+import Alertas from '../layout/Alertas'
+
 
 
 function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing }) {
@@ -19,6 +21,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
 
   const [alerta, setAlerta] = useState({ show: false, message: '', variant: 'danger' });
   setTimeout(() => { setAlerta({ ...alerta, show: false }); }, 6000);// Definir um temporizador para esconder o alerta após 6 segundos
+  
+  
+  
   const handleSelectHospede = (fk_hospede) => {
     // Define o id do hospede como o valor que será enviado para o banco
     handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
@@ -28,6 +33,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   };
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState('');
   const [capacidade, setCapacidade] = useState("");
+
+
+
 
   const handleSelectAcomodacao = (fk_acomodacao) => {
     console.log("Dados da acomodação selecionada:", fk_acomodacao);
@@ -51,7 +59,11 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const totalPessoas = parseInt(formData.numero_adulto || 0) + parseInt(formData.numero_crianca || 0);
   useEffect(() => {
     if (capacidade && totalPessoas > capacidade) {
-      setAlerta({ show: true, message: `A quantidade de hóspedes informada excede a capacidade máxima da acomodação selecionada.`, variant: 'danger' });
+      setAlerta({
+        show: true,
+        message: "A quantidade de hóspedes informada excede a capacidade máxima da acomodação selecionada.",
+        variant: "danger"
+      });
       setFormData({
         ...formData,
         numero_adulto: '',
@@ -118,28 +130,15 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
 
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
       <h4 style={{ marginLeft: '40px', position: 'relative', zIndex: 1 }}>Informações da Reserva</h4>
-      {
-        alerta.show && (
-          <Alert
-            variant={alerta.variant}
-            style={{
-              position: 'absolute', // Permite sobreposição
-              top: '10px',          // Ajusta a posição vertical
-              left: '50%',          // Centraliza horizontalmente
-              transform: 'translateX(-50%)', // Corrige o alinhamento central
-              height: '50px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
-              zIndex: 10, // Garante que o alerta esteja acima de outros elementos
-            }}
-          >
-            {alerta.message}
-          </Alert>
-        )
-      }
-
+      {alerta.show && (
+      <Alertas
+        show={alerta.show}
+        variant={alerta.variant}
+        message={alerta.message}
+        onClose={() => setAlerta({ ...alerta, show: false })}
+      />
+    )}
+      
       <div className="mx-auto">
         {/* Campo Situação */}
         <div className="mb-3 d-flex align-items-center">
