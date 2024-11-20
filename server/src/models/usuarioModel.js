@@ -109,30 +109,32 @@ export async function deleteUsuario(req, res) {
   }
 }
 
-export async function getUserByLoginPassword(login, senha) {
+export async function getUserByLoginPassword(senha) {
   console.log('UsuarioController :: getUserByLoginPassword');
   try {
-    const conexao = mysql.createPool(db);
-    const sql = 'SELECT id_usuario, senha FROM usuarios WHERE login = ?';
-    const params = [login];
+      const conexao = mysql.createPool(db);
+      const sql = 'SELECT id_funcionario, senha FROM funcionarios WHERE cpf = ?';
+      const params = [login]; // Aqui, usamos o CPF como login
 
-    const [resposta] = await conexao.query(sql, params);
+      const [resposta] = await conexao.query(sql, params);
 
-    if (resposta.length < 1) {
-      return [401, { message: 'Usuário não encontrado' }];
-    }
+      if (resposta.length < 1) {
+          // Mensagem genérica para evitar exposição de informações
+          return [401, { message: 'Credenciais inválidas' }];
+      }
 
-    console.log('Senha informada:', senha);
-    console.log('Senha armazenada:', resposta[0].senha);
+      console.log('Validando senha...');
 
-    if (senha !== resposta[0].senha) {
-      return [401, { message: 'Senha incorreta' }];
-    }
+      // Verificar senha usando bcrypt
+      const senhaValida = await bcrypt.compare(senha, resposta[0].senha);
+      if (!senhaValida) {
+          return [401, { message: 'Credenciais inválidas' }];
+      }
 
-    return [200, { id_usuario: resposta[0].id_usuario }];
+      console.log('Usuário autenticado com sucesso:', resposta[0].id_funcionario);
+      return [200, { id_usuario: resposta[0].id_funcionario }];
   } catch (error) {
-    console.log(error);
-    return [500, { message: 'Erro ao realizar login', details: error.message }];
+      console.log('Erro ao realizar login:', error);
+      return [500, { message: 'Erro ao realizar login', details: error.message }];
   }
 }
-

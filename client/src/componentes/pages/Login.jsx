@@ -15,9 +15,9 @@ function Login() {
     let errorMsg = '';
 
     if (name === 'login' && value.trim() === '') {
-      errorMsg = 'Login é obrigatório.';
-    } else if (name === 'senha' && value.length < 6) {
-      errorMsg = 'A senha deve ter pelo menos 6 caracteres.';
+      errorMsg = 'Login (CPF) é obrigatório.';
+    } else if (name === 'senha' && value.length < 11) {
+      errorMsg = 'A senha deve ter pelo menos 11 caracteres (CPF).';
     }
 
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
@@ -26,7 +26,7 @@ function Login() {
   // Função para validar o formulário
   const validateForm = () => {
     const { login, senha } = formData;
-    return login.trim() && senha.length >= 6 && !errors.login && !errors.senha;
+    return login.trim() && senha.length === 11 && !errors.login && !errors.senha; // CPF tem 11 dígitos
   };
 
   // Manipulador de mudança de entrada
@@ -42,12 +42,12 @@ function Login() {
     setIsLoading(true); // Inicia o estado de carregamento
 
     try {
-      const resposta = await fetch('http://localhost:5000/logar', {
+      const resposta = await fetch('http://localhost:5000/usuario', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ login, senha }),
+        body: JSON.stringify({ login, senha }), // Passa o CPF como login e senha
       });
 
       if (!resposta.ok) {
@@ -58,11 +58,11 @@ function Login() {
       setShowAlert(true);
       setAuthError('');
       console.log("Login bem-sucedido com:", formData);
-      window.location.href = "http://localhost:3000"; 
+      window.location.href = "http://localhost:3000"; // Redireciona após login
     } catch (error) {
       console.log("Erro ao efetuar login:", error);
       setShowAlert(false);
-      setAuthError('Login ou senha incorretos.');
+      setAuthError('CPF ou senha incorretos.');
     } finally {
       setIsLoading(false); // Finaliza o estado de carregamento
     }
@@ -85,19 +85,18 @@ function Login() {
         <Col xs={12} md={6} className="mx-auto">
           <h3 className="text-center mb-4">Login</h3>
 
-          {showAlert && <Alert variant="success">Login realizado com sucesso!</Alert>}
           {authError && <Alert variant="danger">{authError}</Alert>}
 
           <Form onSubmit={handleSubmit} className="border p-4 shadow rounded">
             <Form.Group className="mb-3" controlId="formLogin">
-              <Form.Label>Login</Form.Label>
+              <Form.Label>CPF</Form.Label>
               <Form.Control
                 type="text"
                 name="login"
                 value={formData.login}
                 onChange={handleChange}
                 isInvalid={!!errors.login}
-                placeholder="Digite seu login"
+                placeholder="Digite seu CPF"
                 required
               />
               <Form.Control.Feedback type="invalid">{errors.login}</Form.Control.Feedback>

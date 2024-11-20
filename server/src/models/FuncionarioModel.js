@@ -4,17 +4,19 @@ import mysql from 'mysql2/promise';
 //importando configurações do banco
 import db from '../conexao.js';
 
-
-
-//Cadastrando Funcionario
+// Cadastrando Funcionario
 export async function createFuncionario(funcionario) {
     const conexao = mysql.createPool(db);
 
     const sqlFuncionario = `INSERT INTO funcionarios 
-          (nome_funcionario, rg, cpf, data_nascimento, sexo, email, telefone, observacoes, 
-          cep, Estado, cidade, bairro, logradouro, numero, complemento, observacoes_endereco,
-          cargo, data_admissao, data_emissao_carteira, banco, agencia, conta, status_funcionario, observacoes_adicionais) 
-          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+        (nome_funcionario, rg, cpf, data_nascimento, sexo, email, telefone, observacoes, 
+        cep, estado, cidade, bairro, logradouro, numero, complemento, observacoes_endereco,
+        cargo, data_admissao, data_emissao_carteira, banco, agencia, conta, status_funcionario, observacoes_adicionais, 
+        senha) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    // Gerando senha padrão (CPF sem criptografia) - Substituir por hash em produção
+    const senha = funcionario.cpf;
 
     const paramsFuncionario = [
         funcionario.nome_funcionario,
@@ -39,47 +41,40 @@ export async function createFuncionario(funcionario) {
         funcionario.banco,
         funcionario.agencia,
         funcionario.conta,
-        funcionario.status,
+        funcionario.statusFuncionario,
         funcionario.observacoesAdicionais,
+        senha
     ];
 
     try {
-        console.log('Inserindo funcionário com os seguintes dados:', paramsFuncionario);
+        console.log('Tentando cadastrar funcionário:', paramsFuncionario);
 
         const connection = await conexao.getConnection();
         try {
-            await connection.beginTransaction(); // Inicia a transação
-            
-            // Insere o funcionário na tabela
+            await connection.beginTransaction();
+
+            // Inserção na tabela
             const [resultadoFuncionario] = await connection.query(sqlFuncionario, paramsFuncionario);
             const idFuncionario = resultadoFuncionario.insertId;
 
-            // Gera login e senha com base no CPF (ou outra lógica que você preferir)
-            const login = funcionario.cpf; // Login será o CPF
-            const senha = funcionario.cpf.slice(0, 6); // Os 6 primeiros dígitos do CPF como senha inicial
+            await connection.commit();
 
-            const sqlUsuario = `INSERT INTO usuarios (id_usuario, login, senha) VALUES (?, ?, ?)`;
-            const paramsUsuario = [idFuncionario, login, senha];
-
-            // Insere o usuário na tabela
-            await connection.query(sqlUsuario, paramsUsuario);
-
-            await connection.commit(); // Confirma a transação
-
-            console.log('Funcionário e usuário cadastrados com sucesso');
-            return [201, { mensagem: 'Funcionário e usuário cadastrados com sucesso' }];
+            console.log('Funcionário cadastrado com sucesso, ID:', idFuncionario);
+            return [201, { mensagem: 'Funcionário cadastrado com sucesso', id: idFuncionario }];
         } catch (error) {
-            await connection.rollback(); // Reverte a transação em caso de erro
-            console.error('Erro ao cadastrar funcionário e usuário:', error);
-            throw error; // Retorna o erro para ser tratado em outro lugar
+            await connection.rollback();
+            console.error('Erro ao realizar cadastro:', error);
+            return [400, { mensagem: 'Erro ao cadastrar funcionário', detalhes: error.message }];
         } finally {
-            connection.release(); // Libera a conexão
+            connection.release();
         }
-    } catch (mensagem) {
-        console.log('Erro no banco:', mensagem);
-        return [500, { mensagem: 'Erro interno ao processar cadastro' }];
+    } catch (error) {
+        console.error('Erro na conexão com o banco:', error);
+        return [500, { mensagem: 'Erro interno ao processar o cadastro', detalhes: error.message }];
     }
 }
+
+
 
 
   
