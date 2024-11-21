@@ -9,7 +9,7 @@ function FormCadReserva({ handleSubmit }) {
   const navigate = useNavigate(); // Hook para redirecionamento de página
   const { id } = useParams(); // Captura o parâmetro `id` da URL para edição
   const isEditing = !!id; // Determina se o formulário está em modo de edição com base na presença do `id`
-  
+
   // Estado inicial para os dados do formulário
   const [formData, setFormData] = useState({
     status_reserva: "",
@@ -18,7 +18,7 @@ function FormCadReserva({ handleSubmit }) {
     data_checkout: "",
     fk_acomodacao: "",
     numero_adulto: "",
-    numero_crianca: "0",
+    numero_crianca: '0',
     valor_diaria: "",
     pago: "não",
     observacoes: "",
@@ -26,6 +26,8 @@ function FormCadReserva({ handleSubmit }) {
 
   const [dataInicio, setDataInicio] = useState(""); // Estado para armazenar a data de início
   const [dataFim, setDataFim] = useState(""); // Estado para armazenar a data de fim
+  const [nomeHospede, setNomeHospede] = useState("");
+  const [nomeAcomodacao, setNomeAcomodacao] = useState("");
 
   // Efeito para monitorar mudanças nas datas
   useEffect(() => {
@@ -59,15 +61,55 @@ function FormCadReserva({ handleSubmit }) {
           return response.json();
         })
         .then((data) => {
+          console.log("Dados da reserva recebidos:", data); // Exibe os dados no console
+
+          // Preenche os dados do formulário com os dados da reserva
+          setFormData(data);
+
+          // Fazendo um GET para buscar o hóspede usando fk_hospede
+          const fkHospede = data.fk_hospede;
+          fetch(`http://localhost:5000/hospedes/${fkHospede}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+              }
+              return response.json();
+            })
+            .then((hospedeData) => {
+              setNomeHospede(hospedeData.nome_hospede); // Armazena o nome do hóspede no estado
+              console.log("Nome do hóspede:", hospedeData.nome_hospede);
+              console.log("Nome do hóspedeV:", nomeHospede);
+            })
+            .catch((error) => {
+              console.error("Erro ao buscar o hóspede:", error);
+            });
+
+          // Fazendo um GET para buscar a acomodação usando fk_acomodacao
+          const fkAcomodacao = data.fk_acomodacao;
+          fetch(`http://localhost:5000/acomodacoes/${fkAcomodacao}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`Erro: ${response.status} - ${response.statusText}`);
+              }
+              return response.json();
+            })
+            .then((acomodacaoData) => {
+              setNomeAcomodacao(acomodacaoData.nome); // Armazena o nome da acomodação no estado
+              console.log("Nome da acomodação:", acomodacaoData.nome);
+              console.log("Nome da acomodaçãoV:", nomeAcomodacao);
+
+            })
+            .catch((error) => {
+              console.error("Erro ao buscar a acomodação:", error);
+            });
+
           setFormData(data); // Preenche os dados do formulário com os dados retornados
         })
         .catch((error) => {
           console.error("Erro ao buscar a reserva:", error); // Loga erros na requisição
         });
     }
-  }, [id, isEditing, formData.data_checkin, formData.data_checkout]);
-
-  
+  }, [id, isEditing]); //formData.data_checkin, formData.data_checkout]);
 
   // Estado para configurar as mensagens de alerta
   const [alertProps, setAlertProps] = useState({
@@ -84,6 +126,11 @@ function FormCadReserva({ handleSubmit }) {
   };
 
   // Função para validar se as datas de check-in e check-out são válidas
+  useEffect(() => {
+    if (formData.data_checkin && formData.data_checkout) {
+      isDataValida(); // Chama a função de validação assim que as duas datas forem preenchidas
+    }
+  }, [formData.data_checkin, formData.data_checkout]); // Dependências para monitorar mudanças nas datas
   const isDataValida = () => {
     if (formData.data_checkin && formData.data_checkout) {
       const dataInicio = new Date(formData.data_checkin);
@@ -116,66 +163,72 @@ function FormCadReserva({ handleSubmit }) {
 
   const submit = (e) => {
     e.preventDefault(); // Previne o comportamento padrão do formulário (recarregar a página)
-    
+
     // Verifica se as datas são válidas antes de continuar
     if (!isDataValida()) {
       return;
     }
-  
+
     const { name, value } = e.target;
     const today = new Date().toISOString().split("T")[0]; // Data de hoje para comparar com a data de checkin
-    
+
     // Validação para garantir que a data de checkin não seja anterior a hoje
     if (name === "data_checkin" && value < today) {
       showAlert("A data de entrada não pode ser anterior a hoje!.", "danger");
       return;
     }
-  
+
     // ---------Validações para garantir que os campos obrigatórios não estejam vazios--------
 
     if (!formData.status_reserva) { // Validação do campo "Situação"
       showAlert("O campo Situação é obrigatório.", "danger");
       return;
     }
-  
+
     if (!formData.fk_hospede) { // Validação do campo "Hospede"
       showAlert("O campo Hóspede é obrigatório.", "danger");
       return;
     }
-  
+
     if (!formData.data_checkin) { // Validação do campo "Data de Entrada"
       showAlert("O campo Data de Entrada é obrigatório.", "danger");
       return;
     }
-  
+
     if (!formData.data_checkout) { // Validação do campo "Data de Saida"
       showAlert("O campo Data de Saida é obrigatório.", "danger");
       return;
     }
-  
+
     if (!formData.fk_acomodacao) { // Validação do campo "Acomodação"
       showAlert("O campo Acomodação é obrigatório.", "danger");
       return;
     }
-  
+
     if (!formData.numero_adulto || parseInt(formData.numero_adulto) < 1) { // Validação do campo "Número de Adultos"
       showAlert("O campo Nº de Adultos é obrigatório e deve ser maior que 0.", "danger");
       return;
     }
-  
+
     const numeroCrianca = parseInt(formData.numero_crianca); // Validação adicional: Verificar se o número de crianças é um valor válido
     if (isNaN(numeroCrianca) || numeroCrianca < 0) {
       showAlert("O campo Nº de Crianças deve ser um número válido maior ou igual a 0.", "danger");
       return;
     }
-  
-    if (// Validação do campo "Valor da Diária"
+
+
+
+    // Validação do campo "Valor da Diária"
+    if (
       formData.valor_diaria === "" ||
-      isNaN(parseFloat(formData.valor_diaria.replace(",", ".")))
+      isNaN(parseFloat(formData.valor_diaria)) // Não precisa do replace se o valor já estiver no formato correto
     ) {
       showAlert("O campo Valor da Diária é obrigatório e deve ser um número válido.", "danger");
       return;
     }
+
+
+
     // Se estamos editando uma reserva, faz uma requisição PUT para atualizar
     if (isEditing) {
       fetch(`http://localhost:5000/reservas/${id}`, {
@@ -205,7 +258,7 @@ function FormCadReserva({ handleSubmit }) {
       navigate("/tabela_reserva"); // Redireciona para a página de reservas após sucesso
     }
   };
-  
+
   return (
     <div className="container mt-4">
       {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
@@ -226,6 +279,8 @@ function FormCadReserva({ handleSubmit }) {
           isEditing={isEditing} // Determina se está em modo de edição ou não
           dataInicio={dataInicio} // Data de início do check-in
           dataFim={dataFim} // Data de fim do check-out
+          nomeHospede={nomeHospede} // nome do hospede
+          nomeAcomodacao={nomeAcomodacao}// nome acomodação
         />
         <div className="text-center mt-4">
           {/* Botões de Cancelar e Salvar */}

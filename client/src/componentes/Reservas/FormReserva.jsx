@@ -7,23 +7,15 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Alertas from '../layout/Alertas';
 
 
-function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing }) {
+function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing, nomeHospede, nomeAcomodacao }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
   const InfHospede = () => setMostrarTabelaHospedes(true);
-  const [nomeHospedeExibido, setNomeHospedeExibido] = useState('');
-
-  
-  const handleSelectHospede = (fk_hospede) => {
-    // Define o id do hospede como o valor que será enviado para o banco
-    handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
-    // Exibe o nome do hospede para o usuário enquanto guarda o ID
-    setNomeHospedeExibido(fk_hospede.nome_hospede);
-    setMostrarTabelaHospedes(false);
-  };
-  const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState('');
+  const [nomeHospedeExibido, setNomeHospedeExibido] = useState(nomeHospede || "");
+  const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState(nomeAcomodacao || "");
   const [capacidade, setCapacidade] = useState("");
+
 
   // Estado para configurar as mensagens de alerta
   const [alertProps, setAlertProps] = useState({
@@ -39,6 +31,27 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
+  // Atualiza o estado `nomeHospedeExibido` quando `nomeHospede` mudar
+  useEffect(() => {
+    if (nomeHospede) {
+      setNomeHospedeExibido(nomeHospede);
+    }
+  }, [nomeHospede]);
+
+  // Atualiza o estado `nomeAcomodacaoExibida` quando `nomeHospede` mudar
+  useEffect(() => {
+    if (nomeAcomodacao) {
+      setNomeAcomodacaoExibida(nomeAcomodacao);
+    }
+  }, [nomeAcomodacao]);
+
+  const handleSelectHospede = (fk_hospede) => {
+    // Define o id do hospede como o valor que será enviado para o banco
+    handleChange({ target: { name: 'fk_hospede', value: fk_hospede.id_hospede } });
+    // Exibe o nome do hospede para o usuário enquanto guarda o ID
+    setNomeHospedeExibido(fk_hospede.nome_hospede);
+    setMostrarTabelaHospedes(false);
+  };
 
 
   const handleSelectAcomodacao = (fk_acomodacao) => {
@@ -80,30 +93,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     return formData.data_checkin && formData.data_checkout;
   };
 
-  const handleValorDiariaChange = (e) => {
-    let value = e.target.value;
-
-    // Remove tudo o que não é número
-    value = value.replace(/\D/g, '');
-
-    // Limita a entrada a no máximo 10 dígitos
-    if (value.length > 10) {
-      value = value.slice(0, 10);
-    }
-
-    // Adiciona o formato de moeda com vírgula
-    value = new Intl.NumberFormat('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(value / 100); // Divide por 100 para simular os centavos
-
-
-    setFormData({  // Atualiza o estado com o valor formatado
-      ...formData,
-      valor_diaria: value
-    });
-  };
-
   useEffect(() => {
     console.log('Data Inícioooooo:', dataInicio);
     console.log('Data Fimmmmm:', dataFim);
@@ -128,6 +117,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     setNomeAcomodacaoExibida("");
   };
 
+  
 
   return (
 
@@ -215,7 +205,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               >
                 Fechar
               </button>
-
               <TabelaHospede
                 exibirAcoes={true}
                 textoBotao="Selecionar"
@@ -348,7 +337,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             type="text"
             className="form-control"
             name="numero_crianca"
-            value={formData.numero_crianca || ''}
+            value={formData.numero_crianca}
             onChange={(e) => {
               // Verifica se o valor inserido é um número inteiro
               const value = e.target.value;
@@ -379,10 +368,19 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             type="text"
             className="form-control"
             name="valor_diaria"
-            value={formData.valor_diaria}
-            onChange={(e) => handleValorDiariaChange(e)}
+            value={formData.valor_diaria || ''} // Sempre uma string
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*(\.|,)?\d*$/.test(value)) {
+                setFormData({
+                  ...formData,
+                  valor_diaria: value.replace(",", "."), // Substitui vírgula por ponto
+                });
+              }
+            }}
             style={{ width: "200px" }}
-            maxLength="12" // Limita a quantidade de caracteres para permitir valores como "999999,99"
+            maxLength="12"
+            inputMode="decimal"
           />
         </div>
 
