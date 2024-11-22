@@ -1,81 +1,92 @@
 import React, { useState } from "react";
-import { Form, Button, Alert, Container, Row, Col, Spinner, InputGroup } from "react-bootstrap";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importa os ícones de olho
+import { Form, Button, Alert, Container, Row, Col, Spinner } from "react-bootstrap";
 
 function Login() {
-  const [formData, setFormData] = useState({ login: '', senha: '' });
-  const [errors, setErrors] = useState({ login: '', senha: '' });
-  const [showAlert, setShowAlert] = useState(false);
-  const [authError, setAuthError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+  const [formData, setFormData] = useState({ login: "", senha: "" }); // Controla os campos de login e senha
+  const [errors, setErrors] = useState({ login: "", senha: "" }); // Controla erros de validação
+  const [authError, setAuthError] = useState(""); // Controla erros de autenticação
+  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
 
-  // Função para validar os campos
+  // Valida campos individuais
   const validateField = (name, value) => {
-    let errorMsg = '';
-
-    if (name === 'login' && value.trim() === '') {
-      errorMsg = 'Login (CPF) é obrigatório.';
-    } else if (name === 'senha' && value.length < 11) {
-      errorMsg = 'A senha deve ter pelo menos 11 caracteres (CPF).';
+    let errorMsg = "";
+    if (!/^\d{11}$/.test(value)) {
+      errorMsg = "O campo deve conter exatamente 11 dígitos (CPF).";
     }
-
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
   };
 
-  // Função para validar o formulário
+  // Valida o formulário
   const validateForm = () => {
     const { login, senha } = formData;
-    return login.trim() && senha.length === 11 && !errors.login && !errors.senha; // CPF tem 11 dígitos
+    return (
+      login === senha && // Verifica se login e senha são iguais
+      /^\d{11}$/.test(login) && // Valida se ambos são CPFs válidos
+      !errors.login &&
+      !errors.senha
+    );
   };
 
-  // Manipulador de mudança de entrada
+  // Manipula mudanças nos campos de entrada
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     validateField(name, value);
   };
 
+
   // Função para efetuar login
   async function efetuarLogin() {
-    const { login, senha } = formData;
-    setIsLoading(true); // Inicia o estado de carregamento
+    setIsLoading(true);
 
     try {
-      const resposta = await fetch('http://localhost:5000/usuario', {
-        method: 'POST',
+      const resposta = await fetch("http://localhost:5000/usuario", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ login, senha }), // Passa o CPF como login e senha
+        body: JSON.stringify({ cpf: formData.login }), // Envia o login como CPF
       });
 
       if (!resposta.ok) {
         const errorData = await resposta.json();
-        throw new Error(errorData.message || 'Erro ao efetuar login');
+        throw new Error(errorData.message || "Erro ao efetuar login");
       }
 
-      setShowAlert(true);
-      setAuthError('');
-      console.log("Login bem-sucedido com:", formData);
+      // Supondo que a resposta contenha o nome do usuário
+      const data = await resposta.json();
+
+      // Verifique a resposta da API
+      console.log(data); // Isso vai mostrar o que foi retornado da API
+
+      if (data && data.name) {
+        // Armazena o nome do usuário no localStorage
+        localStorage.setItem("userName", data.name); // Armazena o nome do usuário
+        localStorage.setItem("userCPF", formData.login); // Armazena o CPF do usuário
+      } else {
+        console.error("Nome do usuário não encontrado na resposta da API.");
+      }
+
+      // Login bem-sucedido
+      setAuthError("");
+      console.log("Login bem-sucedido com CPF:", formData.login);
       window.location.href = "http://localhost:3000"; // Redireciona após login
     } catch (error) {
       console.log("Erro ao efetuar login:", error);
-      setShowAlert(false);
-      setAuthError('CPF ou senha incorretos.');
+      setAuthError("CPF ou senha inválidos.");
     } finally {
-      setIsLoading(false); // Finaliza o estado de carregamento
+      setIsLoading(false);
     }
   }
 
-  // Manipulador de submissão de formulário
+
+  // Manipula o envio do formulário
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       efetuarLogin();
     } else {
-      setShowAlert(false);
+      setAuthError("Login e senha devem ser válidos.");
     }
   };
 
@@ -88,8 +99,9 @@ function Login() {
           {authError && <Alert variant="danger">{authError}</Alert>}
 
           <Form onSubmit={handleSubmit} className="border p-4 shadow rounded">
+            {/* Campo Login (CPF) */}
             <Form.Group className="mb-3" controlId="formLogin">
-              <Form.Label>CPF</Form.Label>
+              <Form.Label>CPF (Login)</Form.Label>
               <Form.Control
                 type="text"
                 name="login"
@@ -97,33 +109,29 @@ function Login() {
                 onChange={handleChange}
                 isInvalid={!!errors.login}
                 placeholder="Digite seu CPF"
+                maxLength={11}
                 required
               />
               <Form.Control.Feedback type="invalid">{errors.login}</Form.Control.Feedback>
             </Form.Group>
 
+            {/* Campo Senha (CPF) */}
             <Form.Group className="mb-3" controlId="formSenha">
-              <Form.Label>Senha</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  type={showPassword ? "text" : "password"} // Alterna entre "text" e "password"
-                  name="senha"
-                  value={formData.senha}
-                  onChange={handleChange}
-                  isInvalid={!!errors.senha}
-                  placeholder="Digite sua senha"
-                  required
-                />
-                <Button
-                  variant="outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Ícone de olho */}
-                </Button>
-                <Form.Control.Feedback type="invalid">{errors.senha}</Form.Control.Feedback>
-              </InputGroup>
+              <Form.Label>Senha (CPF)</Form.Label>
+              <Form.Control
+                type="password"
+                name="senha"
+                value={formData.senha}
+                onChange={handleChange}
+                isInvalid={!!errors.senha}
+                placeholder="Digite sua senha"
+                maxLength={11}
+                required
+              />
+              <Form.Control.Feedback type="invalid">{errors.senha}</Form.Control.Feedback>
             </Form.Group>
 
+            {/* Botão de envio */}
             <Button variant="primary" type="submit" className="w-100" disabled={isLoading}>
               {isLoading ? <Spinner animation="border" size="sm" /> : "Entrar"}
             </Button>

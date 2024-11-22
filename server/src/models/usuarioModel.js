@@ -109,32 +109,36 @@ export async function deleteUsuario(req, res) {
   }
 }
 
-export async function getUserByLoginPassword(senha) {
+export async function getUserByLoginPassword(cpf) {
   console.log('UsuarioController :: getUserByLoginPassword');
+  
   try {
-      const conexao = mysql.createPool(db);
-      const sql = 'SELECT id_funcionario, senha FROM funcionarios WHERE cpf = ?';
-      const params = [login]; // Aqui, usamos o CPF como login
+    // Criar a conexão com o banco de dados
+    const conexao = mysql.createPool(db);
 
-      const [resposta] = await conexao.query(sql, params);
+    // Buscar o funcionário pelo CPF
+    const sql = 'SELECT id_funcionario, nome_funcionario, cpf FROM funcionarios WHERE cpf = ?';
+    const params = [cpf];
 
-      if (resposta.length < 1) {
-          // Mensagem genérica para evitar exposição de informações
-          return [401, { message: 'Credenciais inválidas' }];
-      }
+    const [resposta] = await conexao.query(sql, params);
 
-      console.log('Validando senha...');
+    // Verificar se o funcionário foi encontrado
+    if (resposta.length < 1) {
+      // Mensagem genérica para evitar a exposição de informações
+      return [401, { message: 'Credenciais inválidas' }];
+    }
 
-      // Verificar senha usando bcrypt
-      const senhaValida = await bcrypt.compare(senha, resposta[0].senha);
-      if (!senhaValida) {
-          return [401, { message: 'Credenciais inválidas' }];
-      }
+    console.log('Usuário autenticado com sucesso:', resposta[0].id_funcionario);
 
-      console.log('Usuário autenticado com sucesso:', resposta[0].id_funcionario);
-      return [200, { id_usuario: resposta[0].id_funcionario }];
+    // Retornar sucesso com as informações do funcionário
+    return [200, {
+      id_funcionario: resposta[0].id_funcionario,
+      nome_funcionario: resposta[0].nome_funcionario,
+      cpf: resposta[0].cpf,
+    }];
   } catch (error) {
-      console.log('Erro ao realizar login:', error);
-      return [500, { message: 'Erro ao realizar login', details: error.message }];
+    console.log('Erro ao realizar login:', error);
+    return [500, { message: 'Erro ao realizar login', details: error.message }];
   }
 }
+

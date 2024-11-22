@@ -9,20 +9,35 @@ import {
 
 export async function criarUsuario(req, res) {
   console.log("UsuarioController :: criarUsuario");
-  const { login, senha } = req.body;
 
-  if (!login || !senha) {
-    res.status(400).json({ message: "Login e senha devem ser informados" });
-  } else {
-    try {
-      const [status, resposta] = await createUsuario(login, senha);
-      res.status(status).json(resposta);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Erro ao criar usuário" });
+  const { cpf } = req.body;
+
+  // Validar se o CPF foi informado
+  if (!cpf) {
+    return res.status(400).json({ message: "CPF deve ser informado" });
+  }
+
+  try {
+    // Verificar se o funcionário existe
+    const [status, resposta] = await getUserByLoginPassword(cpf);
+
+    if (status === 200) {
+      return res.status(200).json({
+        message: "Usuário autenticado com sucesso",
+        dados: resposta,
+      });
+    } else {
+      return res.status(status).json(resposta);
     }
+  } catch (error) {
+    console.error("Erro ao autenticar usuário:", error);
+    return res.status(500).json({
+      message: "Erro ao autenticar usuário",
+      details: error.message,
+    });
   }
 }
+
 
 export async function mostrarUsuario(req, res) {
   console.log("UsuarioController :: mostrarUsuario");
@@ -71,40 +86,26 @@ export async function atualizarUsuario(req, res) {
   }
 }
 
-export async function deletarUsuario(req, res) {
-  console.log("UsuarioController :: deletarUsuario");
-  const { id_usuario } = req.params;
-
-  if (!id_usuario) {
-    res.status(400).json({ message: "ID do usuário deve ser informado" });
-  } else {
-    try {
-      const [status, resposta] = await deleteUsuario(id_usuario);
-      res.status(status).json(resposta);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Erro ao deletar usuário" });
-    }
-  }
-}
-
 
 // Controlador (UsuarioController.js)
 export async function logarUsuario(req, res) {
   console.log("UsuarioController :: logarUsuario");
-  const { login, senha } = req.body;
 
-  // Verifica se login ou senha não foram informados
-  if (!login || !senha) {
-    return res.status(400).json({ message: "Login e senha devem ser informados" });
+  const { cpf } = req.body;
+
+  // Verifica se o CPF foi informado
+  if (!cpf) {
+    return res.status(400).json({ message: "CPF deve ser informado" });
   }
 
   try {
-    // Chama o modelo para autenticar o usuário
-    const [status, resposta] = await getUserByLoginPassword(login, senha);
+    // Chama a função para autenticar o usuário
+    const [status, resposta] = await getUserByLoginPassword(cpf);
+
     return res.status(status).json(resposta);
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Erro ao realizar login" });
+    console.log("Erro ao realizar login:", error);
+    return res.status(500).json({ message: "Erro ao realizar login", details: error.message });
   }
 }
+
