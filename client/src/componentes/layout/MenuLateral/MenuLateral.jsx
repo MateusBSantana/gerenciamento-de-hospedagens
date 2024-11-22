@@ -23,9 +23,9 @@ function MenuLateral() {
     const storedUserName = localStorage.getItem("userName"); // Obtém o nome do localStorage
     if (storedUserName) {
       setUserName(storedUserName);
+      console.log(storedUserName);
     }
   }, []);
-
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };

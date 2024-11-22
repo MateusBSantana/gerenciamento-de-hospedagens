@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Form, Button, Alert, Container, Row, Col, Spinner } from "react-bootstrap";
 
 function Login() {
-  const [formData, setFormData] = useState({ login: "", senha: "" }); // Controla os campos de login e senha
-  const [errors, setErrors] = useState({ login: "", senha: "" }); // Controla erros de validação
-  const [authError, setAuthError] = useState(""); // Controla erros de autenticação
-  const [isLoading, setIsLoading] = useState(false); // Estado de carregamento
+  const [formData, setFormData] = useState({ login: "", senha: "" });
+  const [errors, setErrors] = useState({ login: "", senha: "" });
+  const [authError, setAuthError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Valida campos individuais
   const validateField = (name, value) => {
@@ -20,8 +20,8 @@ function Login() {
   const validateForm = () => {
     const { login, senha } = formData;
     return (
-      login === senha && // Verifica se login e senha são iguais
-      /^\d{11}$/.test(login) && // Valida se ambos são CPFs válidos
+      login === senha &&
+      /^\d{11}$/.test(login) &&
       !errors.login &&
       !errors.senha
     );
@@ -33,7 +33,6 @@ function Login() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     validateField(name, value);
   };
-
 
   // Função para efetuar login
   async function efetuarLogin() {
@@ -60,9 +59,9 @@ function Login() {
       console.log(data); // Isso vai mostrar o que foi retornado da API
 
       if (data && data.name) {
-        // Armazena o nome do usuário no localStorage
-        localStorage.setItem("userName", data.name); // Armazena o nome do usuário
-        localStorage.setItem("userCPF", formData.login); // Armazena o CPF do usuário
+        // Armazena o nome do usuário no localStorage corretamente
+        localStorage.setItem("userName", data.name); // Usa o nome real retornado pela API
+        localStorage.setItem("userCPF", formData.login); // Salva o CPF do usuário
       } else {
         console.error("Nome do usuário não encontrado na resposta da API.");
       }
@@ -78,7 +77,6 @@ function Login() {
       setIsLoading(false);
     }
   }
-
 
   // Manipula o envio do formulário
   const handleSubmit = (e) => {
@@ -117,7 +115,7 @@ function Login() {
 
             {/* Campo Senha (CPF) */}
             <Form.Group className="mb-3" controlId="formSenha">
-              <Form.Label>Senha (CPF)</Form.Label>
+              <Form.Label>Senha</Form.Label>
               <Form.Control
                 type="password"
                 name="senha"
