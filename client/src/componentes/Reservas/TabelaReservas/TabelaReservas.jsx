@@ -1,11 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import styles from './TabelaReserva.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Alertas from '../../layout/Alertas';
 
 function TabelaReservas() {
   const [reservas, setReservas] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Estado para configurar as mensagens de alerta
+  const [alertProps, setAlertProps] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
+
+  // Função para exibir alertas com mensagem e estilo
+  const showAlert = (message, variant) => {
+    setAlertProps({ show: true, message, variant });
+    // Oculta o alerta automaticamente após 5 segundos
+    setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
+  };
+
+  // Captura o alerta passado pelo navigate, apenas na montagem inicial
+  useEffect(() => {
+    const alertData = location.state?.alert;
+    if (alertData) {
+      showAlert(alertData.message, alertData.type);
+      navigate(location.pathname, { replace: true }); // Limpa o estado após exibir o alerta
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -82,6 +108,13 @@ function TabelaReservas() {
 
   return (
     <div className="d-flex">
+    {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
+    <Alertas
+        show={alertProps.show}
+        variant={alertProps.variant}
+        message={alertProps.message}
+        onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
+      />
       <div className="flex-grow-1 p-">
         <h2 className="text-center">Lista de Reservas</h2>
 

@@ -247,7 +247,9 @@ function FormCadReserva({ handleSubmit }) {
           return response.json();
         })
         .then(() => {
-          navigate("/tabela_reserva"); // Redireciona para a página de reservas após sucesso
+          navigate("/tabela_reserva", {
+            state: { alert: { message: "Reserva atualizada com sucesso!", type: "success" } },
+          }); // Redireciona para a página de reservas após sucesso
         })
         .catch((error) => {
           console.error("Erro ao atualizar a reserva:", error);
@@ -255,7 +257,6 @@ function FormCadReserva({ handleSubmit }) {
     } else {
       // Se não estamos editando, chama o handleSubmit para adicionar uma nova reserva
       handleSubmit(formData);
-      navigate("/tabela_reserva"); // Redireciona para a página de reservas após sucesso
     }
   };
 
