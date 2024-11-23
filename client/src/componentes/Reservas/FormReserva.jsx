@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TabelaHospede from '../Hospedes/TabelaHospedes/TabelaHospedes';
 import ListagemAcomodacoes from '../acomodacao/ListaAcomodacoes';
@@ -16,6 +16,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState(nomeAcomodacao || "");
   const [capacidade, setCapacidade] = useState("");
 
+  const refs = useRef({
+    data_checkin: null,
+    data_checkout: null,
+  });
 
   // Estado para configurar as mensagens de alerta
   const [alertProps, setAlertProps] = useState({
@@ -101,26 +105,87 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   useEffect(() => {
   }, [formData]);
 
-  const handleDateChange = (e) => {
-    const { name, value } = e.target;
 
-    // Atualiza a data no estado e reseta os campos relacionados
+  const handleDateChange = async (e) => {
+    const { name, value } = e.target;
+  
+    // Atualiza o estado com os dados da data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-      fk_acomodacao: "", // Limpa o ID da acomodação
-      numero_adulto: "", // Limpa o número de adultos
-      numero_crianca: "0", // Limpa o número de crianças
     }));
-
-    // Limpa o nome da acomodação exibida
-    setNomeAcomodacaoExibida("");
-  };
-
   
-
+    // Captura os valores diretamente do DOM via refs
+    const dataEntradaExata = refs.current.data_checkin?.value;
+    const dataSaidaExata = refs.current.data_checkout?.value;
+  
+    console.log("Datas exibidas nos campos:", {
+      dataEntradaExata,
+      dataSaidaExata,
+    });
+  
+    if (dataEntradaExata && dataSaidaExata && isEditing) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/acomodacoes/disponibilidade/${dataEntradaExata}/${dataSaidaExata}/${formData.fk_acomodacao}/${formData.id_reserva}`
+        );
+  
+        if (response.ok) {
+          const { disponivel } = await response.json(); // Recebe { disponivel: true/false }
+          console.log("Disponibilidade recebida:", disponivel);
+  
+          if (disponivel) {
+            console.log("Acomodação disponível.");
+            console.log("bom");
+          } else {
+            console.log("Acomodação indisponível.");
+            console.log("ruim");
+            showAlert(
+              "Selecione outra acomodação: a acomodação atual da reserva não está disponível para o período informado.",
+              "danger"
+            );
+            setFormData((prev) => ({
+              ...prev,
+              [name]: value,
+              fk_acomodacao: "", // Limpa o ID da acomodação
+              numero_adulto: "", // Limpa o número de adultos
+              numero_crianca: "0", // Limpa o número de crianças
+            }));
+        
+            // Limpa o nome da acomodação exibida
+            setNomeAcomodacaoExibida("");
+          }
+        } else {
+          console.error("Erro na API:", response.status);
+        }
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    } else if (!isEditing) {
+      // Aqui, quando não estamos editando (ou seja, estamos criando uma nova reserva), limpar os campos
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        fk_acomodacao: "", // Limpa o ID da acomodação
+        numero_adulto: "", // Limpa o número de adultos
+        numero_crianca: "0", // Limpa o número de crianças
+      }));
+  
+      // Limpa o nome da acomodação exibida
+      setNomeAcomodacaoExibida("");
+    }
+  };
+  const handleBlur = () => {
+    const observacoesValue = formData.observacoes || '';
+    if (!observacoesValue.trim()) {
+      setFormData(prevData => ({
+        ...prevData,
+        observacoes: ' ',
+      }));
+    }
+  };
+  
   return (
-
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
       <h4 style={{ marginLeft: '40px', position: 'relative', zIndex: 1 }}>Informações da Reserva</h4>
       {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
@@ -225,6 +290,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             onChange={handleDateChange}
             style={{ width: "200px" }}
             min={new Date().toISOString().split('T')[0]} // Data mínima garantida como hoje
+            ref={(el) => (refs.current.data_checkin = el)} // Vincula ao ref
           />
         </div>
 
@@ -239,6 +305,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkout ? formData.data_checkout.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
+            ref={(el) => (refs.current.data_checkout = el)} // Vincula ao ref
           />
         </div>
 
@@ -405,8 +472,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
           <textarea
             className="form-control"
             name="observacoes"
-            value={formData.observacoes}
+            value={formData.observacoes || ''}
             onChange={handleChange}
+            onBlur={handleBlur}
             style={{ width: "400px" }}
             maxLength="200"
           ></textarea>

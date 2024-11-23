@@ -21,7 +21,7 @@ function FormCadReserva({ handleSubmit }) {
     numero_crianca: '0',
     valor_diaria: "",
     pago: "não",
-    observacoes: "",
+    observacoes: " ",
   });
 
   const [dataInicio, setDataInicio] = useState(""); // Estado para armazenar a data de início
@@ -37,18 +37,6 @@ function FormCadReserva({ handleSubmit }) {
 
   // Efeito para validar as datas e carregar os dados ao editar
   useEffect(() => {
-    const validarDatas = () => {
-      if (!isDataValida()) {
-        return; // Se as datas forem inválidas, retorna sem prosseguir
-      }
-      setDataInicio(formData.data_checkin); // Define a data de início
-      setDataFim(formData.data_checkout); // Define a data de fim
-    };
-
-    if (formData.data_checkin && formData.data_checkout) {
-      validarDatas(); // Valida as datas caso estejam preenchidas
-    }
-
     // Busca os dados da reserva caso esteja no modo de edição
     if (isEditing) {
       fetch(`http://localhost:5000/reservas/${id}`)
@@ -62,9 +50,13 @@ function FormCadReserva({ handleSubmit }) {
         })
         .then((data) => {
           console.log("Dados da reserva recebidos:", data); // Exibe os dados no console
+          const reservaCorrigida = {
+            ...data,
+            observacoes: data.observacoes?.trim() || ' ', // Substitui por espaço se vazio ou null
+          };
 
-          // Preenche os dados do formulário com os dados da reserva
-          setFormData(data);
+          // Preenche os dados do formulário com os dados corrigidos
+          setFormData(reservaCorrigida);
 
           // Fazendo um GET para buscar o hóspede usando fk_hospede
           const fkHospede = data.fk_hospede;
@@ -129,6 +121,17 @@ function FormCadReserva({ handleSubmit }) {
   useEffect(() => {
     if (formData.data_checkin && formData.data_checkout) {
       isDataValida(); // Chama a função de validação assim que as duas datas forem preenchidas
+    }
+    const validarDatas = () => {
+      if (!isDataValida()) {
+        return; // Se as datas forem inválidas, retorna sem prosseguir
+      }
+      setDataInicio(formData.data_checkin); // Define a data de início
+      setDataFim(formData.data_checkout); // Define a data de fim
+    };
+
+    if (formData.data_checkin && formData.data_checkout) {
+      validarDatas(); // Valida as datas caso estejam preenchidas
     }
   }, [formData.data_checkin, formData.data_checkout]); // Dependências para monitorar mudanças nas datas
   const isDataValida = () => {
@@ -216,8 +219,6 @@ function FormCadReserva({ handleSubmit }) {
       return;
     }
 
-
-
     // Validação do campo "Valor da Diária"
     if (
       formData.valor_diaria === "" ||
@@ -226,6 +227,20 @@ function FormCadReserva({ handleSubmit }) {
       showAlert("O campo Valor da Diária é obrigatório e deve ser um número válido.", "danger");
       return;
     }
+
+    // Verificar se o campo 'observacoes' está vazio antes do submit
+    if (!formData.observacoes || !String(formData.observacoes).trim()) {
+      setFormData(prevData => ({
+        ...prevData,
+        observacoes: ' '  // Atualiza 'observacoes' para um espaço se estiver vazio ou nulo
+      }));
+    }
+
+
+    // Agora você pode seguir com o envio ou outras ações
+    // Exemplo de envio dos dados do formulário
+    console.log('Formulário pronto para ser enviado:', formData);
+
 
 
 

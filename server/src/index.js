@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 
-import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
+import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, 
+mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
-import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva, alterarStatusReserva } from './controllers/reservaController.js';
+import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva, alterarStatusReserva, verificarDisponibilidadeAcomodacao } from './controllers/reservaController.js';
 
 const app = express();
 const porta = 5000;
@@ -36,6 +37,9 @@ app.get('/acomodacoes/:id', mostrandoAcomodacaoPorId);
 app.put('/acomodacoes/:id', atualizandoAcomodacao);
 app.delete('/acomodacoes/:id', excluindoAcomodacao);
 app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDisponiveis);
+// Rota para verificar a disponibilidade de uma acomodação nas novas datas
+app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarDisponibilidadeAcomodacao);
+
 
 
 // Rotas de CRUD de reserva

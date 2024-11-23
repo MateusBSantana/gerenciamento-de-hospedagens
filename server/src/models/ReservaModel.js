@@ -80,6 +80,11 @@ export async function updateReserva(reserva, id) {
   console.log('Dados recebidos para atualização:', reserva);
   const conexao = mysql.createPool(db);
   
+  // Verifica se o campo observacoes está vazio, e se sim, substitui por null
+  const observacoes = reserva.observacoes && reserva.observacoes.trim() !== "" 
+                        ? reserva.observacoes 
+                        : null;
+
   const sql = `UPDATE reservas SET 
       status_reserva = ?, 
       fk_hospede = ?, 
@@ -102,25 +107,26 @@ export async function updateReserva(reserva, id) {
     reserva.valor_diaria,        
     reserva.numero_adulto,         
     reserva.numero_crianca,        
-    reserva.observacoes,
+    observacoes,  // Campo observacoes tratado como null quando vazio
     reserva.pago,
     id
   ];
 
   try {
-      const [retorno] = await conexao.query(sql, params);
-      console.log("Atualizando Reserva");
-      
-      if (retorno.affectedRows < 1) {
-          return [404, { mensagem: "Reserva não encontrada" }];
-      }
-      
-      return [200, { mensagem: "Reserva atualizada" }];
+    const [retorno] = await conexao.query(sql, params);
+    console.log("Atualizando Reserva");
+    
+    if (retorno.affectedRows < 1) {
+      return [404, { mensagem: "Reserva não encontrada" }];
+    }
+    
+    return [200, { mensagem: "Reserva atualizada" }];
   } catch (error) {
-      console.error(error);
-      return [500, error];
+    console.error(error);
+    return [500, error];
   }
 }
+
 
 // Alterando o status de uma reserva
 export async function updateStatusReserva(id, novoStatus) {
@@ -145,6 +151,52 @@ export async function updateStatusReserva(id, novoStatus) {
     return [500, error];
   }
 }
+
+
+export const verificarDisponibilidade = async (dataEntrada, dataSaida, acomodacaoId, reservaId) => {
+  console.log('ReservaModel: verificarDisponibilidade');
+  
+  const conexao = mysql.createPool(db);
+  
+  const sql = `
+    SELECT COUNT(*) as count
+    FROM reservas
+    WHERE fk_acomodacao = ? 
+    AND (id_reserva != ? OR ? IS NULL) -- Ignorar a reserva atual, caso reservaId seja fornecido
+    AND (
+      (data_checkin BETWEEN ? AND ?) 
+      OR (data_checkout BETWEEN ? AND ?)
+      OR (? BETWEEN data_checkin AND data_checkout)
+      OR (? BETWEEN data_checkin AND data_checkout)
+    )
+  `;
+  
+  const params = [
+    acomodacaoId,
+    reservaId,
+    reservaId,
+    dataEntrada, dataSaida,
+    dataEntrada, dataSaida,
+    dataEntrada, dataSaida
+  ];
+
+  try {
+    const [retorno] = await conexao.query(sql, params);
+    console.log('Resultado da consulta:', retorno);
+
+    // Retorna um valor booleano diretamente
+    const disponivel = retorno[0].count === 0;
+    console.log('Disponibilidade calculada:', disponivel);
+    return disponivel;
+  } catch (error) {
+    console.error('Erro ao verificar a disponibilidade:', error);
+    throw error; // Deixe o erro ser tratado na camada superior
+  }
+};
+
+
+
+
 
 
 
