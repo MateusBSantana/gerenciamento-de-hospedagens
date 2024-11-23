@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Tab } from "react-bootstrap";
 
 function FormFuncionario({ formData, handleChange, submit }) {
-  
+
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -87,6 +87,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 style={{ width: "200px" }}
               />
             </div>
+
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
@@ -205,6 +206,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formEstado"
                 name="estado"
+                name="estado"
                 value={formData.estado}
                 onChange={handleChange}
                 required
@@ -223,6 +225,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formCidade"
+                name="cidade"
                 name="cidade"
                 value={formData.cidade}
                 onChange={handleChange}
@@ -262,6 +265,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formLogradouro"
                 name="logradouro"
+                name="logradouro"
                 value={formData.logradouro}
                 onChange={handleChange}
                 required
@@ -281,6 +285,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formNumero"
                 name="numero"
+                name="numero"
                 value={formData.numero}
                 onChange={handleChange}
                 required
@@ -299,6 +304,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formComplemento"
+                name="complemento"
                 name="complemento"
                 value={formData.complemento}
                 onChange={handleChange}
@@ -386,6 +392,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               />
             </div>
 
+
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
@@ -397,6 +404,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBanco"
+                name="banco"
                 name="banco"
                 value={formData.banco}
                 onChange={handleChange}
@@ -417,6 +425,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formAgencia"
                 name="agencia"
+                name="agencia"
                 value={formData.agencia}
                 onChange={handleChange}
                 required
@@ -436,6 +445,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formConta"
                 name="conta"
+                name="conta"
                 value={formData.conta}
                 onChange={handleChange}
                 required
@@ -454,6 +464,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="select"
                 id="formStatus"
+                name="status_funcionario"
                 name="status_funcionario"
                 value={formData.status_funcionario}
                 onChange={handleChange}

@@ -91,3 +91,44 @@ export async function excluindoAcomodacao(id) {
         throw error;
     }
 }
+
+export async function getAcomodacoesDisponiveis(dataInicio, dataFim) {
+    console.log('ReservaModel: getAcomodacoesDisponiveis');
+    const conexao = mysql.createPool(db);
+    
+    // A consulta
+    const sql = `
+    SELECT a.*
+FROM acomodacoes a
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM reservas r
+    WHERE r.fk_acomodacao = a.id
+    AND (
+        -- Verificar se há sobreposição completa das datas
+        (? < r.data_checkout AND ? > r.data_checkin) OR
+        (? < r.data_checkout AND ? > r.data_checkin)
+    )
+    AND r.status_reserva IN ('reservado', 'hospedado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
+)
+
+    `;
+
+    // Parâmetros para as datas
+    const params = [dataInicio, dataFim, dataInicio, dataFim, dataInicio, dataFim];
+
+    try {
+      const [acomodacoesDisponiveis] = await conexao.query(sql, params);
+      console.log('Mostrando acomodações disponíveis',dataInicio, dataFim, );
+
+      
+      if (acomodacoesDisponiveis.length < 1) {
+        return [404, { mensagem: 'Nenhuma acomodação disponível encontrada' }];
+      }
+  
+      return [200, acomodacoesDisponiveis];
+    } catch (error) {
+      console.error('Erro ao buscar acomodações disponíveis:', error);
+      return [500, error];
+    }
+}

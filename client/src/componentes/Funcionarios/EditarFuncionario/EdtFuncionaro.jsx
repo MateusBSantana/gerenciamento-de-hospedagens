@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Tab, Nav, Button } from 'react-bootstrap';
-import FormFuncionario from '../FormCadFuncionario/FormFuncionario';
+import FormFuncionario from '../Funcionarios/FormCadFuncionario/FormFuncionario';
 
-function EdtFuncionario() {
+
+function EditarFuncionario() {
   const { id } = useParams(); // Captura o ID do funcionário da URL
-  const navigate = useNavigate(); // Para navegação
-  const [activeTab, setActiveTab] = useState('informacoes'); // Controla as abas ativas
+  const navigate = useNavigate(); // Função para navegação entre páginas
+  const [activeTab, setActiveTab] = useState('informacoes'); // Controla a aba ativa
   const [formData, setFormData] = useState({
-    nome: '',
+    nome_funcionario: '',
     cpf: '',
     rg: '',
-    dataNascimento: '',
+    data_nascimento: '',
     sexo: '',
     email: '',
     telefone: '',
@@ -24,23 +25,33 @@ function EdtFuncionario() {
       logradouro: '',
       numero: '',
       complemento: '',
-      observacoesEndereco: '',
+      observacoes_endereco: '',
     },
     adicionais: {
       cargo: '',
-      dataAdmissao: '',
-      dataEmissaoCarteira: '',
+      data_admissao: '',
+      data_emissao_carteira: '',
       banco: '',
       agencia: '',
       conta: '',
       status: '',
-      observacoesAdicionais: '',
+      observacoes_adicionais: '',
     },
   });
-  const [loading, setLoading] = useState(true); // Para mostrar o status de carregamento
+
+  function formatDateToInput(isoString) {
+    if (!isoString) return ''; // Verifique se a data está presente
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
+  
+  const [loading, setLoading] = useState(true); // Estado de carregamento enquanto os dados são buscados
 
   useEffect(() => {
-    // Função para buscar dados do funcionário pelo ID
     async function buscarFuncionario() {
       try {
         const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
@@ -49,22 +60,34 @@ function EdtFuncionario() {
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (!resposta.ok) {
           throw new Error('Erro ao buscar funcionário');
         }
-
+  
         const dadosFuncionario = await resposta.json();
+  
+        // Log para depuração
+        console.log('Dados do funcionário:', dadosFuncionario);
+  
+        // Formatar as datas recebidas, mas apenas se a data existir
+        dadosFuncionario.data_nascimento = formatDateToInput(dadosFuncionario.data_nascimento);
+        dadosFuncionario.adicionais.data_admissao = formatDateToInput(dadosFuncionario.adicionais.data_admissao);
+        dadosFuncionario.adicionais.data_emissao_carteira = formatDateToInput(dadosFuncionario.adicionais.data_emissao_carteira);
+  
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
-        setLoading(false);
+        console.log('Dados após formatação:', dadosFuncionario);
+        setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
         console.error('Erro ao buscar funcionário', error);
       }
     }
-
+  
     buscarFuncionario();
   }, [id]);
+  
 
+  // Função para manipular as mudanças no formulário, incluindo campos de endereço e adicionais
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.startsWith('endereco')) {
@@ -88,24 +111,38 @@ function EdtFuncionario() {
     }
   };
 
+  // Função de envio do formulário, que atualiza os dados do funcionário
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), // Envia os dados atualizados
-      });
 
-      if (!resposta.ok) {
-        throw new Error('Erro ao atualizar funcionário');
+    // Verifica se estamos na aba 'adicionais' para salvar os dados
+    if (activeTab === 'adicionais') {
+      try {
+        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData), // Envia os dados atualizados
+        });
+
+        if (!resposta.ok) {
+          const errorData = await resposta.json();
+          console.error('Erro ao atualizar funcionário:', errorData || 'Erro desconhecido');
+          throw new Error(errorData.message || 'Erro desconhecido');
+        }
+
+        navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
+      } catch (error) {
+        console.error('Erro ao atualizar funcionário', error);
       }
-
-      navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
-    } catch (error) {
-      console.error('Erro ao atualizar funcionário', error);
+    } else {
+      // Muda para a próxima aba, conforme a aba atual
+      if (activeTab === 'informacoes') {
+        setActiveTab('endereco');
+      } else if (activeTab === 'endereco') {
+        setActiveTab('adicionais');
+      }
     }
   };
 

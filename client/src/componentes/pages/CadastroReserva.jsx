@@ -1,13 +1,15 @@
-// CadastroReserva.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Importando o useNavigate
 import FormCadReserva from '../Reservas/FormCadReserva';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CadastroReserva() {
+  const navigate = useNavigate(); // Inicializando o navigate
+
   // Função assíncrona para cadastrar uma nova reserva
   async function cadastrarReserva(infoReserva) {
     try {
-      const resposta = await fetch('http://localhost:5000/reserva', {
+      const resposta = await fetch('http://localhost:5000/reservas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -18,7 +20,10 @@ function CadastroReserva() {
       if (!resposta.ok) {
         console.log('Erro ao cadastrar Reserva');
       } else {
-        alert('Reserva Cadastrada');
+        // Redireciona para a página de reservas após sucesso
+        navigate("/tabela_reserva", {
+          state: { alert: { message: "Reserva cadastrada com sucesso!", type: "success" } },
+        });
       }
     } catch (error) {
       console.log('Erro ao cadastrar Reserva', error);

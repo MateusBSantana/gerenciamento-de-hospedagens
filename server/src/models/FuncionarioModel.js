@@ -158,6 +158,7 @@ export async function updateFuncionario(funcionario, id) {
     funcionario.rg,
     funcionario.cpf,
     funcionario.data_nascimento,
+    funcionario.data_nascimento,
     funcionario.sexo,
     funcionario.email,
     funcionario.telefone,
