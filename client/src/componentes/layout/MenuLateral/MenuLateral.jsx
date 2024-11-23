@@ -83,7 +83,7 @@ function MenuLateral() {
           </li>
           <li className="nav-item side-item w-100">
             <Link
-              to="/cadastro_reserva"
+              to="/tabela_reserva"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
             >
               <FontAwesomeIcon
@@ -95,7 +95,7 @@ function MenuLateral() {
           </li>
           <li className="nav-item side-item w-100">
             <Link
-              to="/cadastro_hospede"
+              to="/tabela_hospedes"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
             >
               <FontAwesomeIcon
