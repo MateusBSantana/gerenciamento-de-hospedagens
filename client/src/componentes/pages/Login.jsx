@@ -37,9 +37,9 @@ function Login() {
   // Função para efetuar login
   async function efetuarLogin() {
     setIsLoading(true);
-
+    console.log('teste')
     try {
-      const resposta = await fetch("http://localhost:5000/usuario", {
+      const resposta = await fetch("http://localhost:5000/logar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,16 +51,16 @@ function Login() {
         const errorData = await resposta.json();
         throw new Error(errorData.message || "Erro ao efetuar login");
       }
-
+      console.log(resposta);
       // Supondo que a resposta contenha o nome do usuário
       const data = await resposta.json();
 
       // Verifique a resposta da API
       console.log(data); // Isso vai mostrar o que foi retornado da API
 
-      if (data && data.name) {
+      if (data && data.nome_funcionario) {
         // Armazena o nome do usuário no localStorage corretamente
-        localStorage.setItem("userName", data.name); // Usa o nome real retornado pela API
+        localStorage.setItem("userName", data.nome_funcionario); // Usa o nome real retornado pela API
         localStorage.setItem("userCPF", formData.login); // Salva o CPF do usuário
       } else {
         console.error("Nome do usuário não encontrado na resposta da API.");
