@@ -1,28 +1,28 @@
-import React from 'react';
-import './CalendarBody.css';
+import React from "react";
+import "./CalendarBody.css";
 
 const CalendarBody = ({ dates, accommodations, reservations }) => {
   const getStatusColor = (status) => {
     switch (status) {
-      case 'reservado':
-        return '#ADD8E6';
-      case 'hospedado':
-        return '#0000FF';
-      case 'finalizada':
-        return '#800080';
-      case 'cancelada':
-        return '#FF0000';
+      case "reservado":
+        return "#ADD8E6";
+      case "hospedado":
+        return "#0000FF";
+      case "finalizada":
+        return "#800080";
+      case "cancelada":
+        return "#FF0000";
       default:
-        return '#FFFFFF';
+        return "#FFFFFF";
     }
   };
 
   const isDateInRange = (currentDate, start, end) => {
     if (!currentDate || !start || !end) return false;
 
-    const [startDay, startMonth] = start.split('/');
-    const [endDay, endMonth] = end.split('/');
-    const [currentDay, currentMonth] = currentDate.split('/');
+    const [startDay, startMonth] = start.split("/");
+    const [endDay, endMonth] = end.split("/");
+    const [currentDay, currentMonth] = currentDate.split("/");
 
     const startDate = new Date(2024, startMonth - 1, startDay);
     const endDate = new Date(2024, endMonth - 1, endDay);
@@ -50,97 +50,80 @@ const CalendarBody = ({ dates, accommodations, reservations }) => {
               <tr key={accommodation.id}>
                 <td>{accommodation.nome}</td>
                 {dates.map((d, index) => {
-                  const reservation = roomReservations.find((r) =>
+                  // Encontrar reservas que começam e terminam nesta data
+                  const reservationEnding = roomReservations.find(
+                    (r) => r.end === d.date
+                  );
+                  const reservationStarting = roomReservations.find(
+                    (r) => r.start === d.date
+                  );
+
+                  // Determinar se é um dia intermediário para qualquer reserva
+                  const reservationInRange = roomReservations.find((r) =>
                     isDateInRange(d.date, r.start, r.end)
                   );
 
-                  if (reservation) {
-                    const startIdx = dates.findIndex((date) => date.date === reservation.start);
-                    const endIdx = dates.findIndex((date) => date.date === reservation.end);
-
-                    // Caso seja o primeiro dia da reserva
-                    if (d.date === reservation.start) {
-                      return (
-                        <td
-                          key={d.date}
+                  return (
+                    <td
+                      key={d.date}
+                      style={{
+                        position: "relative",
+                        padding: 0,
+                        zIndex: 0,
+                      }}
+                    >
+                      {/* Lado esquerdo - final de uma reserva */}
+                      {reservationEnding && (
+                        <div
                           style={{
-                            position: 'relative',
-                            padding: 0,
-                            zIndex: 0,
+                            backgroundColor: getStatusColor(reservationEnding.status),
+                            position: "absolute",
+                            top: "25%", // Centraliza verticalmente (100% - 50%) / 2
+                            left: "0",
+                            width: "50%", // Metade esquerda
+                            height: "50%", // Reduzido para 50% da altura
+                            borderRadius: "0 10px 10px 0", // Bordas arredondadas no lado esquerdo
+                            zIndex: 1,
                           }}
-                        >
+                        ></div>
+                      )}
+                  
+                      {/* Lado direito - início de uma reserva */}
+                      {reservationStarting && (
+                        <div
+                          style={{
+                            backgroundColor: getStatusColor(reservationStarting.status),
+                            position: "absolute",
+                            top: "25%", // Centraliza verticalmente
+                            left: "50%", // Metade direita
+                            width: "50%",
+                            height: "50%", // Reduzido para 50% da altura
+                            borderRadius: "10px 0 0 10px ", // Bordas arredondadas no lado direito
+                            zIndex: 1,
+                          }}
+                        ></div>
+                      )}
+                  
+                      {/* Caso seja um dia intermediário de qualquer reserva */}
+                      {!reservationStarting &&
+                        !reservationEnding &&
+                        reservationInRange && (
                           <div
                             style={{
-                              backgroundColor: getStatusColor(reservation.status),
-                              position: 'absolute',
-                              top: '25%',
-                              left: '50%',
-                              width: '50%',
-                              height: '50%',
-                              borderRadius: '10px 0 0 10px',
-                              zIndex: 1,
+                              backgroundColor: getStatusColor(reservationInRange.status),
+                              position: "absolute",
+                              top: "25%", // Centraliza verticalmente
+                              left: "0",
+                              width: "100%", // Célula inteira
+                              height: "50%", // Reduzido para 50% da altura
+                              borderRadius: "0", // Sem bordas arredondadas
+                              zIndex: 0,
                             }}
                           ></div>
-                        </td>
-                      );
-                    }
-
-                    // Caso seja o último dia da reserva
-                    if (d.date === reservation.end) {
-                      return (
-                        <td
-                          key={d.date}
-                          style={{
-                            position: 'relative',
-                            padding: 0,
-                            zIndex: 0,
-                          }}
-                        >
-                          <div
-                            style={{
-                              backgroundColor: getStatusColor(reservation.status),
-                              position: 'absolute',
-                              top: '25%',
-                              left: '0%',
-                              width: '50%',
-                              height: '50%',
-                              borderRadius: '0 10px 10px 0',
-                              zIndex: 1,
-                            }}
-                          ></div>
-                        </td>
-                      );
-                    }
-
-                    // Caso seja um dia intermediário
-                    if (index > startIdx && index < endIdx) {
-                      return (
-                        <td
-                          key={d.date}
-                          style={{
-                            position: 'relative',
-                            padding: 0,
-                            zIndex: 0,
-                          }}
-                        >
-                          <div
-                            style={{
-                              backgroundColor: getStatusColor(reservation.status),
-                              position: 'absolute',
-                              top: '25%',
-                              left: '0',
-                              width: '100%',
-                              height: '50%',
-                              borderRadius: '0',
-                              zIndex: 1,
-                            }}
-                          ></div>
-                        </td>
-                      );
-                    }
-                  }
-                  // Renderiza células vazias normalmente
-                  return <td key={d.date}></td>;
+                        )}
+                    </td>
+                  );
+                  
                 })}
               </tr>
             );
