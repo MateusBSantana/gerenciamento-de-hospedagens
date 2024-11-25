@@ -42,7 +42,7 @@ function MenuLateral() {
             </Link>
           </li>
           <li className="nav-item side-item w-100">
-            <Link to="/mapa" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
+            <Link to="/mapa_reservas" className="nav-link text-white d-flex align-items-center justify-content-start w-100">
               <FontAwesomeIcon icon={faMap} style={{ fontSize: '25px', color: '#ffffff', paddingRight: '12px' }} />
               <span className="item-description text-white">Mapa</span>
             </Link>

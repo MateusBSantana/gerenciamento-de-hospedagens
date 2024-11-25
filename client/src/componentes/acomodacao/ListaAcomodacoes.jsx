@@ -22,7 +22,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
         console.log('Não tem data');
         response = await api.get('/acomodacoes');
       }
-      
+      console.log('Resposta da API:', response);
       const validAcomodacoes = response.data.filter(Boolean);
       setAcomodacoes(validAcomodacoes);
     } catch (error) {
