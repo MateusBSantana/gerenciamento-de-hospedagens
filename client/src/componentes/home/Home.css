@@ -1,0 +1,54 @@
+/* Estilo do título do card */
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0; /* Remove margens para evitar espaçamento extra */
+  border-radius: 10px; /* Bordas arredondadas em todos os lados */
+  padding: 5px 10px; /* Ajusta o padding para não grudar nas bordas */
+  word-wrap: break-word; /* Permite quebra de linha */
+  overflow: hidden; /* Garante que o título não saia do card */
+  text-overflow: ellipsis; /* Texto longo será cortado com "..." */
+  border: 2px solid #2c3e50; /* Borda em todos os lados do título */
+  background-color: #ffffff; /* Fundo branco para o título */
+}
+
+/* Estilo geral do card */
+.card {
+  width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */
+  max-width: 600px; /* Largura máxima do card */
+  margin: auto; /* Centraliza o card */
+  padding: 0; /* Remove padding interno para alinhar o título com as bordas do card */
+  box-sizing: border-box; /* Inclui o padding no cálculo da largura */
+  border: 2px solid #2c3e50; /* Borda externa do card */
+  border-radius: 10px; /* Bordas arredondadas */
+  background-color: #ffffff; /* Fundo branco */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Organiza conteúdo em coluna */
+  justify-content: flex-start; /* Alinha conteúdo no topo */
+  align-items: center; /* Alinha itens no centro horizontal */
+  min-height: 200px; /* Altura mínima */
+  height: 250px; /* Altura fixa para uniformidade */
+  transition: all 0.3s ease; /* Transição suave */
+  overflow: hidden; /* Garante que o conteúdo extra não transborde */
+}
+
+/* Responsividade para ajustar o card em telas menores */
+@media (max-width: 991px) {
+  .card {
+    max-width: 90%; /* O card ocupa 90% da largura */
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    max-width: 80%; /* O card ocupa 80% da largura */
+  }
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 575px) {
+  .card {
+    max-width: 100%; /* O card ocupa toda a largura */
+  }
+}
