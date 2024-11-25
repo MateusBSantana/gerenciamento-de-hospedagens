@@ -30,9 +30,9 @@ function CadastroHospede() {
     <div className="d-flex">
       {/* Componente de formulário de cadastro, passando propriedades */}
       <FormCadHospede
-        titulo="Cadastro Hóspede"      // Título exibido no formulário
-        txtBtn="Cadastrar"             // Texto do botão de envio
-        handleSubmit={cadastrarHospede} // Função chamada ao submeter o formulário
+        titulo="Cadastro Hóspede"      
+        txtBtn="Cadastrar"             
+        handleSubmit={cadastrarHospede} 
       />
     </div>
   );

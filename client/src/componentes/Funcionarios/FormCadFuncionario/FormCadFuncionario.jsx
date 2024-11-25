@@ -81,34 +81,42 @@ function FormCadFuncionario({ handleSubmit }) {
         console.error('Erro ao carregar os dados', error);
       }
     }
-  
+
     if (id) {
       fetchData();
     }
   }, [id]);
-  
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('endereco')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        endereco: {
-          ...prevState.endereco,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else if (name.startsWith('adicionais')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        adicionais: {
-          ...prevState.adicionais,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else {
-      setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });
+
+    // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
+    if (name === 'cep' && value.length === 8) {
+      handleBuscarCep(value);
+    }
+  };
+
+  // Função para buscar o endereço pelo CEP
+  const handleBuscarCep = async (cep) => {
+    try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (!data.erro) {
+            setFormData((prevData) => ({
+                ...prevData,
+                estado: data.uf || '',
+                cidade: data.localidade || '',
+                bairro: data.bairro || '',
+                logradouro: data.logradouro || '',
+                complemento: data.complemento || '',
+            }));
+        } else {
+            console.error('CEP inválido');
+        }
+    } catch (error) {
+        console.error('Erro ao consultar o CEP:', error);
     }
   };
 

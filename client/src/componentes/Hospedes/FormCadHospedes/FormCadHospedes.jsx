@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Tab, Nav, Form, Button } from 'react-bootstrap';
+import { Tab, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { txtHospede } from '../../../services/txt.js'; 
 import './FormCadHospedes.css';
 import FormHospede from './FormHospedes';
 
 function FormCadHospede({ handleSubmit }) {
-  const navigate = useNavigate(); // Navegação entre páginas
-  const [activeTab, setActiveTab] = useState('informacoes'); // Aba ativa
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('informacoes');
   const [formData, setFormData] = useState({
       nome_hospede: '',
       cpf: '',
@@ -29,37 +30,45 @@ function FormCadHospede({ handleSubmit }) {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target; // Captura o nome_hospede e valor do campo
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
 
-    // Atualiza os dados do formulário com base no campo modificado
-    if (name.startsWith('endereco')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        endereco: {
-          ...prevState.endereco,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else if (name.startsWith('adicionais')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        adicionais: {
-          ...prevState.adicionais,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else {
-      setFormData({ ...formData, [name]: value });
+    // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
+    if (name === 'cep' && value.length === 8) {
+      handleBuscarCep(value);
     }
   };
 
+  // Função para buscar o endereço pelo CEP
+  const handleBuscarCep = async (cep) => {
+    try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (!data.erro) {
+            setFormData((prevData) => ({
+                ...prevData,
+                estado: data.uf || '',
+                cidade: data.localidade || '',
+                bairro: data.bairro || '',
+                rua: data.logradouro || '',
+                complemento: data.complemento || '',
+            }));
+        } else {
+            console.error('CEP inválido');
+        }
+    } catch (error) {
+        console.error('Erro ao consultar o CEP:', error);
+    }
+  };
+  
   const submit = (e) => {
-    e.preventDefault(); // Previne o comportamento padrão
+    e.preventDefault();
     if (activeTab === 'adicionais') {
-      handleSubmit(formData); // Envia os dados
-      navigate('/tabela_hospedes'); // Navega para a tabela
+      handleSubmit(formData);
+      txtHospede(formData); 
+      navigate('/tabela_hospedes');
     } else {
-      // Muda a aba ativa
       if (activeTab === 'informacoes') {
         setActiveTab('endereco');
       } else if (activeTab === 'endereco') {
@@ -69,14 +78,14 @@ function FormCadHospede({ handleSubmit }) {
   };
 
   const handleCancel = () => {
-    navigate('/tabela_hospedes'); // Cancela e redireciona
+    navigate('/tabela_hospedes');
   };
 
   return (
-    <div className="container mt-4 ">
-      <h2 style={{ marginLeft: '50px' }}>Novo Hóspede</h2> {/* Título */}
+    <div className="container mt-4">
+      <h2 style={{ marginLeft: '50px' }}>Novo Hóspede</h2>
       <Tab.Container id="left-tabs-example" activeKey={activeTab} onSelect={setActiveTab}>
-        <Nav variant="tabs"> {/* Navegação das abas */}
+        <Nav variant="tabs">
           <Nav.Item>
             <Nav.Link eventKey="informacoes" className="p-1 fs-6">Informações do Hóspede</Nav.Link>
           </Nav.Item>
@@ -90,22 +99,22 @@ function FormCadHospede({ handleSubmit }) {
 
         <Tab.Content>
           <FormHospede
-            formData={formData} // Dados do formulário
-            handleChange={handleChange} // Função de alteração
+            formData={formData}
+            handleChange={handleChange}
           />
         </Tab.Content>
       </Tab.Container>
 
       <div className="text-center mt-4">
         <Button
-          variant="danger" // Botão de cancelar
+          variant="danger"
           className="mt-2 me-2"
           onClick={handleCancel}
         >
           Cancelar
         </Button>
         <Button
-          variant="primary" // Botão de salvar ou continuar
+          variant="primary"
           className="mt-2"
           type="submit"
           onClick={submit}
@@ -117,4 +126,4 @@ function FormCadHospede({ handleSubmit }) {
   );
 }
 
-export default FormCadHospede; // Exporta o componente
+export default FormCadHospede;

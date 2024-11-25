@@ -6,6 +6,8 @@ mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva, alterarStatusReserva, verificarDisponibilidadeAcomodacao } from './controllers/reservaController.js';
+import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
+ 
 
 const app = express();
 const porta = 5000;
@@ -48,6 +50,15 @@ app.get('/reservas', mostrandoReservas);
 app.get('/reservas/:id', mostrandoUmaReserva);
 app.put('/reservas/:id', atualizandoReserva);
 app.put('/reservas/:id/status', alterarStatusReserva);
+
+//CRUD Usuario
+app.post('/usuario/', criarUsuario);
+app.get('/usuario/', mostrarUsuario);
+app.get('/usuario/:id_usuario',mostrarUmUsuario);
+app.put('/usuario/:id_usuario',atualizarUsuario);
+
+//Rota para Logar
+app.post('/logar/',logarUsuario);
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

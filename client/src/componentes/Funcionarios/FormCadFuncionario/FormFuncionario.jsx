@@ -72,16 +72,16 @@ function FormFuncionario({ formData, handleChange, submit }) {
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
                 className="me-2 text-end"
-                htmlFor="formDataNascimento"
+                htmlFor="formdata_nascimento"
                 style={{ width: "160px" }}
               >
                 Data de Nascimento:
               </Form.Label>
               <Form.Control
                 type="date"
-                id="formDataNascimento"
+                id="formdata_nascimento"
                 name="data_nascimento"
-                value={formData.data_nascimento ? formData.data_nascimento.split('T')[0] : ''} // Garantir o formato correto
+                value={new Date(formData.data_nascimento).getDate()}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -187,7 +187,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formCep"
                 name="cep"
-                value={formData.cep}
+                value={formData.cep} 
                 onChange={handleChange}
                 required
                 style={{ width: "180px" }}
@@ -205,6 +205,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formEstado"
+                name="estado"
                 name="estado"
                 value={formData.estado}
                 onChange={handleChange}
@@ -225,6 +226,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formCidade"
                 name="cidade"
+                name="cidade"
                 value={formData.cidade}
                 onChange={handleChange}
                 required
@@ -243,7 +245,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBairro"
-                name="bairro"
+                name=".bairro"
                 value={formData.bairro}
                 onChange={handleChange}
                 required
@@ -262,6 +264,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formLogradouro"
+                name="logradouro"
                 name="logradouro"
                 value={formData.logradouro}
                 onChange={handleChange}
@@ -282,6 +285,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formNumero"
                 name="numero"
+                name="numero"
                 value={formData.numero}
                 onChange={handleChange}
                 required
@@ -301,6 +305,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formComplemento"
                 name="complemento"
+                name="complemento"
                 value={formData.complemento}
                 onChange={handleChange}
                 style={{ width: "350px" }}
@@ -317,7 +322,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               </Form.Label>
               <Form.Control
                 as="textarea"
-                id="formObservacaoendereco"
+                id="formObservacaoEndereco"
                 name="observacoes_endereco"
                 value={formData.observacoes_endereco}
                 onChange={handleChange}
@@ -328,26 +333,26 @@ function FormFuncionario({ formData, handleChange, submit }) {
         </Form>
       </Tab.Pane>
 
-      <Tab.Pane eventKey="adicionais">
-        <Form onSubmit={submit} className="border rounded p-3">
-          <div className="mx-auto">
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
-              <Form.Control
-                as="select"
-                id="formCargo"
-                name="cargo"
-                value={formData.cargo}
-                onChange={handleChange}
-                required
-                style={{ width: '200px' }}
-              >
-                <option value="">Por favor selecione</option>
-                <option value="administrador">Administrador</option>
-                <option value="recepcionista">Recepcionista</option>
-                <option value="camareira">Camareira</option>
-              </Form.Control>
-            </div>
+          <Tab.Pane eventKey="adicionais">
+            <Form onSubmit={submit} className="border rounded p-3">
+              <div className="mx-auto">
+                <div className="mb-3 d-flex align-items-center">
+                  <Form.Label className="me-2 text-end" htmlFor="formCargo" style={{ width: '160px' }}>Cargo:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    id="formCargo"
+                    name="cargo"
+                    value={formData.cargo}
+                    onChange={handleChange}
+                    required
+                    style={{ width: '200px' }} 
+                    >
+                    <option value="">Por favor selecione</option>
+                    <option value="administrador">Administrador</option> 
+                    <option value="recepcionista">Recepcionista</option>
+                    <option value="camareira">Camareira</option>
+                    </Form.Control>
+                </div>
 
             <div className="mb-3 d-flex align-items-center">
               <Form.Label
@@ -360,8 +365,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataAdmissao"
-                name="data_admissao"
-                value={formData.data_admissao ? formData.data_admissao.split('T')[0] : ''}
+                name="dataAdmissao"
+                value={formData.dataAdmissao}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -379,8 +384,8 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="date"
                 id="formDataEmissaoCarteira"
-                name="data_emissao_carteira"
-                value={formData.data_emissao_carteira ? formData.data_emissao_carteira.split('T')[0] : ''}
+                name="dataEmissaoCarteira"
+                value={formData.dataEmissaoCarteira}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -399,6 +404,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formBanco"
+                name="banco"
                 name="banco"
                 value={formData.banco}
                 onChange={handleChange}
@@ -419,6 +425,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formAgencia"
                 name="agencia"
+                name="agencia"
                 value={formData.agencia}
                 onChange={handleChange}
                 required
@@ -438,6 +445,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
                 type="text"
                 id="formConta"
                 name="conta"
+                name="conta"
                 value={formData.conta}
                 onChange={handleChange}
                 required
@@ -456,6 +464,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="select"
                 id="formStatus"
+                name="status_funcionario"
                 name="status_funcionario"
                 value={formData.status_funcionario}
                 onChange={handleChange}
@@ -479,7 +488,7 @@ function FormFuncionario({ formData, handleChange, submit }) {
               <Form.Control
                 as="textarea"
                 id="formObservacoesadicionais"
-                name="observacoes_adicionais"
+                name="observacoesAdicionais"
                 value={formData.observacoes_adicionais}
                 onChange={handleChange}
                 style={{ width: "350px" }}
