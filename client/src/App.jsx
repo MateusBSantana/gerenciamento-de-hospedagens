@@ -22,7 +22,7 @@ import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
 // Importação do componente de Quarto (adicionando à lista de acomodações)
-import RoomList from './componentes/home/RoomList'; // Novo componente para lista de quartos
+import RoomList from './componentes/home/Home'; // Novo componente para lista de quartos
 
 function App() {
   return (
@@ -42,7 +42,7 @@ function App() {
             <Route path="/editar_acomodacao/:id" element={<CadastroAcomodacao />} />
 
             {/* Novo: Lista de quartos */}
-            <Route path='/lista_quartos' element={<RoomList />} /> {/* Nova rota para lista de quartos */}
+            <Route path='/home' element={<RoomList />} /> {/* Nova rota para lista de quartos */}
 
             {/* Rotas para hóspedes */}
             <Route path='/cadastro_hospede' element={<CadastroHospede />} />
