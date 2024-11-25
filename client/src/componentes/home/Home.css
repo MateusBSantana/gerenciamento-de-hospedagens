@@ -1,123 +1,54 @@
 /* Estilo do título do card */
 .card-title {
   font-size: 1.25rem;
-/* Estilo do título do card */
-.card-title {
-  font-size: 1.25rem;
   font-weight: bold;
   text-align: center;
-  margin: 0; /* Remove o espaço superior do título para que ele fique encostado na borda do card */
-  border-radius: 10px 10px 0 0; /* Bordas arredondadas apenas no topo do card */
-  padding: 5px 10px; /* Ajusta o padding para que o título não grude nas bordas */
-  word-wrap: break-word; /* Garante que o texto quebre a linha caso seja muito longo */
+  margin: 0; /* Remove margens para evitar espaçamento extra */
+  border-radius: 10px; /* Bordas arredondadas em todos os lados */
+  padding: 5px 10px; /* Ajusta o padding para não grudar nas bordas */
+  word-wrap: break-word; /* Permite quebra de linha */
   overflow: hidden; /* Garante que o título não saia do card */
-  text-overflow: ellipsis; /* Se o texto for muito longo, ele será cortado com "..." */
-  /* white-space: nowrap; Garante que o texto não quebre linha */
-  border: 2px solid #2c3e50; /* Borda ao redor do título */
+  text-overflow: ellipsis; /* Texto longo será cortado com "..." */
+  border: 2px solid #2c3e50; /* Borda em todos os lados do título */
   background-color: #ffffff; /* Fundo branco para o título */
 }
 
-/* Estilo do botão do card */
-.card-button {
-  background-color: #2c3e50;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;  /* Bordas arredondadas no botão */
-  border: none;
-  padding: 10px;
-  border-radius: 10px;  /* Bordas arredondadas no botão */
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 20px;  /* Espaço acima do botão, separando do título */
-}
-
-/* Efeito de hover no botão */
-.card-button:hover {
-  background-color: #34495e;
-  transition: background-color 0.3s;
-  margin-top: 20px;  /* Espaço acima do botão, separando do título */
-}
-
-/* Efeito de hover no botão */
-.card-button:hover {
-  background-color: #34495e;
-}
-
 /* Estilo geral do card */
 .card {
   width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */
-  max-width: 600px; /* Aumenta a largura máxima do card */
+  max-width: 600px; /* Largura máxima do card */
   margin: auto; /* Centraliza o card */
-  padding: 20px; /* Adiciona padding interno ao card */
-  box-sizing: border-box; /* Inclui o padding no cálculo da largura do card */
-  border: 2px solid #2c3e50; /* Borda do card */
-  border-radius: 10px; /* Bordas arredondadas no card */
-  background-color: #ffffff; /* Fundo branco para o card */
-  display: flex; /* Flexbox para organizar o conteúdo do card */
-  flex-direction: column; /* Organiza o conteúdo em coluna */
-  justify-content: flex-start; /* Alinha o conteúdo no topo do card */
-  align-items: center; /* Alinha os itens no centro horizontal */
-  min-height: 200px; /* Altura mínima para o card */
-  height: 250px; /* Altura fixa para garantir que todos os cards tenham o mesmo tamanho */
-  transition: all 0.3s ease; /* Adiciona transição suave para mudanças de estilo */
-  overflow: hidden; /* Garante que o conteúdo extra não transborde do card */
+  padding: 0; /* Remove padding interno para alinhar o título com as bordas do card */
+  box-sizing: border-box; /* Inclui o padding no cálculo da largura */
+  border: 2px solid #2c3e50; /* Borda externa do card */
+  border-radius: 10px; /* Bordas arredondadas */
+  background-color: #ffffff; /* Fundo branco */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Organiza conteúdo em coluna */
+  justify-content: flex-start; /* Alinha conteúdo no topo */
+  align-items: center; /* Alinha itens no centro horizontal */
+  min-height: 200px; /* Altura mínima */
+  height: 250px; /* Altura fixa para uniformidade */
+  transition: all 0.3s ease; /* Transição suave */
+  overflow: hidden; /* Garante que o conteúdo extra não transborde */
 }
 
 /* Responsividade para ajustar o card em telas menores */
 @media (max-width: 991px) {
   .card {
-    max-width: 90%; /* O card ocupa 90% da largura da tela em dispositivos menores */
+    max-width: 90%; /* O card ocupa 90% da largura */
   }
 }
 
 @media (max-width: 767px) {
   .card {
-    max-width: 80%; /* O card ocupa 80% da largura da tela em dispositivos muito pequenos */
+    max-width: 80%; /* O card ocupa 80% da largura */
   }
 }
 
+/* Ajustes para telas menores */
 @media (max-width: 575px) {
   .card {
-    max-width: 100%; /* O card ocupa toda a largura da tela em telas muito pequenas */
+    max-width: 100%; /* O card ocupa toda a largura */
   }
-}
-/* Estilo geral do card */
-.card {
-  width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */
-  max-width: 600px; /* Aumenta a largura máxima do card */
-  margin: auto; /* Centraliza o card */
-  padding: 20px; /* Adiciona padding interno ao card */
-  box-sizing: border-box; /* Inclui o padding no cálculo da largura do card */
-  border: 2px solid #2c3e50; /* Borda do card */
-  border-radius: 10px; /* Bordas arredondadas no card */
-  background-color: #ffffff; /* Fundo branco para o card */
-  display: flex; /* Flexbox para organizar o conteúdo do card */
-  flex-direction: column; /* Organiza o conteúdo em coluna */
-  justify-content: flex-start; /* Alinha o conteúdo no topo do card */
-  align-items: center; /* Alinha os itens no centro horizontal */
-  min-height: 200px; /* Altura mínima para o card */
-  height: 250px; /* Altura fixa para garantir que todos os cards tenham o mesmo tamanho */
-  transition: all 0.3s ease; /* Adiciona transição suave para mudanças de estilo */
-  overflow: hidden; /* Garante que o conteúdo extra não transborde do card */
-}
-
-/* Responsividade para ajustar o card em telas menores */
-@media (max-width: 991px) {
-  .card {
-    max-width: 90%; /* O card ocupa 90% da largura da tela em dispositivos menores */
-  }
-}
-
-@media (max-width: 767px) {
-  .card {
-    max-width: 80%; /* O card ocupa 80% da largura da tela em dispositivos muito pequenos */
-  }
-}
-
-@media (max-width: 575px) {
-  .card {
-    max-width: 100%; /* O card ocupa toda a largura da tela em telas muito pequenas */
-  }
-}
 }
