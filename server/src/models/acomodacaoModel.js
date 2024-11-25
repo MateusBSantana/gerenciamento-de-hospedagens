@@ -6,8 +6,8 @@ const conexao = mysql.createPool(db);
 
 // Cadastrando Acomodação
 export async function createAcomodacao(acomodacao) {
-    const sql = `INSERT INTO acomodacoes 
-        (Nome, Capacidade, Tipo, Observacoes, Status, Wifi, Tv, Ar_Condicionado, Frigobar, Banheiros_Adaptados, Sinalizacao_Em_Braille, Entrada_Acessivel, Estacionamento_Acessivel) 
+    const sql = `INSERT INTO acomodacao 
+        (Nome, Capacidade, Tipo, Observacoes, Status, Wifi, Tv, arCondicionado, Frigobar, banheirosAdaptados, sinalizacaoBraille, entradaAcessivel, estacionamentoAcessivel) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const params = [
@@ -18,12 +18,12 @@ export async function createAcomodacao(acomodacao) {
         acomodacao.status || 'Disponível',
         acomodacao.wifi || false,
         acomodacao.tv || false,
-        acomodacao.ar_condicionado || false,
+        acomodacao.arCondicionado || false,
         acomodacao.frigobar || false,
-        acomodacao.banheiros_adaptados || false,
-        acomodacao.sinalizacao_em_braille || false,
-        acomodacao.entrada_acessivel || false,
-        acomodacao.estacionamento_acessivel || false
+        acomodacao.banheirosAdaptados || false,
+        acomodacao.sinalizacaoBraille || false,
+        acomodacao.entradaAcessivel || false,
+        acomodacao.estacionamentoAcessivel || false
     ];
 
     try {
@@ -37,7 +37,7 @@ export async function createAcomodacao(acomodacao) {
 
 // Mostrando todas as Acomodações
 export async function mostrandoAcomodacoes() {
-    const sql = `SELECT * FROM acomodacoes`;
+    const sql = `SELECT * FROM acomodacao`;
 
     try {
         const [acomodacoes] = await conexao.query(sql);
@@ -50,7 +50,7 @@ export async function mostrandoAcomodacoes() {
 
 // Mostrando Acomodação por ID
 export async function mostrandoAcomodacaoPorId(id) {
-    const sql = `SELECT * FROM acomodacoes WHERE id = ?`;
+    const sql = `SELECT * FROM acomodacao WHERE id = ?`;
 
     try {
         const [acomodacao] = await conexao.query(sql, [id]);
@@ -63,11 +63,11 @@ export async function mostrandoAcomodacaoPorId(id) {
 
 // Atualizando Acomodação
 export async function atualizandoAcomodacao(id, acomodacao) {
-    const sql = `UPDATE acomodacoes SET 
+    const sql = `UPDATE acomodacao SET 
         Nome = ?, Capacidade = ?, Tipo = ?, Observacoes = ?, Status = ?, 
-        Wifi = ?, Tv = ?, Ar_Condicionado = ?, Frigobar = ?, 
-        Banheiros_Adaptados = ?, Sinalizacao_Em_Braille = ?, 
-        Entrada_Acessivel = ?, Estacionamento_Acessivel = ?
+        Wifi = ?, Tv = ?, arCondicionado = ?, Frigobar = ?, 
+        banheirosAdaptados = ?, sinalizacaoBraille = ?, 
+        entradaAcessivel = ?, estacionamentoAcessivel = ?
         WHERE id = ?`;
 
     const params = [
@@ -78,12 +78,12 @@ export async function atualizandoAcomodacao(id, acomodacao) {
         acomodacao.status || 'Disponível',
         acomodacao.wifi || false,
         acomodacao.tv || false,
-        acomodacao.ar_condicionado || false,
+        acomodacao.arCondicionado || false,
         acomodacao.frigobar || false,
-        acomodacao.banheiros_adaptados || false,
-        acomodacao.sinalizacao_em_braille || false,
-        acomodacao.entrada_acessivel || false,
-        acomodacao.estacionamento_acessivel || false,
+        acomodacao.banheirosAdaptados || false,
+        acomodacao.sinalizacaoBraille || false,
+        acomodacao.entradaAcessivel || false,
+        acomodacao.estacionamentoAcessivel || false,
         id
     ];
 
@@ -98,7 +98,7 @@ export async function atualizandoAcomodacao(id, acomodacao) {
 
 // Excluindo Acomodação
 export async function excluindoAcomodacao(id) {
-    const sql = `DELETE FROM acomodacoes WHERE id = ?`;
+    const sql = `DELETE FROM acomodacao WHERE id = ?`;
 
     try {
         const [retorno] = await conexao.query(sql, [id]);
@@ -111,7 +111,7 @@ export async function excluindoAcomodacao(id) {
 
 // Filtrando Acomodações por Status
 export async function filtrandoAcomodacoesPorStatus(status) {
-    const sql = `SELECT * FROM acomodacoes WHERE Status = ?`;
+    const sql = `SELECT * FROM acomodacao WHERE Status = ?`;
 
     try {
         const [acomodacoes] = await conexao.query(sql, [status]);
