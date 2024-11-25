@@ -1,6 +1,8 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+
+// Importação dos componentes para Login
+import Login from './componentes/pages/Login';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -21,45 +23,50 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
-// Importação do componente de Quarto (adicionando à lista de acomodações)
-import Home from './componentes/home/Home'; // Novo componente para lista de quartos
+function AppContent() {
+  const location = useLocation();
+
+  return (
+    <div className="app-container d-flex">
+      {/* Mostra o MenuLateral em todas as rotas, exceto na rota de login */}
+      {location.pathname !== '/login' && <MenuLateral />}
+      <div className="content flex-grow-1">
+        <Routes>
+          <Route path='/login' element={<Login />} />
+
+          {/* Rotas para funcionários */}
+          <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
+          <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
+          <Route path='/editar_funcionario/:id' element={<EditarFuncionario />} />
+
+          {/* Rotas para acomodações */}
+          <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
+          <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} /> 
+          <Route path='/editar_acomodacao/:id' element={<CadastroAcomodacao />} /> 
+
+          {/* Rotas para hóspedes */}
+          <Route path='/cadastro_hospede' element={<CadastroHospede />} />
+          <Route path='/tabela_hospedes' element={<TabelaHospedes />} />
+          <Route path='/editar_hospede/:id' element={<EditarHospede />} />
+
+          {/* Rotas para reservas */}
+          <Route path='/cadastro_reserva' element={<CadastroReserva />} />
+          <Route path='/tabela_reserva' element={<TabelaReservas />} />
+          <Route path='/cadastro_reserva/:id' element={<CadastroReserva />} />
+        </Routes>
+      </div>
+    </div>
+  );
+}
 
 function App() {
+  
   return (
     <Router>
-      <div className="app-container d-flex">
-        <MenuLateral /> {/* Menu lateral adicionado */}
-        <Container className="content flex-grow-1">
-          <Routes>
-            {/* Rota para Home */}
-            <Route path="/home" element={<Home />} />
-
-            {/* Rotas para funcionários */}
-            <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
-            <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
-            <Route path='/editar_funcionario/:id' element={<EditarFuncionario />} />
-
-            {/* Rotas para acomodações */}
-            <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
-            <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} />
-            <Route path="/editar_acomodacao/:id" element={<CadastroAcomodacao />} />
-
-      
-            
-
-            {/* Rotas para hóspedes */}
-            <Route path='/cadastro_hospede' element={<CadastroHospede />} />
-            <Route path='/tabela_hospedes' element={<TabelaHospedes />} />
-            <Route path="/editar_hospede/:id" element={<EditarHospede />} />
-
-            {/* Rotas para reservas */}
-            <Route path='/cadastro_reserva' element={<CadastroReserva />} />
-            <Route path='/tabela_reserva' element={<TabelaReservas />} />
-            <Route path="/cadastro_reserva/:id" element={<CadastroReserva />} />
-          </Routes>
-        </Container>
-      </div>
+      <AppContent />
     </Router>
+
+    
   );
 }
 

@@ -57,7 +57,7 @@ function EditarFuncionario() {
 
         const dadosFuncionario = await resposta.json();
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
-        console.log(dadosFuncionario)
+        console.log('dodos funcionario: ',dadosFuncionario)
         setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
         console.error('Erro ao buscar funcionário', error);

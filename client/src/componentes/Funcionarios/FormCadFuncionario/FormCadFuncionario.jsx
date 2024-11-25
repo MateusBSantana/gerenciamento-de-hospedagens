@@ -13,31 +13,27 @@ function FormCadFuncionario({ handleSubmit }) {
     nome_funcionario: '',
     cpf: '',
     rg: '',
-    dataNascimento: '',
+    data_nascimento: '',
     sexo: '',
     email: '',
     telefone: '',
     observacoes: '',
-    endereco: {
-      cep: '',
-      estado: '',
-      cidade: '',
-      bairro: '',
-      logradouro: '',
-      numero: '',
-      complemento: '',
-      observacoesEndereco: '',
-    },
-    adicionais: {
-      cargo: '',
-      dataAdmissao: '',
-      dataEmissaoCarteira: '',
-      banco: '',
-      agencia: '',
-      conta: '',
-      status: '',
-      observacoesAdicionais: '',
-    },
+    cep: '',
+    estado: '',
+    cidade: '',
+    bairro: '',
+    logradouro: '',
+    numero: '',
+    complemento: '',
+    observacoes_endereco: '',
+    cargo: '',
+    dataAdmissao: '',
+    dataEmissaoCarteira: '',
+    banco: '',
+    agencia: '',
+    conta: '',
+    status_funcionario: '',
+    observacoesAdicionais: '',
   });
 
  
@@ -55,64 +51,72 @@ function FormCadFuncionario({ handleSubmit }) {
           nome_funcionario: data.nome_funcionario || '',
           cpf: data.cpf || '',
           rg: data.rg || '',
-          dataNascimento: data.dataNascimento || '',
+          data_nascimento: data.data_nascimento || '',
           sexo: data.sexo || '',
           email: data.email || '',
           telefone: data.telefone || '',
           observacoes: data.observacoes || '',
-          endereco: {
-            cep: data.endereco?.cep || '',
-            estado: data.endereco?.estado || '',
-            cidade: data.endereco?.cidade || '',
-            bairro: data.endereco?.bairro || '',
-            logradouro: data.endereco?.logradouro || '',
-            numero: data.endereco?.numero || '',
-            complemento: data.endereco?.complemento || '',
-            observacoesEndereco: data.endereco?.observacoesEndereco || '',
-          },
-          adicionais: {
-            cargo: data.adicionais?.cargo || '',
-            dataAdmissao: data.adicionais?.dataAdmissao || '',
-            dataEmissaoCarteira: data.adicionais?.dataEmissaoCarteira || '',
-            banco: data.adicionais?.banco || '',
-            agencia: data.adicionais?.agencia || '',
-            conta: data.adicionais?.conta || '',
-            status: data.adicionais?.status || '',
-            observacoesAdicionais: data.adicionais?.observacoesAdicionais || '',
-          },
+          
+            cep: data.cep || '',
+            estado: data.estado || '',
+            cidade: data.cidade || '',
+            bairro: data.bairro || '',
+            logradouro: data.logradouro || '',
+            numero: data.numero || '',
+            complemento: data.complemento || '',
+            observacoes_endereco: data.observacoes_endereco || '',
+          
+         
+            cargo: data.cargo || '',
+            data_admissao: data.data_admissao || '',
+            data_emissao_carteira: data.data_emissao_carteira || '',
+            banco: data.banco || '',
+            agencia: data.agencia || '',
+            conta: data.conta || '',
+            status_funcionario: data.status_funcionario || '',
+            observacoes_adicionais: data.observacoes_adicionais || '',
+          
         });
       } catch (error) {
         console.error('Erro ao carregar os dados', error);
       }
     }
-  
+
     if (id) {
       fetchData();
     }
   }, [id]);
-  
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('endereco')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        endereco: {
-          ...prevState.endereco,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else if (name.startsWith('adicionais')) {
-      setFormData((prevState) => ({
-        ...prevState,
-        adicionais: {
-          ...prevState.adicionais,
-          [name.split('.')[1]]: value,
-        },
-      }));
-    } else {
-      setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: value });
+
+    // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
+    if (name === 'cep' && value.length === 8) {
+      handleBuscarCep(value);
+    }
+  };
+
+  // Função para buscar o endereço pelo CEP
+  const handleBuscarCep = async (cep) => {
+    try {
+        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await response.json();
+
+        if (!data.erro) {
+            setFormData((prevData) => ({
+                ...prevData,
+                estado: data.uf || '',
+                cidade: data.localidade || '',
+                bairro: data.bairro || '',
+                logradouro: data.logradouro || '',
+                complemento: data.complemento || '',
+            }));
+        } else {
+            console.error('CEP inválido');
+        }
+    } catch (error) {
+        console.error('Erro ao consultar o CEP:', error);
     }
   };
 

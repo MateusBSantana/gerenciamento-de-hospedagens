@@ -1,13 +1,7 @@
-import React, { useEffect } from "react";
 import { Form, Tab } from "react-bootstrap";
-import AbreviaData from "../../layout/AbreviaData";
 
 function FormHospede({ formData, handleChange, submit }) {
-  // useEffect(()=>{
-  //   formData.data_nascimento = AbreviaData(formData.data_nascimento);
-  //   console.log(formData.data_nascimento);
-    
-  // },[])
+
   return (
     <>
       <Tab.Pane eventKey="informacoes">
@@ -90,7 +84,7 @@ function FormHospede({ formData, handleChange, submit }) {
                 type="date"
                 id="formDataNascimento"
                 name="data_nascimento"
-                value={formData.data_nascimento}
+                value={formData.data_nascimento ? formData.data_nascimento.split('T')[0] : 'h'}
                 onChange={handleChange}
                 required
                 style={{ width: "200px" }}
@@ -254,7 +248,7 @@ function FormHospede({ formData, handleChange, submit }) {
                 htmlFor="formRua"
                 style={{ width: "160px" }}
               >
-                Rua:
+                Logradouro:
               </Form.Label>
               <Form.Control
                 type="text"
