@@ -1,6 +1,9 @@
 /* Estilo do título do card */
 .card-title {
   font-size: 1.25rem;
+/* Estilo do título do card */
+.card-title {
+  font-size: 1.25rem;
   font-weight: bold;
   text-align: center;
   margin: 0; /* Remove o espaço superior do título para que ele fique encostado na borda do card */
@@ -21,7 +24,17 @@
   padding: 10px;
   border-radius: 10px;  /* Bordas arredondadas no botão */
   border: none;
+  padding: 10px;
+  border-radius: 10px;  /* Bordas arredondadas no botão */
+  border: none;
   cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;  /* Espaço acima do botão, separando do título */
+}
+
+/* Efeito de hover no botão */
+.card-button:hover {
+  background-color: #34495e;
   transition: background-color 0.3s;
   margin-top: 20px;  /* Espaço acima do botão, separando do título */
 }
@@ -31,6 +44,44 @@
   background-color: #34495e;
 }
 
+/* Estilo geral do card */
+.card {
+  width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */
+  max-width: 600px; /* Aumenta a largura máxima do card */
+  margin: auto; /* Centraliza o card */
+  padding: 20px; /* Adiciona padding interno ao card */
+  box-sizing: border-box; /* Inclui o padding no cálculo da largura do card */
+  border: 2px solid #2c3e50; /* Borda do card */
+  border-radius: 10px; /* Bordas arredondadas no card */
+  background-color: #ffffff; /* Fundo branco para o card */
+  display: flex; /* Flexbox para organizar o conteúdo do card */
+  flex-direction: column; /* Organiza o conteúdo em coluna */
+  justify-content: flex-start; /* Alinha o conteúdo no topo do card */
+  align-items: center; /* Alinha os itens no centro horizontal */
+  min-height: 200px; /* Altura mínima para o card */
+  height: 250px; /* Altura fixa para garantir que todos os cards tenham o mesmo tamanho */
+  transition: all 0.3s ease; /* Adiciona transição suave para mudanças de estilo */
+  overflow: hidden; /* Garante que o conteúdo extra não transborde do card */
+}
+
+/* Responsividade para ajustar o card em telas menores */
+@media (max-width: 991px) {
+  .card {
+    max-width: 90%; /* O card ocupa 90% da largura da tela em dispositivos menores */
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    max-width: 80%; /* O card ocupa 80% da largura da tela em dispositivos muito pequenos */
+  }
+}
+
+@media (max-width: 575px) {
+  .card {
+    max-width: 100%; /* O card ocupa toda a largura da tela em telas muito pequenas */
+  }
+}
 /* Estilo geral do card */
 .card {
   width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */

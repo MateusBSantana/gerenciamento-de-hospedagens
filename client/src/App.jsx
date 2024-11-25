@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap'; // Importação do React Bootstrap para container
+import { Container } from 'react-bootstrap';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -31,6 +31,9 @@ function App() {
         <MenuLateral /> {/* Menu lateral adicionado */}
         <Container className="content flex-grow-1">
           <Routes>
+            {/* Rota para Home */}
+            <Route path="/home" element={<Home />} />
+
             {/* Rotas para funcionários */}
             <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
             <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
