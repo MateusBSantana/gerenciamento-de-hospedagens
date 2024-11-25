@@ -24,9 +24,12 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
+
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
   return (
     <div className="app-container d-flex">
       {/* Mostra o MenuLateral em todas as rotas, exceto na rota de login */}
@@ -50,17 +53,27 @@ function App() {
           <Route path='/tabela_hospedes' element={<TabelaHospedes />} />
           <Route path='/editar_hospede/:id' element={<EditarHospede />} />
 
-            {/*  rotas para reservas */}
-            <Route path='/cadastro_reserva' element={<CadastroReserva/>} />
-            <Route path='/tabela_reserva' element={<TabelaReservas/>} />
-            <Route path="/cadastro_reserva/:id" element={<CadastroReserva/>} />
+          {/* Rotas para reservas */}
+          <Route path='/cadastro_reserva' element={<CadastroReserva />} />
+          <Route path='/tabela_reserva' element={<TabelaReservas />} />
+          <Route path='/cadastro_reserva/:id' element={<CadastroReserva />} />
 
-            <Route path="/mapa_reservas" element={<MapaReservas/>} />
 
-          </Routes>
-        </div>
+          <Route path="/mapa_reservas" element={<MapaReservas/>} />
+
+
+        </Routes>
       </div>
-    
+    </div>
+  );
+}
+
+function App() {
+  
+  return (
+    <Router>
+      <AppContent />
+    </Router>
 
     
   );

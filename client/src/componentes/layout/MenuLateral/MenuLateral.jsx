@@ -107,7 +107,7 @@ function MenuLateral() {
           </li>
           <li className="nav-item side-item w-100">
             <Link
-              to="/mapa"
+              to="/mapa_reservas"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
             >
               <FontAwesomeIcon
