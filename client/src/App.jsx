@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap'; // Importação do React Bootstrap para container
+import { Container } from 'react-bootstrap';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -21,8 +21,8 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
-// Importação do componente de Quarto (adicionando à lista de acomodações)
-import RoomList from './componentes/home/RoomList'; // Novo componente para lista de quartos
+// Importação da página Home
+import Home from './componentes/home/Home';
 
 function App() {
   return (
@@ -31,6 +31,9 @@ function App() {
         <MenuLateral /> {/* Menu lateral adicionado */}
         <Container className="content flex-grow-1">
           <Routes>
+            {/* Rota para Home */}
+            <Route path="/home" element={<Home />} />
+
             {/* Rotas para funcionários */}
             <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
             <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
@@ -40,9 +43,6 @@ function App() {
             <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
             <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} />
             <Route path="/editar_acomodacao/:id" element={<CadastroAcomodacao />} />
-
-            {/* Novo: Lista de quartos */}
-            <Route path='/lista_quartos' element={<RoomList />} /> {/* Nova rota para lista de quartos */}
 
             {/* Rotas para hóspedes */}
             <Route path='/cadastro_hospede' element={<CadastroHospede />} />
