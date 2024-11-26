@@ -4,6 +4,7 @@ import { Form, Button } from "react-bootstrap"; // Componentes do Bootstrap
 import { useNavigate, useParams } from "react-router-dom"; // Hooks para navegação e parâmetros de rota
 import FormReserva from "./FormReserva"; // Componente personalizado para o formulário de reserva
 import Alertas from "../layout/Alertas"; // Componente de alerta para mensagens de feedback
+import { txtReserva } from '../../services/txtReserva.js'
 
 function FormCadReserva({ handleSubmit }) {
   const navigate = useNavigate(); // Hook para redirecionamento de página
@@ -166,7 +167,8 @@ function FormCadReserva({ handleSubmit }) {
 
   const submit = (e) => {
     e.preventDefault(); // Previne o comportamento padrão do formulário (recarregar a página)
-
+    console.log(formData);
+    txtReserva(formData);
     // Verifica se as datas são válidas antes de continuar
     if (!isDataValida()) {
       return;

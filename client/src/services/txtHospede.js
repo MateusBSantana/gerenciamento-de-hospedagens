@@ -8,23 +8,13 @@ export const txtHospede = (hospedeData) => {
   
   INFORMAÇÕES DO HÓSPEDE:
   -------------------------
-  Nome Completo:        ${hospedeData.nome_hospede}
+  Nome Do Hospede:        ${hospedeData.nome_hospede}
   CPF:                  ${hospedeData.cpf}
   RG:                   ${hospedeData.rg}
   Data de Nascimento:   ${hospedeData.data_nascimento}
   Sexo:                 ${hospedeData.sexo}
   Profissão:            ${hospedeData.profissao}
   Observações:          ${hospedeData.observacoes}
-  
-  ENDEREÇO:
-  -------------------------
-  Rua:                  ${hospedeData.rua}
-  Número:               ${hospedeData.numero}
-  Bairro:               ${hospedeData.bairro}
-  Complemento:          ${hospedeData.complemento}
-  Cidade:               ${hospedeData.cidade}
-  Estado:               ${hospedeData.estado}
-  CEP:                  ${hospedeData.cep}
   
   CONTATOS:
   -------------------------
