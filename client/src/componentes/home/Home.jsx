@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Row, Badge } from 'react-bootstrap';
-import { FaDoorOpen } from 'react-icons/fa'; // Importando o ícone de porta
+import { FaDoorOpen } from 'react-icons/fa'; // Ícone de porta
 import api from '../../services/api';
 import './Home.css';
 
@@ -45,56 +45,60 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Quartos</h1>
-      <div className="d-flex justify-content-between mb-4">
-        <Badge bg="success" className="p-3 text-light">
+    <div className="container-fluid">
+      <h1 className="text-center mb-4">Quartos</h1>
+      <div className="d-flex justify-content-center mb-4 flex-wrap">
+        <Badge bg="success" className="p-3 text-light mx-2 mb-2">
           Disponível: {statusQuartos.disponivel}
         </Badge>
-        <Badge bg="warning" className="p-3 text-light">
+        <Badge bg="warning" className="p-3 text-light mx-2 mb-2">
           Reservado: {statusQuartos.reservado}
         </Badge>
-        <Badge bg="danger" className="p-3 text-light">
+        <Badge bg="danger" className="p-3 text-light mx-2 mb-2">
           Ocupado: {statusQuartos.ocupado}
         </Badge>
-        <Badge bg="primary" className="p-3 text-light">
+        <Badge bg="primary" className="p-3 text-light mx-2 mb-2">
           Limpeza: {statusQuartos.limpeza}
         </Badge>
-        <Badge bg="secondary" className="p-3 text-light">
+        <Badge bg="secondary" className="p-3 text-light mx-2 mb-2">
           Bloqueado: {statusQuartos.bloqueado}
         </Badge>
       </div>
 
-      <Row>
+      <Row className="gy-4 justify-content-center custom-row">
         {acomodacoes.map((acomodacao) => (
-          <Col key={acomodacao.id} md={3} className="mb-4">
-            <Card className="card">
+          <Col key={acomodacao.id} xs={12} sm={6} md={3} className="d-flex justify-content-center custom-col">
+            <Card className="card w-100 h-100">
               <Card.Body className="d-flex flex-column justify-content-between text-center">
                 <Card.Title
                   className="card-title"
                   style={{
                     border: `2px solid ${getStatusStyles(acomodacao.status).borderColor}`,
                     backgroundColor: getStatusStyles(acomodacao.status).backgroundColor,
-                    padding: '10px',
+                    padding: '8px',
                     color: 'white',
+                    fontSize: '1.1rem',
                   }}
                 >
                   {acomodacao.nome}
                 </Card.Title>
-                <Button 
-                  className="card-button mt-auto" 
+                <Button
+                  className="card-button mt-auto"
                   style={{
-                    backgroundColor: '#b0b0b0', // Cor de fundo cinza
-                    borderColor: '#808080', // Cor da borda cinza
-                    color: 'white', // Cor do texto branco
+                    backgroundColor: '#b0b0b0',
+                    borderColor: '#808080',
+                    color: 'white',
                     fontWeight: 'bold',
                     cursor: 'pointer',
-                    transition: 'background-color 0.3s', // Transição suave para o hover
+                    transition: 'background-color 0.3s',
+                    height: '40px',
+                    fontSize: '0.9rem',
+                    padding: '10px',
                   }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#007bff'} // Altera o fundo para azul ao passar o mouse
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#b0b0b0'} // Retorna para cinza ao sair
+                  onMouseEnter={(e) => (e.target.style.backgroundColor = '#007bff')}
+                  onMouseLeave={(e) => (e.target.style.backgroundColor = '#b0b0b0')}
                 >
-                  <FaDoorOpen style={{ marginRight: '8px' }} /> Hospedar {/* Ícone de porta */}
+                  <FaDoorOpen style={{ marginRight: '8px' }} /> Hospedar
                 </Button>
               </Card.Body>
             </Card>
