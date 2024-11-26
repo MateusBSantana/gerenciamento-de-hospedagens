@@ -24,6 +24,9 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
+
+import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
+
 function AppContent() {
   const location = useLocation();
 
@@ -57,6 +60,11 @@ function AppContent() {
           <Route path='/cadastro_reserva' element={<CadastroReserva />} />
           <Route path='/tabela_reserva' element={<TabelaReservas />} />
           <Route path='/cadastro_reserva/:id' element={<CadastroReserva />} />
+
+
+          <Route path="/mapa_reservas" element={<MapaReservas/>} />
+
+
         </Routes>
       </div>
     </div>
