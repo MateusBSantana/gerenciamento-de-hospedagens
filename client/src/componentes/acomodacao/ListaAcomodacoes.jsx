@@ -123,9 +123,20 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
                 <td>{acomodacao.status}</td>
                 <td>{getComodidades(acomodacao)}</td>
                 <td>
-                  <Button variant="primary" size="sm" onClick={() => handleEditar(acomodacao.id)}>
-                    Editar
-                  </Button>
+                   <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    if (textoBotao === 'Selecionar') {
+                      onSelectAcomodacao(acomodacao); // Chama a função onSelectAcomodacao com a acomodação selecionada
+                    } else if (textoBotao === 'Editar') {
+                      navigate(`/editar_acomodacao/${acomodacao.id}`); // Navega para a página de edição de acomodação
+                    }
+                  }}
+                  className="me-2"
+                >
+                  {textoBotao}
+                </Button>
                 </td>
               </tr>
             ))

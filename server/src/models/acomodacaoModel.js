@@ -129,7 +129,7 @@ export async function getAcomodacoesDisponiveis(dataInicio, dataFim) {
     // A consulta
     const sql = `
     SELECT a.*
-FROM acomodacoes a
+FROM acomodacao a
 WHERE NOT EXISTS (
     SELECT 1
     FROM reservas r
