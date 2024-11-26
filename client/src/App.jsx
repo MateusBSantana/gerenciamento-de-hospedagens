@@ -1,8 +1,9 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-// Importação dos componentes para Login
+// Importação dos componentes
 import Login from './componentes/pages/Login';
+import Home from './componentes/home/Home';  // Importando a página Home
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -33,7 +34,10 @@ function AppContent() {
       <div className="content flex-grow-1">
         <Routes>
           <Route path='/login' element={<Login />} />
-
+          
+          {/* Rota para a página inicial */}
+          <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
+          
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
           <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
@@ -60,13 +64,10 @@ function AppContent() {
 }
 
 function App() {
-  
   return (
     <Router>
       <AppContent />
     </Router>
-
-    
   );
 }
 

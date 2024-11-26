@@ -1,54 +1,51 @@
-/* Estilo do título do card */
-.card-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  text-align: center;
-  margin: 0; /* Remove margens para evitar espaçamento extra */
-  border-radius: 10px; /* Bordas arredondadas em todos os lados */
-  padding: 5px 10px; /* Ajusta o padding para não grudar nas bordas */
-  word-wrap: break-word; /* Permite quebra de linha */
-  overflow: hidden; /* Garante que o título não saia do card */
-  text-overflow: ellipsis; /* Texto longo será cortado com "..." */
-  border: 2px solid #2c3e50; /* Borda em todos os lados do título */
-  background-color: #ffffff; /* Fundo branco para o título */
-}
-
 /* Estilo geral do card */
 .card {
-  width: 100%; /* Garante que o card ocupe toda a largura do contêiner pai */
-  max-width: 600px; /* Largura máxima do card */
-  margin: auto; /* Centraliza o card */
+  width: 100%; /* O card ocupa toda a largura do contêiner pai */
+  max-width: 90%; /* O card ocupa no máximo 90% da largura do contêiner */
+  margin: 10px; /* Adiciona um pouco de espaçamento entre os cards */
   padding: 0; /* Remove padding interno para alinhar o título com as bordas do card */
-  box-sizing: border-box; /* Inclui o padding no cálculo da largura */
-  border: 2px solid #2c3e50; /* Borda externa do card */
-  border-radius: 10px; /* Bordas arredondadas */
+  box-sizing: border-box; /* Ajuste de box-sizing para incluir padding no cálculo da largura */
+  border: 2px solid #2c3e50; /* Borda do card */
+  border-radius: 15px; /* Bordas arredondadas */
   background-color: #ffffff; /* Fundo branco */
   display: flex; /* Flexbox */
   flex-direction: column; /* Organiza conteúdo em coluna */
   justify-content: flex-start; /* Alinha conteúdo no topo */
-  align-items: center; /* Alinha itens no centro horizontal */
-  min-height: 200px; /* Altura mínima */
-  height: 250px; /* Altura fixa para uniformidade */
-  transition: all 0.3s ease; /* Transição suave */
-  overflow: hidden; /* Garante que o conteúdo extra não transborde */
+  align-items: center; /* Centraliza itens horizontalmente */
+  min-height: 200px; /* Altura mínima para garantir que o card não fique muito pequeno */
+  height: 250px; /* Ajusta a altura para ser mais compacta */
+  transition: all 0.3s ease; /* Transição suave para transformações */
+  overflow: hidden; /* Garante que o conteúdo não transborde */
 }
 
-/* Responsividade para ajustar o card em telas menores */
+/* Responsividade para ajustar o card em telas médias */
+@media (max-width: 1200px) {
+  .card {
+    max-width: 80%; /* O card ocupa no máximo 80% da largura para telas médias */
+    height: 300px; /* Ajusta a altura para ser menor */
+  }
+}
+
+/* Responsividade para telas menores */
 @media (max-width: 991px) {
   .card {
-    max-width: 90%; /* O card ocupa 90% da largura */
+    max-width: 75%; /* O card ocupa no máximo 75% da largura para telas menores */
+    height: 270px; /* Ajusta a altura para uma proporção mais compacta */
   }
 }
 
+/* Responsividade para telas pequenas */
 @media (max-width: 767px) {
   .card {
-    max-width: 80%; /* O card ocupa 80% da largura */
+    max-width: 70%; /* O card ocupa no máximo 70% da largura da tela para dispositivos ainda menores */
+    height: 220px; /* Ajusta a altura para que os cards não fiquem muito grandes */
   }
 }
 
-/* Ajustes para telas menores */
+/* Responsividade para telas muito pequenas */
 @media (max-width: 575px) {
   .card {
-    max-width: 100%; /* O card ocupa toda a largura */
+    max-width: 90%; /* O card ocupa 90% da largura da tela em dispositivos muito pequenos */
+    height: 200px; /* Ajusta a altura para telas muito pequenas */
   }
 }

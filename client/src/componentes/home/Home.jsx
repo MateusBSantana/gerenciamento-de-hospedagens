@@ -45,38 +45,40 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Quartos</h1>
-      <div className="d-flex justify-content-between mb-4">
-        <Badge bg="success" className="p-3 text-light">
+    <div className="container-fluid">
+      <h1 className="text-center mb-4">Quartos</h1> {/* Título centralizado */}
+      <div className="d-flex justify-content-center mb-4 flex-wrap">
+        {/* Centralizando os badges */}
+        <Badge bg="success" className="p-3 text-light mx-2 mb-2">
           Disponível: {statusQuartos.disponivel}
         </Badge>
-        <Badge bg="warning" className="p-3 text-light">
+        <Badge bg="warning" className="p-3 text-light mx-2 mb-2">
           Reservado: {statusQuartos.reservado}
         </Badge>
-        <Badge bg="danger" className="p-3 text-light">
+        <Badge bg="danger" className="p-3 text-light mx-2 mb-2">
           Ocupado: {statusQuartos.ocupado}
         </Badge>
-        <Badge bg="primary" className="p-3 text-light">
+        <Badge bg="primary" className="p-3 text-light mx-2 mb-2">
           Limpeza: {statusQuartos.limpeza}
         </Badge>
-        <Badge bg="secondary" className="p-3 text-light">
+        <Badge bg="secondary" className="p-3 text-light mx-2 mb-2">
           Bloqueado: {statusQuartos.bloqueado}
         </Badge>
       </div>
 
-      <Row>
+      <Row className="gy-4">
         {acomodacoes.map((acomodacao) => (
-          <Col key={acomodacao.id} md={3} className="mb-4">
-            <Card className="card">
+          <Col key={acomodacao.id} md={4} lg={3} xl={3} className="mb-4 d-flex align-items-stretch">
+            <Card className="card w-100 h-100">
               <Card.Body className="d-flex flex-column justify-content-between text-center">
                 <Card.Title
                   className="card-title"
                   style={{
                     border: `2px solid ${getStatusStyles(acomodacao.status).borderColor}`,
                     backgroundColor: getStatusStyles(acomodacao.status).backgroundColor,
-                    padding: '10px',
+                    padding: '8px', // Diminui o padding
                     color: 'white',
+                    fontSize: '1.1rem', // Diminui o tamanho da fonte
                   }}
                 >
                   {acomodacao.nome}
@@ -90,6 +92,9 @@ const Home = () => {
                     fontWeight: 'bold',
                     cursor: 'pointer',
                     transition: 'background-color 0.3s', // Transição suave para o hover
+                    height: '40px', // Ajusta a altura do botão
+                    fontSize: '0.9rem', // Ajusta o tamanho da fonte
+                    padding: '10px', // Ajusta o padding do botão
                   }}
                   onMouseEnter={(e) => e.target.style.backgroundColor = '#007bff'} // Altera o fundo para azul ao passar o mouse
                   onMouseLeave={(e) => e.target.style.backgroundColor = '#b0b0b0'} // Retorna para cinza ao sair
