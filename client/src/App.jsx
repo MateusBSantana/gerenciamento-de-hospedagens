@@ -1,9 +1,9 @@
-// src/App.jsx
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-// Importação dos componentes para Login
+// Importação dos componentes
 import Login from './componentes/pages/Login';
+import Home from './componentes/home/Home';  // Importando a página Home
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -24,6 +24,9 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
+
+import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
+
 function AppContent() {
   const location = useLocation();
 
@@ -34,7 +37,10 @@ function AppContent() {
       <div className="content flex-grow-1">
         <Routes>
           <Route path='/login' element={<Login />} />
-
+          
+          {/* Rota para a página inicial */}
+          <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
+          
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
           <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
@@ -54,6 +60,11 @@ function AppContent() {
           <Route path='/cadastro_reserva' element={<CadastroReserva />} />
           <Route path='/tabela_reserva' element={<TabelaReservas />} />
           <Route path='/cadastro_reserva/:id' element={<CadastroReserva />} />
+
+
+          <Route path="/mapa_reservas" element={<MapaReservas/>} />
+
+
         </Routes>
       </div>
     </div>
@@ -61,13 +72,10 @@ function AppContent() {
 }
 
 function App() {
-  
   return (
     <Router>
       <AppContent />
     </Router>
-
-    
   );
 }
 

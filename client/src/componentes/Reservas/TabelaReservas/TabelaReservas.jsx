@@ -52,6 +52,7 @@ function TabelaReservas() {
       }
       const consulta = await resposta.json();
       setReservas(consulta);
+      console.log(consulta)
       setRemoveLoading(true);
     } catch (error) {
       console.log('Erro ao buscar Reservas', error);

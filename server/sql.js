@@ -52,7 +52,8 @@
 //     agencia VARCHAR(10), 
 //     conta VARCHAR(20),   
 //     status_funcionario VARCHAR(20), 
-//     observacoes_adicionais VARCHAR(500),  
+//     observacoes_adicionais VARCHAR(500),
+//     senha VARCHAR(255),  
 //     PRIMARY KEY (id_funcionario)
 // );
 

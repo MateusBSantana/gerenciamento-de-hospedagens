@@ -1,0 +1,67 @@
+/* Estilo geral do card */
+.card {
+  margin: 0 auto; /* Alinhamento centralizado */
+  max-width: 90%; /* Largura máxima do card */
+  border: 2px solid #2c3e50; /* Borda do card */
+  border-radius: 20px; /* Bordas arredondadas */
+  background-color: #ffffff; /* Fundo branco */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Organização em coluna */
+  justify-content: flex-start; /* Conteúdo alinhado ao topo */
+  align-items: center; /* Centralização horizontal */
+  min-height: 250px; /* Altura mínima */
+  height: 250px; /* Altura padrão */
+  padding: 0; /* Remove padding interno */
+  transition: all 0.3s ease; /* Transição suave */
+  overflow: hidden; /* Previne overflow */
+}
+
+/* Estilo do título com bordas arredondadas e coloridas */
+.card-title {
+  padding: 8px;
+  color: white;
+  font-size: 1rem;
+  border-radius: 15px; /* Bordas arredondadas em todos os lados */
+  border: 2px solid transparent; /* Cor da borda será dinâmica */
+  transition: all 0.3s ease; /* Transição suave */
+  text-align: center;
+  width: 100%; /* Para evitar que o título ultrapasse as bordas do card */
+}
+
+/* Espaçamento entre colunas */
+.custom-row {
+  gap: 1px; /* Espaçamento entre cartões */
+}
+
+.custom-col {
+  padding: 0 8px; /* Ajusta espaçamento horizontal */
+}
+
+/* Responsividade para ajustar o card em diferentes telas */
+@media (max-width: 1200px) {
+  .card {
+    max-width: 80%;
+    height: 300px;
+  }
+}
+
+@media (max-width: 991px) {
+  .card {
+    max-width: 75%;
+    height: 270px;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    max-width: 70%;
+    height: 220px;
+  }
+}
+
+@media (max-width: 575px) {
+  .card {
+    max-width: 90%;
+    height: 200px;
+  }
+}
