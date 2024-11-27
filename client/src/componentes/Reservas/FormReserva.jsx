@@ -55,6 +55,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     // Exibe o nome do hospede para o usuário enquanto guarda o ID
     setNomeHospedeExibido(fk_hospede.nome_hospede);
     setMostrarTabelaHospedes(false);
+    setFormData((prev) => ({
+      ...prev,
+      nome_hospede: fk_hospede.nome_hospede}))
   };
 
 
@@ -67,6 +70,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     handleChange({ target: { name: "fk_acomodacao", value: fk_acomodacao.id } });
     setNomeAcomodacaoExibida(fk_acomodacao.nome);
     setMostrarTabelaAcomodacoes(false);
+    setFormData((prev) => ({
+      ...prev,
+      nome: fk_acomodacao.nome}))
   };
 
 

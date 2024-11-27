@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tab, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { txtHospede } from '../../../services/txt.js'; 
+import { txtHospede } from '../../../services/txtHospede.js'; 
 import './FormCadHospedes.css';
 import FormHospede from './FormHospedes';
 
