@@ -1,101 +1,65 @@
-/* Menu lateral */
 #sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
   border-radius: 0px 18px 18px 0px;
-  position: fixed;  /* Fixando o menu na tela */
-  top: 0;
-  left: 0;
-  background-color: #006bb4;
-  transition: all 0.3s ease; /* Reduzi a transição para 0.3s */
-  width: 65px; /* Largura fixa para desktop */
-  z-index: 1000;  /* Garante que o menu fique acima do conteúdo */
+  position: relative;
+  transition: all 0.6s ease;
+  min-width: 60px;
 }
 
-/* Itens do menu */
 .side-item {
-  border: 8px solid transparent;
+  border: 8px;
   padding: 4px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
 }
 
-.side-item:hover {
+.side-item:hover:not(active), #btn:hover {
   background-color: #4f46e5;
 }
 
-/* Descrição dos itens */
+#sidebar.open-sidebar #open_btn {
+  transform: rotate(180deg);
+}
+
 .item-description {
   width: 0px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 14px;
-  transition: width 0.3s; /* Reduzi a transição para 0.3s */
+  transition: width 0.6s;
   height: 20px;
   max-width: 100px;
 }
 
-/* Expande a descrição quando o menu está aberto */
 #sidebar.open-sidebar .item-description {
-  width: 150px; /* Aumentei a largura da descrição para mais visibilidade */
+  width: 80px;
 }
 
-/* Transformação do botão */
-#sidebar.open-sidebar #open_btn {
-  transform: rotate(180deg); /* Gira o botão ao abrir */
-}
-
-/* Responsividade para telas pequenas */
 @media (max-width: 600px) {
   #sidebar {
     position: absolute;
     z-index: 1000;
-    transform: translateX(-100%); /* Menu fora da tela */
-    width: 200px;  /* Largura maior para telas pequenas */
+    transform: translateX(-100%);
   }
 
   #sidebar.open-sidebar {
-    transform: translateX(0);  /* Mostra o menu */
+    transform: translateX(0);
     width: 200px;
-  }
-
-  #open_btn {
-    right: -25px; /* Ajustei o posicionamento do botão para não sair da tela */
+    min-width: 200px;
   }
 }
 
-/* Ajustes para telas maiores */
 @media (min-width: 600px) {
   #sidebar {
-    position: fixed;
-    width: 65px; /* Menor largura do menu */
+    position: relative;
+    width: 65px; 
   }
 
   #sidebar.open-sidebar {
     width: 200px;
+    min-width: 200px;
   }
-}
-
-/* Botão de abrir/fechar */
-#open_btn {
-  position: absolute;
-  top: 10px;
-  right: -25px;  /* Ajustei o botão para não ficar fora da tela */
-  background-color: #4f46e5;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease;
-  z-index: 1100; /* Garante que o botão fique acima do conteúdo */
-}
-
-#open_btn:hover {
-  transform: rotate(180deg); /* Girar o botão ao passar o mouse */
 }
