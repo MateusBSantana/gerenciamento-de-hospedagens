@@ -117,7 +117,7 @@ export async function getUserByLoginPassword(cpf) {
     const conexao = mysql.createPool(db);
 
     // Buscar o funcionário pelo CPF
-    const sql = 'SELECT id_funcionario, nome_funcionario, cpf FROM funcionarios WHERE cpf = ?';
+    const sql = 'SELECT id_funcionario, nome_funcionario, cpf, cargo FROM funcionarios WHERE cpf = ?';
     const params = [cpf];
 
     const [resposta] = await conexao.query(sql, params);
@@ -135,6 +135,7 @@ export async function getUserByLoginPassword(cpf) {
       id_funcionario: resposta[0].id_funcionario,
       nome_funcionario: resposta[0].nome_funcionario,
       cpf: resposta[0].cpf,
+      cargo: resposta[0].cargo
     }];
   } catch (error) {
     console.log('Erro ao realizar login:', error);

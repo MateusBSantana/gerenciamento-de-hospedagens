@@ -24,8 +24,10 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
-
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
+
+
+import TelaAjustes from './componentes/ajustes/telaAjustes';
 
 function AppContent() {
   const location = useLocation();
@@ -63,6 +65,8 @@ function AppContent() {
 
 
           <Route path="/mapa_reservas" element={<MapaReservas/>} />
+
+          <Route path="/ajustes" element={<TelaAjustes/>} />
 
 
         </Routes>
