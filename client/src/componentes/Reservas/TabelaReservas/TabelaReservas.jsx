@@ -1,35 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import styles from './TabelaReserva.module.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Alertas from '../../layout/Alertas';
 
 function TabelaReservas() {
   const [reservas, setReservas] = useState([]);
   const [removeLoading, setRemoveLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedReserva, setSelectedReserva] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Estado para configurar as mensagens de alerta
   const [alertProps, setAlertProps] = useState({
     show: false,
     message: "",
     variant: "danger",
   });
 
-  // Função para exibir alertas com mensagem e estilo
   const showAlert = (message, variant) => {
     setAlertProps({ show: true, message, variant });
-    // Oculta o alerta automaticamente após 5 segundos
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
-  // Captura o alerta passado pelo navigate, apenas na montagem inicial
   useEffect(() => {
     const alertData = location.state?.alert;
     if (alertData) {
       showAlert(alertData.message, alertData.type);
-      navigate(location.pathname, { replace: true }); // Limpa o estado após exibir o alerta
+      navigate(location.pathname, { replace: true });
     }
   }, [location, navigate]);
 
@@ -52,7 +53,6 @@ function TabelaReservas() {
       }
       const consulta = await resposta.json();
       setReservas(consulta);
-      console.log(consulta)
       setRemoveLoading(true);
     } catch (error) {
       console.log('Erro ao buscar Reservas', error);
@@ -63,17 +63,7 @@ function TabelaReservas() {
     setSearchTerm(e.target.value);
   };
 
-  const handleStatusAction = async (id, statusAtual) => {
-    // Determina o novo status baseado no atual
-    let novoStatus;
-    if (statusAtual === 'reservado') {
-      novoStatus = 'cancelada';
-    } else if (statusAtual === 'hospedado') {
-      novoStatus = 'finalizada';
-    } else {
-      return; // Caso nenhum dos estados seja aplicável, não faz nada
-    }
-
+  const handleStatusAction = async (id, novoStatus) => {
     try {
       const resposta = await fetch(`http://localhost:5000/reservas/${id}/status`, {
         method: 'PUT',
@@ -87,17 +77,20 @@ function TabelaReservas() {
         throw new Error(`Erro ao atualizar status da reserva ${id}`);
       }
 
-      // Atualize a lista de reservas após a alteração
       carregarReservas();
+      setSelectedReserva(null);
     } catch (error) {
       console.error(`Erro ao atualizar status da reserva ${id}:`, error);
     }
   };
 
-  const filteredReservas = reservas.filter((reserva) =>
-    (reserva.id_reserva && reserva.id_reserva.toString().includes(searchTerm)) ||
-    (reserva.cpf && reserva.cpf.includes(searchTerm))
-  );
+  const filteredReservas = reservas.filter((reserva) => {
+    const matchesSearch =
+      (reserva.id_reserva && reserva.id_reserva.toString().includes(searchTerm)) ||
+      (reserva.cpf && reserva.cpf.includes(searchTerm));
+    const matchesStatus = !statusFilter || reserva.status_reserva === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   function formatDateToDash(isoString) {
     const date = new Date(isoString);
@@ -107,94 +100,182 @@ function TabelaReservas() {
     return `${day}-${month}-${year}`;
   }
 
-  return (
-    <div className="d-flex">
-    {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
-    <Alertas
-        show={alertProps.show}
-        variant={alertProps.variant}
-        message={alertProps.message}
-        onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
-      />
-      <div className="flex-grow-1 p-">
-        <h2 className="text-center">Lista de Reservas</h2>
+  const openConfirmationModal = (action, reserva) => {
+    setConfirmAction(() => action);
+    setSelectedReserva(reserva);
+    setShowConfirmation(true);
+  };
 
-        <div className="d-flex mb-3 mx-auto" style={{ width: '40%', textAlign: 'center' }}>
+  const handleConfirmAction = () => {
+    if (confirmAction) confirmAction();
+    setShowConfirmation(false);
+  };
+
+  return (
+    <div className="container-fluid border rounded p-3 shadow-lg"
+      style={{
+        height: "94vh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        width: "100%", // Garante que o contêiner ocupe toda a largura
+      }}
+    >
+      <div className="container py- w-100"
+        style={{
+          maxWidth: "100%", // Remove limite de largura
+          padding: "0", // Remove padding interno lateral
+        }}
+      >
+        <Alertas
+          show={alertProps.show}
+          variant={alertProps.variant}
+          message={alertProps.message}
+          onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
+        />
+        <h2 className="text-center">Lista de Reservas</h2>
+        <div className="d-flex mb-3 justify-content-center">
           <input
             type="text"
-            placeholder="Pesquisar Reserva pelo Número ou CPF do Hóspede"
+            placeholder="Pesquisar Reserva pelo Número da Reserva ou CPF do Hóspede"
             value={searchTerm}
             onChange={handleSearchChange}
-            className="form-control me-2"
-            style={{ flex: '1' }}
+            className="form-control me-2 w-50"
           />
           <Link to="/cadastro_reserva">
             <button className="btn btn-primary">Nova Reserva</button>
           </Link>
         </div>
-
-        {removeLoading && reservas.length > 0 && filteredReservas.length === 0 && (
-          <h1 className="mt-3 mx-auto" style={{ width: '50%', textAlign: 'center' }}>
-            Não há reservas disponíveis
-          </h1>
-        )}
-
-        <div className={styles.Reservas}>
-          <table className={`${styles.TabelaReservas} table-bordered mt-3`}>
-            <thead>
-              <tr>
-                <th>Número da Reserva</th>
-                <th>Hóspede</th>
-                <th>CPF</th>
-                <th>Data Entrada</th>
-                <th>Data Saída</th>
-                <th>Situação</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredReservas.map((reserva) => (
-                <tr key={reserva.id_reserva}>
-                  <td>{reserva.id_reserva}</td>
-                  <td>{reserva.nome_hospede}</td>
-                  <td>{reserva.cpf}</td>
-                  <td>{formatDateToDash(reserva.data_checkin)}</td>
-                  <td>{formatDateToDash(reserva.data_checkout)}</td>
-                  <td>{reserva.status_reserva}</td>
-                  <td className="bg-light">
-                    <Link
-                      className="btn btn-primary btn-sm me-2"
-                      to={`/cadastro_reserva/${reserva.id_reserva}`}
-                    >
-                      {reserva.status_reserva === 'cancelada' || reserva.status_reserva === 'finalizada'
-                        ? 'Visualizar Reserva'
-                        : 'Editar'}
-                    </Link>
-                    {reserva.status_reserva === 'reservado' && (
-                      <button
-                        className="btn btn-sm btn-warning"
-                        onClick={() => handleStatusAction(reserva.id_reserva, reserva.status_reserva)}
-                      >
-                        Cancelar Reserva
-                      </button>
-                    )}
-                    {reserva.status_reserva === 'hospedado' && (
-                      <button
-                        className="btn btn-sm btn-success"
-                        onClick={() => handleStatusAction(reserva.id_reserva, reserva.status_reserva)}
-                      >
-                        Finalizar Reserva
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="d-flex align-items-center mb-3 justify-content-center">
+          <span className="me-3">Filtre Reservas por seus Status: </span>
+          <div className="d-flex gap-2">
+            <button className="btn btn-secondary" onClick={() => setStatusFilter('')}>Todas</button>
+            <button className="btn btn-info" onClick={() => setStatusFilter('reservado')}>Reservado</button>
+            <button className="btn btn-primary" onClick={() => setStatusFilter('hospedado')}>Hospedado</button>
+            <button className="btn btn-warning" onClick={() => setStatusFilter('cancelada')}>Cancelada</button>
+            <button className="btn btn-success" onClick={() => setStatusFilter('finalizada')}>Finalizada</button>
+          </div>
         </div>
+
+        <div
+          style={{
+            maxHeight: "500px",
+            overflowY: "auto",
+            width: "100%", // Expande o contêiner para a largura total
+          }}
+        ><table
+        className="table table-bordered table-hover mx-auto"
+        style={{
+          width: "95%", // Define a largura da tabela
+          tableLayout: "fixed", // Garante que as colunas se ajustem proporcionalmente
+        }}
+      >
+        <thead className="table-primary">
+          <tr>
+            <th>Número da Reserva</th>
+            <th>Hóspede</th>
+            <th>CPF</th>
+            <th>Acomodação</th>
+            <th>Data Entrada</th>
+            <th>Data Saída</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredReservas.map((reserva) => (
+            <tr
+              key={reserva.id_reserva}
+              onClick={() => setSelectedReserva(reserva)}
+              className={selectedReserva?.id_reserva === "table-primary" ? "table-primary" : ""}
+              style={{ cursor: "pointer" }}
+            >
+              <td>{reserva.id_reserva}</td>
+              <td>{reserva.nome_hospede || "Nome não informado"}</td>
+              <td>{reserva.cpf}</td>
+              <td>{reserva.nome_acomodacao || "Acomodação não informada"}</td>
+              <td>{formatDateToDash(reserva.data_checkin)}</td>
+              <td>{formatDateToDash(reserva.data_checkout)}</td>
+              <td>{reserva.status_reserva}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      
+        </div>
+
+
+
+        {selectedReserva && (
+          <div
+            className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-5 w-25"
+            style={{ zIndex: 1050 }}>
+            <button
+              type="button"
+              className="btn btn-danger position-absolute top-0 end-0 m-2"
+              aria-label="Fechar"
+              onClick={() => setSelectedReserva(null)}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <h4 className="text-center mb-4">Opções para a Reserva #{selectedReserva.id_reserva}</h4>
+            <p><strong>Hóspede:</strong> {selectedReserva.nome_hospede}</p>
+            <p><strong>Data Entrada:</strong> {formatDateToDash(selectedReserva.data_checkin)}</p>
+            <p><strong>Data Saída:</strong> {formatDateToDash(selectedReserva.data_checkout)}</p>
+            <p><strong>Status:</strong> {selectedReserva.status_reserva}</p>
+            <div className="d-flex flex-column align-items-center gap-2 mt-3 w-100">
+              <Link
+                className="btn btn-primary w-100"
+                to={`/cadastro_reserva/${selectedReserva.id_reserva}`}>
+                {selectedReserva.status_reserva === 'cancelada' || selectedReserva.status_reserva === 'finalizada'
+                  ? 'Visualizar Reserva'
+                  : 'Editar'}
+              </Link>
+              {selectedReserva.status_reserva === 'reservado' && (
+                <>
+                  <button
+                    className="btn btn-warning w-100"
+                    onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'cancelada'), selectedReserva)}>
+                    Cancelar Reserva
+                  </button>
+                  <button
+                    className="btn btn-info w-100"
+                    onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'hospedado'), selectedReserva)}>
+                    Hospedar
+                  </button>
+                </>
+              )}
+              {selectedReserva.status_reserva === 'hospedado' && (
+                <button
+                  className="btn btn-success w-100"
+                  onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'finalizada'), selectedReserva)}>
+                  Finalizar Reserva
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+        {showConfirmation && (
+          <div
+            className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-4 w-50"
+            style={{ zIndex: 1060 }}>
+            <h5 className="text-center mb-3">
+              Deseja realmente {confirmAction?.toString().includes('hospedado') ? 'hospedar' : selectedReserva?.status_reserva === 'reservado' ? 'cancelar' : 'finalizar'} esta reserva?
+            </h5>
+            <div className="text-center">
+              <button
+                className="btn btn-secondary me-3"
+                onClick={() => setShowConfirmation(false)}>
+                Voltar
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={handleConfirmAction}>
+                Sim
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
 export default TabelaReservas;

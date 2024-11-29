@@ -131,24 +131,34 @@ export async function updateReserva(reserva, id) {
 // Alterando o status de uma reserva
 export async function updateStatusReserva(id, novoStatus) {
   console.log("ReservaModel: updateStatusReserva");
-  const conexao = mysql.createPool(db);
-
+  
+  const conexao = mysql.createPool(db); // Configuração da conexão com o banco de dados
+  
   // SQL para atualizar o campo `status_reserva` da reserva com o ID especificado
   const sql = `UPDATE reservas SET status_reserva = ? WHERE id_reserva = ?`;
   const params = [novoStatus, id];
 
   try {
+    // Executa a consulta no banco de dados
     const [retorno] = await conexao.query(sql, params);
-    console.log("Atualizando status da reserva");
+    console.log("Atualizando status da reserva no banco de dados");
 
+    // Verifica se a reserva foi encontrada e atualizada
     if (retorno.affectedRows < 1) {
-      return [404, { mensagem: "Reserva não encontrada" }];
+      console.log(`Nenhuma reserva encontrada com o ID: ${id}`);
+      return [404, { mensagem: "Reserva não encontrada ou nenhum registro atualizado." }];
     }
 
-    return [200, { mensagem: `Status da reserva atualizado para '${novoStatus}'` }];
+    // Retorna sucesso com mensagem
+    return [200, { mensagem: `Status da reserva atualizado para '${novoStatus}' com sucesso.` }];
   } catch (error) {
-    console.error('Erro ao atualizar status da reserva:', error);
-    return [500, error];
+    console.error('Erro ao atualizar status da reserva:', error.message);
+
+    // Retorna erro com detalhes
+    return [500, { mensagem: 'Erro ao atualizar status da reserva.', detalhes: error.message }];
+  } finally {
+    // Fecha a conexão do pool
+    await conexao.end();
   }
 }
 

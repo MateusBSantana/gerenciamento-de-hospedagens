@@ -92,23 +92,28 @@ export async function atualizandoReserva(req, res) {
   }
 }
 
-// Atualizando o status de uma reserva para "cancelada" ou "finalizada"
+// Controlador para alterar o status da reserva
 export async function alterarStatusReserva(req, res) {
-  const { id } = req.params;
+  const id = req.params.id;
   const { novoStatus } = req.body;
 
-  // Validação para permitir apenas os status "cancelada" ou "finalizada"
-  if (!['cancelada', 'finalizada'].includes(novoStatus)) {
-    return res.status(400).json({ mensagem: 'Status inválido. Use "cancelada" ou "finalizada".' });
+  console.log(`Recebida requisição para alterar status da reserva ID: ${id} para ${novoStatus}`);
+
+  // Validação do campo `novoStatus`
+  const statusPermitidos = ['cancelada', 'finalizada', 'hospedado'];
+  if (!statusPermitidos.includes(novoStatus)) {
+    return res.status(400).json({ mensagem: `Status inválido. Use um dos seguintes: ${statusPermitidos.join(', ')}.` });
   }
 
   try {
-    // Presume-se que a função updateStatusReserva seja implementada corretamente
+    // Chama a função do modelo para atualizar o status
     const [status, resposta] = await updateStatusReserva(id, novoStatus);
+
+    // Retorna a resposta com o status apropriado
     res.status(status).json(resposta);
   } catch (error) {
-    console.error('Erro ao alterar o status da reserva:', error);
-    res.status(500).json({ mensagem: 'Erro ao alterar o status da reserva', erro: error.message });
+    console.error('Erro no controlador ao alterar o status da reserva:', error.message);
+    res.status(500).json({ mensagem: 'Erro interno ao processar a solicitação.', detalhes: error.message });
   }
 }
 
