@@ -30,18 +30,21 @@ import Dashboard from './componentes/Dashboard/Dashboard';
 // Importação do Mapa de Reservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
 
+
 function AppContent() {
   const location = useLocation();
 
   return (
     <div className="app-container d-flex">
       {/* Mostra o MenuLateral em todas as rotas, exceto na rota de login */}
-      {location.pathname !== '/login' && <MenuLateral />}
+      {location.pathname !== '/' && <MenuLateral />}
       <div className="content flex-grow-1">
         <Routes>
           {/* Rota para login */}
           <Route path='/login' element={<Login />} />
 
+          <Route path='/' element={<Login />} />
+          
           {/* Rota para a página inicial */}
           <Route path='/home' element={<Home />} />
 
@@ -70,6 +73,10 @@ function AppContent() {
 
           {/* Nova Rota para o Dashboard */}
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path="/mapa_reservas" element={<MapaReservas/>} />
+
+
+
         </Routes>
       </div>
     </div>

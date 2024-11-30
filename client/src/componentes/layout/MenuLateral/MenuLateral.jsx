@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button, Modal, Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./MenuLateral.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,161 +9,216 @@ import {
   faCalendar,
   faUserGroup,
   faMap,
-  faGear,
   faChevronRight,
   faRightFromBracket,
+  faGear, // Ícone para ajustes
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function MenuLateral() {
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState("Usuário"); // Estado para armazenar o nome do usuário
+  const [userCargo, setUserCargo] = useState(""); // Cargo do usuário
+  const [mostrarAjustes, setMostrarAjustes] = useState(false); // Controle de exibição do modal de ajustes
 
-  // Carrega o nome do usuário ao montar o componente
+  // Carrega as informações do usuário do localStorage ao montar o componente
   useEffect(() => {
-    const storedUserName = localStorage.getItem("userName"); // Obtém o nome do localStorage
+    const storedUserName = localStorage.getItem("userName"); // Obtém o nome do usuário
+    const storedUserCargo = localStorage.getItem("userCargo"); // Obtém o cargo do usuário
+
     if (storedUserName) {
       setUserName(storedUserName);
-      console.log(storedUserName);
+    }
+    if (storedUserCargo) {
+      setUserCargo(storedUserCargo);
     }
   }, []);
+
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen); // Alterna o estado do menu lateral
   };
 
   return (
-    <div
-      className={`d-flex flex-column bg-white vh-100 ${
-        isOpen ? "open-sidebar" : ""
-      }`}
-      id="sidebar"
-      style={{ minWidth: isOpen ? "200px" : "60px", height: "100vh" }}
-    >
+    <>
       <div
-        id="sidebar_content"
-        className="flex-grow-1 d-flex flex-column m-0"
-        style={{ backgroundColor: "#006bb4" }}
+        className={`d-flex flex-column bg-white vh-100 ${isOpen ? "open-sidebar" : ""}`}
+        id="sidebar"
+        style={{ minWidth: isOpen ? "200px" : "60px", height: "100vh" }}
       >
-        {/* Informações do usuário */}
         <div
-          id="user"
-          className="d-flex align-items-center justify-content-start text-center mb-5 mt-3 ms-3"
+          id="sidebar_content"
+          className="flex-grow-1 d-flex flex-column m-0"
+          style={{ backgroundColor: "#006bb4" }}
         >
-          <FontAwesomeIcon
-            icon={faUser}
-            style={{ fontSize: "25px", color: "#ffffff", paddingLeft: "10px" }}
-          />
+          {/* Informações do usuário */}
           <div
-            id="user_infos"
-            className="d-flex flex-column ms-0 align-items-start"
+            id="user"
+            className="d-flex align-items-center justify-content-start text-center mb-5 mt-3 ms-3"
           >
-            <span
-              className="item-description text-white ms-0"
-              style={{ fontSize: "12px" }}
+            <FontAwesomeIcon
+              icon={faUser}
+              style={{ fontSize: "25px", color: "#ffffff", paddingLeft: "10px" }}
+            />
+            <div
+              id="user_infos"
+              className="d-flex flex-column ms-0 align-items-start"
             >
-              {userName} {/* Exibe o nome do usuário */}
-            </span>
+              <span
+                className="item-description text-white ms-0"
+                style={{ fontSize: "12px" }}
+              >
+                {userName} {/* Exibe o nome do usuário */}
+              </span>
+            </div>
           </div>
+
+          {/* Itens do menu */}
+          <ul id="side_items" className="nav flex-column gap-2 flex-grow-1 align-items-start w-100">
+            <li className="nav-item side-item w-100">
+              <Link
+                to="/home"
+                className="nav-link text-white d-flex align-items-center justify-content-start hover-effect w-100"
+              >
+                <FontAwesomeIcon
+                  icon={faHouse}
+                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                />
+                <span className="item-description text-white">Home</span>
+              </Link>
+            </li>
+
+            <li className="nav-item side-item w-100">
+              <Link
+                to="/tabela_reserva"
+                className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              >
+                <FontAwesomeIcon
+                  icon={faCalendar}
+                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                />
+                <span className="item-description text-white">Reservas</span>
+              </Link>
+            </li>
+
+            <li className="nav-item side-item w-100">
+              <Link
+                to="/tabela_hospedes"
+                className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              >
+                <FontAwesomeIcon
+                  icon={faUserGroup}
+                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                />
+                <span className="item-description text-white">Hóspedes</span>
+              </Link>
+            </li>
+
+            <li className="nav-item side-item w-100">
+              <Link
+                to="/mapa_reservas"
+                className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              >
+                <FontAwesomeIcon
+                  icon={faMap}
+                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                />
+                <span className="item-description text-white">Mapa</span>
+              </Link>
+            </li>
+
+            {/* Link para ajustes, visível apenas para administradores */}
+            {userCargo === "administrador" && (
+              <li className="nav-item side-item w-100">
+                <button
+                  className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+                  onClick={() => setMostrarAjustes(true)} // Exibe o modal de ajustes
+                >
+                  <FontAwesomeIcon
+                    icon={faGear}
+                    style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                  />
+                  <span className="item-description text-white">Ajustes</span>
+                </button>
+              </li>
+            )}
+
+            <li className="nav-item side-item mt-auto w-100">
+              <Link
+                to="/"
+                className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              >
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                />
+                <span className="item-description text-white">Sair</span>
+              </Link>
+            </li>
+          </ul>
+
+          {/* Botão para abrir/fechar o menu */}
+          <button
+            id="open_btn"
+            className="btn btn-link text-white d-flex justify-content-center align-items-center p-2"
+            onClick={toggleMenu}
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "-40px",
+              backgroundColor: "#4f46e5",
+              borderRadius: "30%",
+              width: "50px",
+              height: "50px",
+              transition: "transform 0.3s",
+            }}
+          >
+            <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
+          </button>
         </div>
-        {/* Itens do menu */}
-        <ul
-          id="side_items"
-          className="nav flex-column gap-2 flex-grow-1 align-items-start w-100"
-        >
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/home"
-              className="nav-link text-white d-flex align-items-center justify-content-start hover-effect w-100"
-            >
-              <FontAwesomeIcon
-                icon={faHouse}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Home</span>
-            </Link>
-          </li>
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/tabela_reserva"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faCalendar}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Reservas</span>
-            </Link>
-          </li>
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/tabela_hospedes"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faUserGroup}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Hóspedes</span>
-            </Link>
-          </li>
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/mapa_reservas"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faMap}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Mapa</span>
-            </Link>
-          </li>
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/ajustes"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faGear}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Ajustes</span>
-            </Link>
-          </li>
-          <li className="nav-item side-item mt-auto w-100">
-            <Link
-              to="/login"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Logout</span>
-            </Link>
-          </li>
-        </ul>
-        {/* Botão para abrir/fechar o menu */}
-        <button
-          id="open_btn"
-          className="btn btn-link text-white d-flex justify-content-center align-items-center p-2"
-          onClick={toggleMenu}
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "-40px",
-            backgroundColor: "#4f46e5",
-            borderRadius: "30%",
-            width: "50px",
-            height: "50px",
-            transition: "transform 0.3s",
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
-          <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
-        </button>
       </div>
-    </div>
+
+      {/* Modal para Ajustes */}
+      <Modal show={mostrarAjustes} onHide={() => setMostrarAjustes(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Recursos do Administrador</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row>
+              <Col md={12} className="mb-3">
+                <Link to="/cadastro_funcionario">
+                  <Button variant="primary" className="w-100">Cadastrar Funcionários</Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/tabela_funcionarios">
+                  <Button variant="primary" className="w-100">Tabela Funcionários</Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/cadastro_acomodacao">
+                  <Button variant="primary" className="w-100">Cadastrar Acomodações</Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/listagem_acomodacoes">
+                  <Button variant="primary" className="w-100">Tabela Acomodações</Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/tabela_funcionarios">
+                  <Button variant="primary" className="w-100">Bloquear Acomodação</Button>
+                </Link>
+              </Col><Col md={12} className="mb-3">
+                <Link to="/tabela_funcionarios">
+                  <Button variant="primary" className="w-100">Relatório</Button>
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 

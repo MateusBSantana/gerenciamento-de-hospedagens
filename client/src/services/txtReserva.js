@@ -2,7 +2,7 @@ import { saveAs } from "file-saver";
 
 export const txtReserva = (reservaData, nomeHospede, nomeAcomodacao) => {
 
-  function formatDateToDash(isoString) {
+  function formatDateToSlash(isoString) {
     const date = new Date(isoString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -10,9 +10,23 @@ export const txtReserva = (reservaData, nomeHospede, nomeAcomodacao) => {
     return `${day}/${month}/${year}`;
   }
 
+  function formatDateTimeNow() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} às ${hours}:${minutes}:${seconds}`;
+  }
+
   // Formatar datas de check-in e check-out
-  const formattedCheckin = formatDateToDash(reservaData.data_checkin);
-  const formattedCheckout = formatDateToDash(reservaData.data_checkout);
+  const formattedCheckin = formatDateToSlash(reservaData.data_checkin);
+  const formattedCheckout = formatDateToSlash(reservaData.data_checkout);
+
+  // Obter data e hora atuais
+  const reservaCriadaEm = formatDateTimeNow();
 
   const reservaText = `
   ====================================
@@ -32,6 +46,9 @@ export const txtReserva = (reservaData, nomeHospede, nomeAcomodacao) => {
 📝 **Observações:**       ${reservaData.observacoes || 'Nenhuma'}
 📌 **Status da Reserva:** ${reservaData.status_reserva}
 
+------------------------------------
+📅 **Reserva feita em:**  ${reservaCriadaEm}
+
 ====================================
        🌴 Hospeda Fácil 🌴
 ====================================
@@ -39,5 +56,5 @@ export const txtReserva = (reservaData, nomeHospede, nomeAcomodacao) => {
     `;
     
   const blob = new Blob([reservaText], { type: "text/plain;charset=utf-8" });
-  saveAs(blob, `Reserva_${nomeHospede}.txt`); // Nome do arquivo com base no nome do hóspede
+  saveAs(blob, `Reserva_${nomeHospede+"."+reservaCriadaEm}.txt`); // Nome do arquivo com base no nome do hóspede
 };

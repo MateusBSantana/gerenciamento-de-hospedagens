@@ -61,6 +61,7 @@ function Login() {
       if (data && data.nome_funcionario) {
         // Armazena o nome do usuário no localStorage corretamente
         localStorage.setItem("userName", data.nome_funcionario); // Usa o nome real retornado pela API
+        localStorage.setItem("userCargo", data.cargo);
         localStorage.setItem("userCPF", formData.login); // Salva o CPF do usuário
       } else {
         console.error("Nome do usuário não encontrado na resposta da API.");
