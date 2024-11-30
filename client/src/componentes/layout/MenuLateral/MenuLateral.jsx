@@ -71,7 +71,7 @@ function MenuLateral() {
         >
           <li className="nav-item side-item w-100">
             <Link
-              to="/home"
+              to="/"
               className="nav-link text-white d-flex align-items-center justify-content-start hover-effect w-100"
             >
               <FontAwesomeIcon
