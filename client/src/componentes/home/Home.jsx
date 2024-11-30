@@ -46,7 +46,7 @@ const Home = () => {
 
   return (
     <div className="container-fluid">
-      <h1 className="text-center mb-4">Quartos</h1>
+      <h1 className="text-center mb-4">Acomodações</h1>
       <div className="d-flex justify-content-center mb-4 flex-wrap">
         <Badge bg="success" className="p-3 text-light mx-2 mb-2">
           Disponível: {statusQuartos.disponivel}

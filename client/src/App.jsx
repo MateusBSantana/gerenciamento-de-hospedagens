@@ -46,8 +46,8 @@ function AppContent() {
           <Route path='/' element={<Login />} />
           
           {/* Rota para a página inicial */}
-          <Route path='/home' element={<Home />} />
-
+          <Route path='/' element={<Home />} />  {/* Nova rota para a Home */}
+          
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
           <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />

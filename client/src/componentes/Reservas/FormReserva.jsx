@@ -35,6 +35,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
+  // Verifica se o status é "finalizada" ou "cancelada"
+  const isNonEditable = isEditing && ['finalizada', 'cancelada'].includes(formData.status_reserva);
+
   // Atualiza o estado `nomeHospedeExibido` quando `nomeHospede` mudar
   useEffect(() => {
     if (nomeHospede) {
@@ -57,7 +60,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     setMostrarTabelaHospedes(false);
     setFormData((prev) => ({
       ...prev,
-      nome_hospede: fk_hospede.nome_hospede}))
+      nome_hospede: fk_hospede.nome_hospede
+    }))
   };
 
 
@@ -72,7 +76,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     setMostrarTabelaAcomodacoes(false);
     setFormData((prev) => ({
       ...prev,
-      nome: fk_acomodacao.nome}))
+      nome: fk_acomodacao.nome
+    }))
   };
 
 
@@ -121,66 +126,47 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
       [name]: value,
     }));
   
-    // Captura os valores diretamente do DOM via refs
-    const dataEntradaExata = refs.current.data_checkin?.value;
-    const dataSaidaExata = refs.current.data_checkout?.value;
+    const dataEntradaExata = formData.data_checkin;
+    const dataSaidaExata = formData.data_checkout;
   
-    console.log("Datas exibidas nos campos:", {
-      dataEntradaExata,
-      dataSaidaExata,
-    });
+    if (!dataEntradaExata || !dataSaidaExata) {
+      return; // Apenas verifica se ambas as datas estão preenchidas
+    }
   
-    if (dataEntradaExata && dataSaidaExata && isEditing) {
+    if (isEditing) {
       try {
         const response = await fetch(
           `http://localhost:5000/acomodacoes/disponibilidade/${dataEntradaExata}/${dataSaidaExata}/${formData.fk_acomodacao}/${formData.id_reserva}`
         );
   
-        if (response.ok) {
-          const { disponivel } = await response.json(); // Recebe { disponivel: true/false }
-          console.log("Disponibilidade recebida:", disponivel);
+        if (!response.ok) {
+          throw new Error(`Erro ao verificar disponibilidade: ${response.statusText}`);
+        }
   
-          if (disponivel) {
-            console.log("Acomodação disponível.");
-            console.log("bom");
-          } else {
-            console.log("Acomodação indisponível.");
-            console.log("ruim");
-            showAlert(
-              "Selecione outra acomodação: a acomodação atual da reserva não está disponível para o período informado.",
-              "danger"
-            );
-            setFormData((prev) => ({
-              ...prev,
-              [name]: value,
-              fk_acomodacao: "", // Limpa o ID da acomodação
-              numero_adulto: "", // Limpa o número de adultos
-              numero_crianca: "0", // Limpa o número de crianças
-            }));
-        
-            // Limpa o nome da acomodação exibida
-            setNomeAcomodacaoExibida("");
-          }
-        } else {
-          console.error("Erro na API:", response.status);
+        const { disponivel } = await response.json();
+  
+        if (!disponivel) {
+          showAlert(
+            "Selecione outra acomodação: a acomodação atual da reserva não está disponível para o período informado.",
+            "danger"
+          );
+  
+          setFormData((prev) => ({
+            ...prev,
+            fk_acomodacao: "",
+            numero_adulto: "",
+            numero_crianca: "0",
+          }));
+  
+          setNomeAcomodacaoExibida("");
         }
       } catch (error) {
-        console.error("Erro na requisição:", error);
+        console.error("Erro ao verificar disponibilidade:", error);
+        showAlert("Erro ao verificar a disponibilidade da acomodação. Tente novamente.", "danger");
       }
-    } else if (!isEditing) {
-      // Aqui, quando não estamos editando (ou seja, estamos criando uma nova reserva), limpar os campos
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-        fk_acomodacao: "", // Limpa o ID da acomodação
-        numero_adulto: "", // Limpa o número de adultos
-        numero_crianca: "0", // Limpa o número de crianças
-      }));
-  
-      // Limpa o nome da acomodação exibida
-      setNomeAcomodacaoExibida("");
     }
   };
+  
   const handleBlur = () => {
     const observacoesValue = formData.observacoes || '';
     if (!observacoesValue.trim()) {
@@ -190,11 +176,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
       }));
     }
   };
-  
+
   return (
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
       <h4 style={{ marginLeft: '40px', position: 'relative', zIndex: 1 }}>Informações da Reserva</h4>
-      {/* Alerta exibido para o usuário caso haja algum erro ou sucesso */}
       <Alertas
         show={alertProps.show}
         variant={alertProps.variant}
@@ -206,35 +191,53 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Situação:</label>
           <div className="d-flex">
-            <div className="me-2">
-              <input
-                type="radio"
-                id="reservar"
-                name="status_reserva"
-                value="reservado"
-                checked={formData.status_reserva === 'reservado'}
-                onChange={handleChange}
-              />
-              <label htmlFor="reservar" className="ms-1">
-                {isEditing ? "Reservado" : "Reservar"}
-              </label>
-            </div>
-            <div className="me-2">
-              <input
-                type="radio"
-                id="hospedar"
-                name="status_reserva"
-                value="hospedado"
-                checked={formData.status_reserva === 'hospedado'}
-                onChange={handleChange}
-              />
-              <label htmlFor="hospedar" className="ms-1">
-                {isEditing ? "Hospedado" : "Hospedar"}
-              </label>
-            </div>
-
+            {isNonEditable ? (
+              <div className="me-2">
+                <input
+                  type="radio"
+                  id="status_atual"
+                  name="status_reserva"
+                  value={formData.status_reserva}
+                  checked
+                  readOnly
+                />
+                <label htmlFor="status_atual" className="ms-1 text-capitalize">
+                  {formData.status_reserva} {/* Exibe "cancelada" ou "finalizada" */}
+                </label>
+              </div>
+            ) : (
+              <>
+                <div className="me-2">
+                  <input
+                    type="radio"
+                    id="reservar"
+                    name="status_reserva"
+                    value="reservado"
+                    checked={formData.status_reserva === 'reservado'}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="reservar" className="ms-1">
+                    {isEditing ? "Reservado" : "Reservar"}
+                  </label>
+                </div>
+                <div className="me-2">
+                  <input
+                    type="radio"
+                    id="hospedar"
+                    name="status_reserva"
+                    value="hospedado"
+                    checked={formData.status_reserva === 'hospedado'}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="hospedar" className="ms-1">
+                    {isEditing ? "Hospedado" : "Hospedar"}
+                  </label>
+                </div>
+              </>
+            )}
           </div>
         </div>
+
 
         {/* Campo Hóspede */}
         <div className="mb-3 d-flex align-items-center">
@@ -244,17 +247,16 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               type="text"
               name="fk_hospede"
               className="form-control"
-              value={nomeHospedeExibido} // Exibe o nome do hóspede selecionado
-              onChange={(e) => handleSelectHospede(e.target.value)} // Atualiza com a seleção
-              required
-              placeholder="Selecione um hóspede ->"
-              readOnly // Torna o campo somente leitura
-              style={{ pointerEvents: 'none' }} // Desabilita interações com o campo
+              value={nomeHospedeExibido}
+              readOnly
+              style={{ pointerEvents: 'none' }}
+              disabled={isNonEditable}
             />
             <button
               type="button"
               className="btn btn-primary ms-2"
-              onClick={InfHospede} // Função para abrir a tabela
+              onClick={() => setMostrarTabelaHospedes(true)} // Ajuste no método de abertura
+              disabled={isNonEditable}
             >
               <FontAwesomeIcon icon={faSearch} />
             </button>
@@ -268,7 +270,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             style={{ zIndex: 400 }}
           >
             <div className="bg-white p-4 rounded shadow-sm w-75 h-75 overflow-auto position-relative">
-              {/* Botão de Fechar posicionado no canto superior direito e cor vermelha */}
               <button
                 type="button"
                 className="btn btn-danger position-absolute top-0 end-0 me-3 mt-3"
@@ -279,11 +280,12 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               <TabelaHospede
                 exibirAcoes={true}
                 textoBotao="Selecionar"
-                onSelectHospede={handleSelectHospede} // Passa a função para selecionar o hóspede
+                onSelectHospede={handleSelectHospede} // Certifique-se de passar esta função
               />
             </div>
           </div>
         )}
+
 
         {/* Campo Data de Entrada */}
         <div className="mb-3 d-flex align-items-center">
@@ -295,11 +297,10 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
-            min={new Date().toISOString().split('T')[0]} // Data mínima garantida como hoje
-            ref={(el) => (refs.current.data_checkin = el)} // Vincula ao ref
+            min={new Date().toISOString().split('T')[0]}
+            disabled={isNonEditable}
           />
         </div>
-
 
         {/* Campo Data de Saída */}
         <div className="mb-3 d-flex align-items-center">
@@ -311,7 +312,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkout ? formData.data_checkout.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
-            ref={(el) => (refs.current.data_checkout = el)} // Vincula ao ref
+            disabled={isNonEditable}
           />
         </div>
 
@@ -324,23 +325,15 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
               name="fk_acomodacao"
               className="form-control"
               value={nomeAcomodacaoExibida || "Selecione uma acomodação ->"}
-              readOnly // Torna o campo somente leitura
-              style={{ pointerEvents: 'none' }} // Desabilita interações com o campo
+              readOnly
+              style={{ pointerEvents: 'none' }}
+              disabled={isNonEditable}
             />
             <button
               type="button"
               className="btn btn-primary ms-2"
-              onClick={() => {
-                // Verificar se as datas estão preenchidas antes de executar a ação
-                if (!isDatasPreenchidas()) {
-                  showAlert(
-                    "As datas devem ser preenchidas antes de selecionar uma acomodação.",
-                    "danger"
-                  );
-                } else {
-                  InfAcomodacao(); // Chama a função para selecionar a acomodação
-                }
-              }}
+              onClick={InfAcomodacao}
+              disabled={isNonEditable}
             >
               <FontAwesomeIcon icon={faSearch} />
             </button>
@@ -381,10 +374,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             name="numero_adulto"
             value={formData.numero_adulto || ''}
             onChange={(e) => {
-              // Verifica se o valor inserido é um número inteiro
               const value = e.target.value;
               if (/^\d*$/.test(value)) {
-                handleChange(e); // Apenas permite a mudança se for um número inteiro válido
+                handleChange(e);
               }
             }}
             onFocus={() => {
@@ -393,14 +385,14 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
                   "Por favor, selecione uma acomodação antes de preencher este campo.",
                   "danger"
                 );
-                document.activeElement.blur(); // Remove o foco do campo
+                document.activeElement.blur();
               }
             }}
+            disabled={isNonEditable} // Desabilita o campo quando isNonEditable é true
             min="1"
             max="100"
             style={{ width: "200px" }}
           />
-
         </div>
 
         {/* Campo Número de Crianças */}
@@ -412,10 +404,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             name="numero_crianca"
             value={formData.numero_crianca}
             onChange={(e) => {
-              // Verifica se o valor inserido é um número inteiro
               const value = e.target.value;
               if (/^\d*$/.test(value)) {
-                handleChange(e); // Apenas permite a mudança se for um número inteiro válido
+                handleChange(e);
               }
             }}
             onFocus={() => {
@@ -424,15 +415,15 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
                   "Por favor, selecione uma acomodação antes de preencher este campo.",
                   "danger"
                 );
-                document.activeElement.blur(); // Remove o foco do campo
+                document.activeElement.blur();
               }
             }}
+            disabled={isNonEditable} // Desabilita o campo quando isNonEditable é true
             min="0"
             max="100"
             style={{ width: "200px" }}
           />
         </div>
-
 
         {/* Campo Valor da Diária */}
         <div className="mb-3 d-flex align-items-center">
@@ -441,16 +432,17 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             type="text"
             className="form-control"
             name="valor_diaria"
-            value={formData.valor_diaria || ''} // Sempre uma string
+            value={formData.valor_diaria || ''}
             onChange={(e) => {
               const value = e.target.value;
               if (/^\d*(\.|,)?\d*$/.test(value)) {
                 setFormData({
                   ...formData,
-                  valor_diaria: value.replace(",", "."), // Substitui vírgula por ponto
+                  valor_diaria: value.replace(",", "."),
                 });
               }
             }}
+            disabled={isNonEditable} // Desabilita o campo quando isNonEditable é true
             style={{ width: "200px" }}
             maxLength="12"
             inputMode="decimal"
@@ -462,11 +454,27 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
           <label className="me-2 text-end" style={{ width: "160px" }}>Pago:</label>
           <div className="d-flex">
             <div className="me-2">
-              <input type="radio" id="pago_sim" name="pago" value="sim" checked={formData.pago === 'sim'} onChange={handleChange} />
+              <input
+                type="radio"
+                id="pago_sim"
+                name="pago"
+                value="sim"
+                checked={formData.pago === 'sim'}
+                onChange={handleChange}
+                disabled={isNonEditable} // Desabilita os botões de rádio quando isNonEditable é true
+              />
               <label htmlFor="pago_sim" className="ms-1">Sim</label>
             </div>
             <div className="me-2">
-              <input type="radio" id="pago_nao" name="pago" value="não" checked={formData.pago === 'não'} onChange={handleChange} />
+              <input
+                type="radio"
+                id="pago_nao"
+                name="pago"
+                value="não"
+                checked={formData.pago === 'não'}
+                onChange={handleChange}
+                disabled={isNonEditable} // Desabilita os botões de rádio quando isNonEditable é true
+              />
               <label htmlFor="pago_nao" className="ms-1">Não</label>
             </div>
           </div>
@@ -481,10 +489,12 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.observacoes || ''}
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={isNonEditable} // Desabilita o campo quando isNonEditable é true
             style={{ width: "400px" }}
             maxLength="200"
           ></textarea>
         </div>
+
 
       </div>
     </div>

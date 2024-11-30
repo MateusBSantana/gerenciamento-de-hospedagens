@@ -8,10 +8,6 @@ const CalendarBody = ({ dates, accommodations, reservations }) => {
         return "#ADD8E6";
       case "hospedado":
         return "#0000FF";
-      case "finalizada":
-        return "#800080";
-      case "cancelada":
-        return "#FF0000";
       default:
         return "#FFFFFF";
     }
