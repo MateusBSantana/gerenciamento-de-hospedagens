@@ -37,13 +37,11 @@ function AppContent() {
   return (
     <div className="app-container d-flex">
       {/* Mostra o MenuLateral em todas as rotas, exceto na rota de login */}
-      {location.pathname !== '/' && <MenuLateral />}
+      {location.pathname !== '/login' && <MenuLateral />}
       <div className="content flex-grow-1">
         <Routes>
           {/* Rota para login */}
           <Route path='/login' element={<Login />} />
-
-          <Route path='/' element={<Login />} />
           
           {/* Rota para a página inicial */}
           <Route path='/' element={<Home />} />  {/* Nova rota para a Home */}
