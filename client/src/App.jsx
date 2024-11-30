@@ -27,18 +27,16 @@ import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
 
 
-import TelaAjustes from './componentes/ajustes/telaAjustes';
-
 function AppContent() {
   const location = useLocation();
 
   return (
     <div className="app-container d-flex">
       {/* Mostra o MenuLateral em todas as rotas, exceto na rota de login */}
-      {location.pathname !== '/login' && <MenuLateral />}
+      {location.pathname !== '/' && <MenuLateral />}
       <div className="content flex-grow-1">
         <Routes>
-          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Login />} />
           
           {/* Rota para a página inicial */}
           <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
@@ -66,7 +64,6 @@ function AppContent() {
 
           <Route path="/mapa_reservas" element={<MapaReservas/>} />
 
-          <Route path="/ajustes" element={<TelaAjustes/>} />
 
 
         </Routes>

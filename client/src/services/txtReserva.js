@@ -56,5 +56,5 @@ export const txtReserva = (reservaData, nomeHospede, nomeAcomodacao) => {
     `;
     
   const blob = new Blob([reservaText], { type: "text/plain;charset=utf-8" });
-  saveAs(blob, `Reserva_${nomeHospede}.txt`); // Nome do arquivo com base no nome do hóspede
+  saveAs(blob, `Reserva_${nomeHospede+"."+reservaCriadaEm}.txt`); // Nome do arquivo com base no nome do hóspede
 };
