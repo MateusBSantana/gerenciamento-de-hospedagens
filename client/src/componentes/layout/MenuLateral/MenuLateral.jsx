@@ -20,6 +20,7 @@ function MenuLateral() {
   const [userName, setUserName] = useState("Usuário");
   const [userCargo, setUserCargo] = useState("");
   const [mostrarAjustes, setMostrarAjustes] = useState(false);
+  const [mostrarModalSair, setMostrarModalSair] = useState(false);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
@@ -37,11 +38,14 @@ function MenuLateral() {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    window.location.href = "/login";
+  };
+
   return (
     <div
-      className={`d-flex flex-column bg-white vh-100 ${
-        isOpen ? "open-sidebar" : ""
-      }`}
+      className={`d-flex flex-column bg-white vh-100 ${isOpen ? "open-sidebar" : ""
+        }`}
       id="sidebar"
       style={{ minWidth: isOpen ? "200px" : "60px", height: "100vh" }}
     >
@@ -142,19 +146,38 @@ function MenuLateral() {
           )}
 
           <li className="nav-item side-item mt-auto w-100">
-            <Link
-              to="/login"
+            <button
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              onClick={() => setMostrarModalSair(true)}
+              style={{ background: "none", border: "none" }}
             >
               <FontAwesomeIcon
                 icon={faRightFromBracket}
                 style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
               />
-              <span className="item-description text-white">Logout</span>
-            </Link>
+              <span className="item-description text-white">Sair</span>
+            </button>
           </li>
         </ul>
       </div>
+
+      {/* Modal de Logout */}
+      <Modal show={mostrarModalSair} onHide={() => setMostrarModalSair(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza que deseja sair?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setMostrarModalSair(false)}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleLogout}>
+            Sair
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Modal para Ajustes */}
       <Modal show={mostrarAjustes} onHide={() => setMostrarAjustes(false)} centered size="lg">
@@ -166,33 +189,64 @@ function MenuLateral() {
             <Row>
               <Col md={12} className="mb-3">
                 <Link to="/cadastro_funcionario">
-                  <Button variant="primary" className="w-100">Cadastrar Funcionários</Button>
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Cadastrar Funcionários
+                  </Button>
                 </Link>
               </Col>
               <Col md={12} className="mb-3">
                 <Link to="/tabela_funcionarios">
-                  <Button variant="primary" className="w-100">Tabela Funcionários</Button>
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Tabela Funcionários
+                  </Button>
                 </Link>
               </Col>
               <Col md={12} className="mb-3">
                 <Link to="/cadastro_acomodacao">
-                  <Button variant="primary" className="w-100">Cadastrar Acomodações</Button>
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Cadastrar Acomodações
+                  </Button>
                 </Link>
               </Col>
               <Col md={12} className="mb-3">
                 <Link to="/listagem_acomodacoes">
-                  <Button variant="primary" className="w-100">Tabela Acomodações</Button>
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Tabela Acomodações
+                  </Button>
                 </Link>
               </Col>
               <Col md={12} className="mb-3">
                 <Link to="/dashboard">
-                  <Button variant="primary" className="w-100">Relatorio</Button>
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Relatório
+                  </Button>
                 </Link>
               </Col>
             </Row>
           </Container>
         </Modal.Body>
       </Modal>
+
 
       {/* Botão para abrir/fechar o menu */}
       <button
