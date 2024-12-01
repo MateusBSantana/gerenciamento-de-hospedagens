@@ -14,9 +14,9 @@
 .content {
   background-color: white;
   border-radius: 8px;
-  padding: 20px; /* Reduz o padding para aproximar o conteúdo das bordas */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 10px; /* Reduz a margem superior para o conteúdo ficar mais próximo */
+  padding: 0px; /* Reduz o padding para aproximar o conteúdo das bordas */
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 0px; /* Reduz a margem superior para o conteúdo ficar mais próximo */
 }
 
 .header h1 {

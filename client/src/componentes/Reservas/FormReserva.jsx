@@ -15,6 +15,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState(nomeHospede || "");
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState(nomeAcomodacao || "");
   const [capacidade, setCapacidade] = useState("");
+  const [diarias, setDiarias] = useState(0);
+  const [valorTotal, setValorTotal] = useState(0);
+
 
   const refs = useRef({
     data_checkin: null,
@@ -119,45 +122,45 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
 
   const handleDateChange = async (e) => {
     const { name, value } = e.target;
-  
+
     // Atualiza o estado com os dados da data
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-  
+
     const dataEntradaExata = formData.data_checkin;
     const dataSaidaExata = formData.data_checkout;
-  
+
     if (!dataEntradaExata || !dataSaidaExata) {
       return; // Apenas verifica se ambas as datas estão preenchidas
     }
-  
+
     if (isEditing) {
       try {
         const response = await fetch(
           `http://localhost:5000/acomodacoes/disponibilidade/${dataEntradaExata}/${dataSaidaExata}/${formData.fk_acomodacao}/${formData.id_reserva}`
         );
-  
+
         if (!response.ok) {
           throw new Error(`Erro ao verificar disponibilidade: ${response.statusText}`);
         }
-  
+
         const { disponivel } = await response.json();
-  
+
         if (!disponivel) {
           showAlert(
             "Selecione outra acomodação: a acomodação atual da reserva não está disponível para o período informado.",
             "danger"
           );
-  
+
           setFormData((prev) => ({
             ...prev,
             fk_acomodacao: "",
             numero_adulto: "",
             numero_crianca: "0",
           }));
-  
+
           setNomeAcomodacaoExibida("");
         }
       } catch (error) {
@@ -166,7 +169,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
       }
     }
   };
-  
+
   const handleBlur = () => {
     const observacoesValue = formData.observacoes || '';
     if (!observacoesValue.trim()) {
@@ -176,6 +179,44 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
       }));
     }
   };
+
+  useEffect(() => {
+    if (formData.data_checkin && formData.data_checkout) {
+      const qtdDiarias = calcularDiarias(formData.data_checkin, formData.data_checkout);
+      setDiarias(qtdDiarias);
+    } else {
+      setDiarias(0);
+    }
+  }, [formData.data_checkin, formData.data_checkout]);
+
+
+  const calcularDiarias = (dataInicio, dataFim) => {
+    const dataInicioObj = new Date(dataInicio);
+    const dataFimObj = new Date(dataFim);
+
+    if (dataFimObj >= dataInicioObj) {
+      const diffTime = Math.abs(dataFimObj - dataInicioObj);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays; // Retorna o número de diárias
+    }
+
+    return 0; // Retorna 0 se as datas forem inválidas
+  };
+
+  const calcularValorTotal = (valorDiaria, diarias) => {
+    return valorDiaria && diarias ? valorDiaria * diarias : 0;
+  };
+
+  useEffect(() => {
+    if (formData.valor_diaria && diarias) {
+      const total = calcularValorTotal(parseFloat(formData.valor_diaria), diarias);
+      setValorTotal(total);
+    } else {
+      setValorTotal(0);
+    }
+  }, [formData.valor_diaria, diarias]);
+
+
 
   return (
     <div className="border rounded pt-3" style={{ textAlign: "left" }}>
@@ -297,7 +338,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
-            min={new Date().toISOString().split('T')[0]}
+            min={new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-CA')}
+
             disabled={isNonEditable}
           />
         </div>
@@ -332,7 +374,16 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             <button
               type="button"
               className="btn btn-primary ms-2"
-              onClick={InfAcomodacao}
+              onClick={() => {
+                if (isDatasPreenchidas()) {
+                  InfAcomodacao();
+                } else {
+                  showAlert(
+                    "Por favor, informe as datas de entrada e saída antes de selecionar uma acomodação.",
+                    "danger"
+                  );
+                }
+              }}
               disabled={isNonEditable}
             >
               <FontAwesomeIcon icon={faSearch} />
@@ -424,6 +475,17 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             style={{ width: "200px" }}
           />
         </div>
+        {/* Campo para exibir a quantidade de diárias */}
+        <div className="mb-3 d-flex align-items-center">
+          <label className="me-2 text-end" style={{ width: "161px" }}>Quantidade de Diárias:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={diarias}
+            readOnly
+            style={{ width: "200px", pointerEvents: "none" }}
+          />
+        </div>
 
         {/* Campo Valor da Diária */}
         <div className="mb-3 d-flex align-items-center">
@@ -448,6 +510,19 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             inputMode="decimal"
           />
         </div>
+
+        {/* Campo para exibir o valor total */}
+        <div className="mb-3 d-flex align-items-center">
+          <label className="me-2 text-end" style={{ width: "160px" }}>Valor Total:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={valorTotal.toFixed(2)} // Exibe o valor com 2 casas decimais
+            readOnly
+            style={{ width: "200px", pointerEvents: "none" }}
+          />
+        </div>
+
 
         {/* Campo Pago */}
         <div className="mb-3 d-flex align-items-center">

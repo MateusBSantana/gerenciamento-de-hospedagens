@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 // Importação dos componentes
 import Login from './componentes/pages/Login';
-import Home from './componentes/home/Home';
+import Home from './componentes/Home/Home';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -24,11 +24,10 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
-// Importação do Dashboard
-import Dashboard from './componentes/Dashboard/Dashboard';
-
 // Importação do Mapa de Reservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
+
+
 
 
 function AppContent() {
@@ -42,11 +41,9 @@ function AppContent() {
         <Routes>
           {/* Rota para login */}
           <Route path='/login' element={<Login />} />
-
-          <Route path='/' element={<Login />} />
           
           {/* Rota para a página inicial */}
-          <Route path='/' element={<Home />} />  {/* Nova rota para a Home */}
+          <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
           
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
@@ -70,12 +67,6 @@ function AppContent() {
 
           {/* Rota para o Mapa de Reservas */}
           <Route path='/mapa_reservas' element={<MapaReservas />} />
-
-          {/* Nova Rota para o Dashboard */}
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path="/mapa_reservas" element={<MapaReservas/>} />
-
-
 
         </Routes>
       </div>

@@ -207,6 +207,42 @@ export const verificarDisponibilidade = async (dataEntrada, dataSaida, acomodaca
 
 
 
+export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
+  const conexao = mysql.createPool(db);
+
+  const sql = `
+    SELECT 
+      status_reserva, 
+      nome_hospede, 
+      data_checkin, 
+      data_checkout 
+    FROM view_informacoes_reserva
+    WHERE fk_acomodacao = ?
+      AND ? BETWEEN data_checkin AND data_checkout
+  `;
+  const params = [acomodacaoId, dataAtual];
+
+  try {
+    const [retorno] = await conexao.query(sql, params);
+    if (retorno.length > 0) {
+      return [200, retorno[0]]; // Retorna o status, nome do hóspede e datas
+    } else {
+      return [404, { mensagem: 'Nenhuma reserva encontrada para a data atual.' }];
+    }
+  } catch (error) {
+    console.error('Erro ao buscar status da reserva:', error);
+    throw error;
+  } finally {
+    await conexao.end();
+  }
+}
+
+
+
+
+
+
+
 
 
 

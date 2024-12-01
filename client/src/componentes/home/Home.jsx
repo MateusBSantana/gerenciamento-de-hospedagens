@@ -1,110 +1,143 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Row, Badge } from 'react-bootstrap';
-import { FaDoorOpen } from 'react-icons/fa'; // Ícone de porta
-import api from '../../services/api';
-import './Home.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Função para formatar datas no formato dd-MM-yyyy
+function formatDateToDash(isoString) {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 
 const Home = () => {
   const [acomodacoes, setAcomodacoes] = useState([]);
-  const [statusQuartos, setStatusQuartos] = useState({
-    disponivel: 0,
-    reservado: 0,
-    ocupado: 0,
-    limpeza: 0,
-    bloqueado: 0,
-  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAcomodacoes = async () => {
+    const fetchAcomodacoesComStatus = async () => {
       try {
-        const response = await api.get('/acomodacoes');
-        setAcomodacoes(response.data);
+        const response = await fetch('http://localhost:5000/acomodacoes');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar acomodações');
+        }
 
-        const disponiveis = response.data.filter((item) => item.status === 'Disponível').length;
-        const reservados = response.data.filter((item) => item.status === 'Reservado').length;
-        const ocupados = response.data.filter((item) => item.status === 'Ocupado').length;
-        const limpeza = response.data.filter((item) => item.status === 'Limpeza').length;
-        const bloqueado = response.data.filter((item) => item.status === 'Bloqueado').length;
+        const acomodacoesData = await response.json();
+        console.log('Dados das acomodações:', acomodacoesData);
 
-        setStatusQuartos({ disponivel: disponiveis, reservado: reservados, ocupado: ocupados, limpeza, bloqueado });
+        const dataAtual = new Date().toLocaleDateString('en-CA');
+
+        const acomodacoesComStatus = await Promise.all(
+          acomodacoesData.map(async (acomodacao) => {
+            try {
+              const reservaResponse = await fetch(
+                `http://localhost:5000/status/${acomodacao.id}?data=${dataAtual}`
+              );
+
+              if (reservaResponse.status === 404) {
+                console.log(`Acomodação ${acomodacao.id} sem reservas. Status: disponível`);
+                return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-' };
+              }
+
+              if (!reservaResponse.ok) {
+                throw new Error(`Erro ao buscar reservas para acomodação ${acomodacao.id}`);
+              }
+
+              const reservaData = await reservaResponse.json();
+              console.log(`Dados da reserva para acomodação ${acomodacao.id}:`, reservaData);
+
+              const status = reservaData?.status_reserva || 'disponível';
+              const nomeHospede = reservaData?.nome_hospede || 'Sem hóspede';
+              const dataCheckin = reservaData?.data_checkin ? formatDateToDash(reservaData.data_checkin) : '-';
+              const dataCheckout = reservaData?.data_checkout ? formatDateToDash(reservaData.data_checkout) : '-';
+
+              return { 
+                ...acomodacao, 
+                status, 
+                nomeHospede, 
+                dataCheckin, 
+                dataCheckout 
+              };
+            } catch (error) {
+              console.error(`Erro na acomodação ${acomodacao.id}:`, error);
+              return { ...acomodacao, status: 'indefinido', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-' };
+            }
+          })
+        );
+
+        console.log('Acomodações com status atualizado:', acomodacoesComStatus);
+        setAcomodacoes(acomodacoesComStatus);
       } catch (error) {
-        console.error('Erro ao buscar acomodações:', error);
+        console.error('Erro ao buscar status das acomodações:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAcomodacoes();
+    fetchAcomodacoesComStatus();
   }, []);
 
-  const getStatusStyles = (status) => {
-    if (status === 'Disponível') return { borderColor: 'green', backgroundColor: 'green' };
-    if (status === 'Reservado') return { borderColor: 'orange', backgroundColor: 'orange' };
-    if (status === 'Ocupado') return { borderColor: 'red', backgroundColor: 'red' };
-    if (status === 'Limpeza') return { borderColor: 'blue', backgroundColor: 'blue' };
-    if (status === 'Bloqueado') return { borderColor: 'gray', backgroundColor: 'gray' };
-    return { borderColor: 'transparent', backgroundColor: 'transparent' };
+  const getCardStyle = (status) => {
+    switch (status.toLowerCase()) {
+      case 'reservado':
+        return { backgroundColor: '#ADD8E6', color: '#000' }; // Azul claro
+      case 'hospedado':
+        return { backgroundColor: '#0000FF', color: '#FFF' }; // Azul escuro
+      case 'bloqueado':
+        return { backgroundColor: '#FF0000', color: '#FFF' }; // Vermelho
+      default:
+        return { backgroundColor: '#90EE90', color: '#000' }; // Verde (Disponível)
+    }
   };
 
-  return (
-    <div className="container-fluid">
-      <h1 className="text-center mb-4">Acomodações</h1>
-      <div className="d-flex justify-content-center mb-4 flex-wrap">
-        <Badge bg="success" className="p-3 text-light mx-2 mb-2">
-          Disponível: {statusQuartos.disponivel}
-        </Badge>
-        <Badge bg="warning" className="p-3 text-light mx-2 mb-2">
-          Reservado: {statusQuartos.reservado}
-        </Badge>
-        <Badge bg="danger" className="p-3 text-light mx-2 mb-2">
-          Ocupado: {statusQuartos.ocupado}
-        </Badge>
-        <Badge bg="primary" className="p-3 text-light mx-2 mb-2">
-          Limpeza: {statusQuartos.limpeza}
-        </Badge>
-        <Badge bg="secondary" className="p-3 text-light mx-2 mb-2">
-          Bloqueado: {statusQuartos.bloqueado}
-        </Badge>
-      </div>
+  if (loading) {
+    return <div className="text-center mt-4">Carregando...</div>;
+  }
 
-      <Row className="gy-4 justify-content-center custom-row">
-        {acomodacoes.map((acomodacao) => (
-          <Col key={acomodacao.id} xs={12} sm={6} md={3} className="d-flex justify-content-center custom-col">
-            <Card className="card w-100 h-100">
-              <Card.Body className="d-flex flex-column justify-content-between text-center">
-                <Card.Title
-                  className="card-title"
-                  style={{
-                    border: `2px solid ${getStatusStyles(acomodacao.status).borderColor}`,
-                    backgroundColor: getStatusStyles(acomodacao.status).backgroundColor,
-                    padding: '8px',
-                    color: 'white',
-                    fontSize: '1.1rem',
-                  }}
-                >
-                  {acomodacao.nome}
-                </Card.Title>
-                <Button
-                  className="card-button mt-auto"
-                  style={{
-                    backgroundColor: '#b0b0b0',
-                    borderColor: '#808080',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.3s',
-                    height: '40px',
-                    fontSize: '0.9rem',
-                    padding: '10px',
-                  }}
-                  onMouseEnter={(e) => (e.target.style.backgroundColor = '#007bff')}
-                  onMouseLeave={(e) => (e.target.style.backgroundColor = '#b0b0b0')}
-                >
-                  <FaDoorOpen style={{ marginRight: '8px' }} /> Hospedar
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+  return (
+    <div
+      className="container-fluid mt-3"
+      style={{
+        maxWidth: '95%',
+      }}
+    >
+      <h2 className="text-center mb-4">Acomodações Cadastradas</h2>
+      <div
+        className="custom-scroll-container"
+        style={{
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          paddingRight: '15px',
+        }}
+      >
+        <div className="row g-4">
+          {acomodacoes.map((acomodacao) => (
+            <div className="col-md-3" key={acomodacao.id}>
+              <div className="card h-100" style={getCardStyle(acomodacao.status)}>
+                <div className="card-body">
+                  <h5 className="card-title">{acomodacao.nome}</h5>
+                  {(acomodacao.status.toLowerCase() === 'reservado' || acomodacao.status.toLowerCase() === 'hospedado') && (
+                    <>
+                      <p className="card-text">Hóspede: {acomodacao.nomeHospede}</p>
+                      <p className="card-text">Check-in: {acomodacao.dataCheckin}</p>
+                      <p className="card-text">Check-out: {acomodacao.dataCheckout}</p>
+                    </>
+                  )}
+                  <p className="card-text">
+                    Status: <span className="badge bg-light text-dark">{acomodacao.status}</span>
+                  </p>
+                  <button 
+                    className="btn btn-outline-dark mt-2 w-100" 
+                    onClick={() => alert(`Ação para acomodação ${acomodacao.nome}`)}
+                  >
+                    Ver Detalhes
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

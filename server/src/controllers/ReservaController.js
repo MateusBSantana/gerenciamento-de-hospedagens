@@ -1,4 +1,4 @@
-import { createReserva, readReservas, getOneReserva, updateReserva, updateStatusReserva, verificarDisponibilidade } from "../models/reservaModel.js";
+import { createReserva, readReservas, getOneReserva, updateReserva, updateStatusReserva, verificarDisponibilidade, buscarStatusReservaPorData } from "../models/reservaModel.js";
 import { isNullOrEmpty, validateReserva } from "../validations/ReservaValidation.js";
 
 
@@ -164,4 +164,43 @@ export const verificarDisponibilidadeAcomodacao = async (req, res) => {
     return res.status(500).json({ error: 'Erro ao verificar disponibilidade no servidor' });
   }
 };
+
+export async function buscarReservas(req, res) {
+  console.log('ReservaController: buscarReservas');
+
+  // Coleta filtros da query string
+  const filtros = {
+    fk_acomodacao: req.query.fk_acomodacao,
+    data_checkin: req.query.data_checkin,
+    data_checkout: req.query.data_checkout,
+    status_reserva: req.query.status_reserva,
+  };
+
+  console.log('Parâmetros de busca:', filtros);
+
+  try {
+    const [status, reservas] = await buscarReservas(filtros);
+    res.status(status).json(reservas);
+  } catch (error) {
+    console.error('Erro ao buscar reservas:', error);
+    res.status(500).json({ mensagem: 'Erro ao buscar reservas', detalhes: error.message });
+  }
+}
+
+export async function buscarStatusReserva(req, res) {
+  const acomodacaoId = req.params.acomodacaoId;
+  const dataAtual = req.query.data;
+
+  if (!acomodacaoId || !dataAtual) {
+    return res.status(400).json({ mensagem: 'ID da acomodação e data são obrigatórios' });
+  }
+
+  try {
+    const [status, resultado] = await buscarStatusReservaPorData(acomodacaoId, dataAtual);
+    return res.status(status).json(resultado);
+  } catch (error) {
+    console.error('Erro ao buscar status da reserva:', error);
+    return res.status(500).json({ mensagem: 'Erro ao buscar status da reserva.', detalhes: error.message });
+  }
+}
 

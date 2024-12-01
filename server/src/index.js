@@ -5,7 +5,8 @@ import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, exclui
 mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
-import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva, alterarStatusReserva, verificarDisponibilidadeAcomodacao } from './controllers/reservaController.js';
+import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva,
+   alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva } from './controllers/reservaController.js';
 import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
  
 
@@ -42,8 +43,6 @@ app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDis
 // Rota para verificar a disponibilidade de uma acomodação nas novas datas
 app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarDisponibilidadeAcomodacao);
 
-
-
 // Rotas de CRUD de reserva
 app.post('/reservas', cadastroReserva);
 app.get('/reservas', mostrandoReservas);
@@ -59,6 +58,10 @@ app.put('/usuario/:id_usuario',atualizarUsuario);
 
 //Rota para Logar
 app.post('/logar/',logarUsuario);
+
+// Rota para Home
+app.get('/status/:acomodacaoId', buscarStatusReserva);
+
 
 app.listen(porta, () => {
   console.log(`Servidor rodando na porta ${porta}`);

@@ -45,7 +45,7 @@
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center;     /* Centraliza verticalmente */
     gap: 10px;               /* Espaço entre os elementos */
-    margin-bottom: 20px;     /* Espaço abaixo do cabeçalho */
+    margin-bottom: 10px;     /* Espaço abaixo do cabeçalho */
   }
   
   .header-container input {
