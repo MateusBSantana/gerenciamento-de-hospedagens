@@ -11,20 +11,20 @@ import {
   faMap,
   faChevronRight,
   faRightFromBracket,
-  faGear, // Ícone para ajustes
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function MenuLateral() {
   const [isOpen, setIsOpen] = useState(false);
-  const [userName, setUserName] = useState("Usuário"); // Estado para armazenar o nome do usuário
-  const [userCargo, setUserCargo] = useState(""); // Cargo do usuário
-  const [mostrarAjustes, setMostrarAjustes] = useState(false); // Controle de exibição do modal de ajustes
+  const [userName, setUserName] = useState("Usuário");
+  const [userCargo, setUserCargo] = useState("");
+  const [mostrarAjustes, setMostrarAjustes] = useState(false);
+  const [mostrarModalSair, setMostrarModalSair] = useState(false);
 
-  // Carrega as informações do usuário do localStorage ao montar o componente
   useEffect(() => {
-    const storedUserName = localStorage.getItem("userName"); // Obtém o nome do usuário
-    const storedUserCargo = localStorage.getItem("userCargo"); // Obtém o cargo do usuário
+    const storedUserName = localStorage.getItem("userName");
+    const storedUserCargo = localStorage.getItem("userCargo");
 
     if (storedUserName) {
       setUserName(storedUserName);
@@ -35,7 +35,11 @@ function MenuLateral() {
   }, []);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen); // Alterna o estado do menu lateral
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    window.location.href = "/login";
   };
 
   return (
@@ -55,6 +59,7 @@ function MenuLateral() {
         <div
           id="user"
           className="d-flex align-items-center justify-content-start text-center mb-5 mt-3 ms-3"
+          title={userName}
         >
           <FontAwesomeIcon
             icon={faUser}
@@ -68,7 +73,7 @@ function MenuLateral() {
               className="item-description text-white ms-0"
               style={{ fontSize: "12px" }}
             >
-              {userName} {/* Exibe o nome do usuário */}
+              {userName}
             </span>
           </div>
         </div>
@@ -81,10 +86,15 @@ function MenuLateral() {
             <Link
               to="/home"
               className="nav-link text-white d-flex align-items-center justify-content-start hover-effect w-100"
+              title="Ir para a página inicial"
             >
               <FontAwesomeIcon
                 icon={faHouse}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Home</span>
             </Link>
@@ -93,10 +103,15 @@ function MenuLateral() {
             <Link
               to="/tabela_reserva"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Reservas"
             >
               <FontAwesomeIcon
                 icon={faCalendar}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Reservas</span>
             </Link>
@@ -105,10 +120,15 @@ function MenuLateral() {
             <Link
               to="/tabela_hospedes"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Hóspedes"
             >
               <FontAwesomeIcon
                 icon={faUserGroup}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Hóspedes</span>
             </Link>
@@ -117,59 +137,178 @@ function MenuLateral() {
             <Link
               to="/mapa_reservas"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Mapa de Reservas"
             >
               <FontAwesomeIcon
                 icon={faMap}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Mapa</span>
             </Link>
           </li>
-          <li className="nav-item side-item w-100">
-            <Link
-              to="/ajustes"
-              className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-            >
-              <FontAwesomeIcon
-                icon={faGear}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
-              />
-              <span className="item-description text-white">Ajustes</span>
-            </Link>
-          </li>
+
+          {/* Link para ajustes, visível apenas para administradores */}
+          {userCargo === "administrador" && (
+            <li className="nav-item side-item w-100">
+              <button
+                className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+                title="Recursos do Administrador "
+                onClick={() => setMostrarAjustes(true)}
+              >
+                <FontAwesomeIcon
+                  icon={faGear}
+                  style={{
+                    fontSize: "25px",
+                    color: "#ffffff",
+                    paddingRight: "12px",
+                  }}
+                />
+                <span className="item-description text-white">
+                  Administrador
+                </span>
+              </button>
+            </li>
+          )}
+
           <li className="nav-item side-item mt-auto w-100">
-            <Link
-              to="/login"
+            <button
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Sair"
+              onClick={() => setMostrarModalSair(true)}
+              style={{ background: "none", border: "none" }}
             >
               <FontAwesomeIcon
                 icon={faRightFromBracket}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
-              <span className="item-description text-white">Logout</span>
-            </Link>
+              <span className="item-description text-white">Sair</span>
+            </button>
           </li>
         </ul>
-        {/* Botão para abrir/fechar o menu */}
-        <button
-          id="open_btn"
-          className="btn btn-link text-white d-flex justify-content-center align-items-center p-2"
-          onClick={toggleMenu}
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "-40px",
-            backgroundColor: "#4f46e5",
-            borderRadius: "30%",
-            width: "50px",
-            height: "50px",
-            transition: "transform 0.3s",
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
-          <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
-        </button>
       </div>
+
+      {/* Modal de Logout */}
+      <Modal
+        show={mostrarModalSair}
+        onHide={() => setMostrarModalSair(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Tem certeza que deseja sair?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setMostrarModalSair(false)}
+          >
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleLogout}>
+            Sair
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal para Ajustes */}
+      <Modal
+        show={mostrarAjustes}
+        onHide={() => setMostrarAjustes(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Recursos do Administrador</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row>
+              <Col md={12} className="mb-3">
+                <Link to="/cadastro_funcionario">
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Cadastrar Funcionários
+                  </Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/tabela_funcionarios">
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Tabela Funcionários
+                  </Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/cadastro_acomodacao">
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Cadastrar Acomodações
+                  </Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/listagem_acomodacoes">
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Tabela Acomodações
+                  </Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/dashboard">
+                  <Button
+                    variant="primary"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    Relatório
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+      </Modal>
+
+      {/* Botão para abrir/fechar o menu */}
+      <button
+        id="open_btn"
+        className="btn btn-link text-white d-flex justify-content-center align-items-center p-2"
+        onClick={toggleMenu}
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "-40px",
+          backgroundColor: "#4f46e5",
+          borderRadius: "30%",
+          width: "50px",
+          height: "50px",
+          transition: "transform 0.3s",
+        }}
+      >
+        <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
+      </button>
     </div>
   );
 }
