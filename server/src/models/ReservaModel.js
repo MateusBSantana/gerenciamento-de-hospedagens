@@ -215,25 +215,40 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
       status_reserva, 
       nome_hospede, 
       data_checkin, 
-      data_checkout 
+      data_checkout,
+      id_reserva 
     FROM view_informacoes_reserva
     WHERE fk_acomodacao = ?
       AND ? BETWEEN data_checkin AND data_checkout
   `;
+
   const params = [acomodacaoId, dataAtual];
 
   try {
+    // Validação dos parâmetros
+    if (!acomodacaoId || !dataAtual) {
+      throw new Error('Parâmetros inválidos: "acomodacaoId" ou "dataAtual" não fornecidos.');
+    }
+
+    // Executa a consulta
     const [retorno] = await conexao.query(sql, params);
+
+    // Verifica se a reserva foi encontrada
     if (retorno.length > 0) {
       return [200, retorno[0]]; // Retorna o status, nome do hóspede e datas
     } else {
-      return [404, { mensagem: 'Nenhuma reserva encontrada para a data atual.' }];
+      return [404, { mensagem: 'Nenhuma reserva encontrada para a data especificada.' }];
     }
   } catch (error) {
     console.error('Erro ao buscar status da reserva:', error);
-    throw error;
+
+    // Retorno de erro padronizado
+    return [500, { mensagem: 'Erro interno ao buscar status da reserva.', detalhes: error.message }];
   } finally {
-    await conexao.end();
+    // Fecha a conexão
+    if (conexao && conexao.end) {
+      await conexao.end();
+    }
   }
 }
 

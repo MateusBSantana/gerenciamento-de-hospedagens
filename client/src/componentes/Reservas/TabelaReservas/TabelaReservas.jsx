@@ -118,13 +118,13 @@ function TabelaReservas() {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        width: "100%", // Garante que o contêiner ocupe toda a largura
+        width: "100%", 
       }}
     >
       <div className="container py- w-100"
         style={{
-          maxWidth: "100%", // Remove limite de largura
-          padding: "0", // Remove padding interno lateral
+          maxWidth: "100%", 
+          padding: "0", 
         }}
       >
         <Alertas
@@ -161,13 +161,13 @@ function TabelaReservas() {
           style={{
             maxHeight: "500px",
             overflowY: "auto",
-            width: "100%", // Expande o contêiner para a largura total
+            width: "100%", 
           }}
         ><table
         className="table table-bordered table-hover mx-auto"
         style={{
-          width: "95%", // Define a largura da tabela
-          tableLayout: "fixed", // Garante que as colunas se ajustem proporcionalmente
+          width: "95%", 
+          tableLayout: "fixed", 
         }}
       >
         <thead className="table-primary">
