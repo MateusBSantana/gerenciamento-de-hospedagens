@@ -44,8 +44,9 @@ function MenuLateral() {
 
   return (
     <div
-      className={`d-flex flex-column bg-white vh-100 ${isOpen ? "open-sidebar" : ""
-        }`}
+      className={`d-flex flex-column bg-white vh-100 ${
+        isOpen ? "open-sidebar" : ""
+      }`}
       id="sidebar"
       style={{ minWidth: isOpen ? "200px" : "60px", height: "100vh" }}
     >
@@ -58,6 +59,7 @@ function MenuLateral() {
         <div
           id="user"
           className="d-flex align-items-center justify-content-start text-center mb-5 mt-3 ms-3"
+          title={userName}
         >
           <FontAwesomeIcon
             icon={faUser}
@@ -84,10 +86,15 @@ function MenuLateral() {
             <Link
               to="/"
               className="nav-link text-white d-flex align-items-center justify-content-start hover-effect w-100"
+              title="Ir para a página inicial"
             >
               <FontAwesomeIcon
                 icon={faHouse}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Home</span>
             </Link>
@@ -96,10 +103,15 @@ function MenuLateral() {
             <Link
               to="/tabela_reserva"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Reservas"
             >
               <FontAwesomeIcon
                 icon={faCalendar}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Reservas</span>
             </Link>
@@ -108,10 +120,15 @@ function MenuLateral() {
             <Link
               to="/tabela_hospedes"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Hóspedes"
             >
               <FontAwesomeIcon
                 icon={faUserGroup}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Hóspedes</span>
             </Link>
@@ -120,10 +137,15 @@ function MenuLateral() {
             <Link
               to="/mapa_reservas"
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Mapa de Reservas"
             >
               <FontAwesomeIcon
                 icon={faMap}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Mapa</span>
             </Link>
@@ -134,13 +156,20 @@ function MenuLateral() {
             <li className="nav-item side-item w-100">
               <button
                 className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+                title="Recursos do Administrador "
                 onClick={() => setMostrarAjustes(true)}
               >
                 <FontAwesomeIcon
                   icon={faGear}
-                  style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                  style={{
+                    fontSize: "25px",
+                    color: "#ffffff",
+                    paddingRight: "12px",
+                  }}
                 />
-                <span className="item-description text-white">Administrador</span>
+                <span className="item-description text-white">
+                  Administrador
+                </span>
               </button>
             </li>
           )}
@@ -148,12 +177,17 @@ function MenuLateral() {
           <li className="nav-item side-item mt-auto w-100">
             <button
               className="nav-link text-white d-flex align-items-center justify-content-start w-100"
+              title="Sair"
               onClick={() => setMostrarModalSair(true)}
               style={{ background: "none", border: "none" }}
             >
               <FontAwesomeIcon
                 icon={faRightFromBracket}
-                style={{ fontSize: "25px", color: "#ffffff", paddingRight: "12px" }}
+                style={{
+                  fontSize: "25px",
+                  color: "#ffffff",
+                  paddingRight: "12px",
+                }}
               />
               <span className="item-description text-white">Sair</span>
             </button>
@@ -162,15 +196,20 @@ function MenuLateral() {
       </div>
 
       {/* Modal de Logout */}
-      <Modal show={mostrarModalSair} onHide={() => setMostrarModalSair(false)} centered>
+      <Modal
+        show={mostrarModalSair}
+        onHide={() => setMostrarModalSair(false)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Confirmar Logout</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Tem certeza que deseja sair?
-        </Modal.Body>
+        <Modal.Body>Tem certeza que deseja sair?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setMostrarModalSair(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setMostrarModalSair(false)}
+          >
             Cancelar
           </Button>
           <Button variant="danger" onClick={handleLogout}>
@@ -180,7 +219,12 @@ function MenuLateral() {
       </Modal>
 
       {/* Modal para Ajustes */}
-      <Modal show={mostrarAjustes} onHide={() => setMostrarAjustes(false)} centered size="lg">
+      <Modal
+        show={mostrarAjustes}
+        onHide={() => setMostrarAjustes(false)}
+        centered
+        size="lg"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Recursos do Administrador</Modal.Title>
         </Modal.Header>
@@ -246,7 +290,6 @@ function MenuLateral() {
           </Container>
         </Modal.Body>
       </Modal>
-
 
       {/* Botão para abrir/fechar o menu */}
       <button
