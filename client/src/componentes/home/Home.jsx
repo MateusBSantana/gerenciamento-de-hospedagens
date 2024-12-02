@@ -15,24 +15,43 @@ const Home = () => {
   });
 
   useEffect(() => {
-    const fetchAcomodacoes = async () => {
+    const fetchDados = async () => {
       try {
-        const response = await api.get('/acomodacoes');
-        setAcomodacoes(response.data);
+        // Buscar acomodações
+        const acomodacoesResponse = await api.get('/acomodacoes');
+        const acomodacoes = acomodacoesResponse.data;
 
-        const disponiveis = response.data.filter((item) => item.status === 'Disponível').length;
-        const reservados = response.data.filter((item) => item.status === 'Reservado').length;
-        const ocupados = response.data.filter((item) => item.status === 'Ocupado').length;
-        const limpeza = response.data.filter((item) => item.status === 'Limpeza').length;
-        const bloqueado = response.data.filter((item) => item.status === 'Bloqueado').length;
+        // Buscar reservas
+        const reservasResponse = await api.get('/reservas');
+        const reservas = reservasResponse.data;
+
+        // Vincular reservas às acomodações
+        const acomodacoesComReservas = acomodacoes.map((acomodacao) => {
+          const reserva = reservas.find(
+            (reserva) => reserva.acomodacao_id === acomodacao.id
+          );
+          return {
+            ...acomodacao,
+            reserva, // Adiciona a reserva correspondente
+          };
+        });
+
+        setAcomodacoes(acomodacoesComReservas);
+
+        // Atualizar contagem de status dos quartos
+        const disponiveis = acomodacoes.filter((item) => item.status === 'Disponível').length;
+        const reservados = acomodacoes.filter((item) => item.status === 'Reservado').length;
+        const ocupados = acomodacoes.filter((item) => item.status === 'Ocupado').length;
+        const limpeza = acomodacoes.filter((item) => item.status === 'Limpeza').length;
+        const bloqueado = acomodacoes.filter((item) => item.status === 'Bloqueado').length;
 
         setStatusQuartos({ disponivel: disponiveis, reservado: reservados, ocupado: ocupados, limpeza, bloqueado });
       } catch (error) {
-        console.error('Erro ao buscar acomodações:', error);
+        console.error('Erro ao buscar dados:', error);
       }
     };
 
-    fetchAcomodacoes();
+    fetchDados();
   }, []);
 
   const getStatusStyles = (status) => {
@@ -82,6 +101,16 @@ const Home = () => {
                 >
                   {acomodacao.nome}
                 </Card.Title>
+
+                {/* Exibir informações da reserva, se houver */}
+                {acomodacao.reserva && (
+                  <div className="reserva-info text-left mt-3">
+                    <p><strong>Hóspede:</strong> {acomodacao.reserva.hospede}</p>
+                    <p><strong>Check-in:</strong> {new Date(acomodacao.reserva.checkin).toLocaleDateString()}</p>
+                    <p><strong>Check-out:</strong> {new Date(acomodacao.reserva.checkout).toLocaleDateString()}</p>
+                  </div>
+                )}
+
                 <Button
                   className="card-button mt-auto"
                   style={{

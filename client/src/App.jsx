@@ -25,11 +25,10 @@ import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
 // Importação do Dashboard
-import Dashboard from './componentes/Dashboard/Dashboard';
+import Dashboard from './componentes/Relatorios/Dashboard'; // Corrigido o caminho
 
 // Importação do Mapa de Reservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
-
 
 function AppContent() {
   const location = useLocation();
@@ -44,7 +43,7 @@ function AppContent() {
           <Route path='/login' element={<Login />} />
           
           {/* Rota para a página inicial */}
-          <Route path='/' element={<Home />} />  {/* Nova rota para a Home */}
+          <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
           
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
@@ -69,11 +68,8 @@ function AppContent() {
           {/* Rota para o Mapa de Reservas */}
           <Route path='/mapa_reservas' element={<MapaReservas />} />
 
-          {/* Nova Rota para o Dashboard */}
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path="/mapa_reservas" element={<MapaReservas/>} />
-
-
+          {/* Rota para o Dashboard */}
+          <Route path='/dashboard' element={<Dashboard />} /> {/* Adicionada a rota para o Dashboard */}
 
         </Routes>
       </div>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
 import Filters from './Filters';  // Componente de filtros
 import ReportCard from './ReportCard';  // Componente para exibir as métricas
 import Header from './Header';  // Componente de cabeçalho
@@ -19,35 +20,41 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
-  // Estado para armazenar os valores de estatísticas
-  const [ocupacao, setOcupacao] = useState('75%');
-  const [mediaPorDia, setMediaPorDia] = useState('12 Reservas/Dia');
-  const [totalReservas, setTotalReservas] = useState('300 Reservas');
-  const [chartData, setChartData] = useState([12, 19, 3, 5, 2]);  // Dados para o gráfico
-  const [selectedMonth, setSelectedMonth] = useState('all'); // Estado para armazenar o mês selecionado
+  // Estado para armazenar as estatísticas e os dados do gráfico
+  const [ocupacao, setOcupacao] = useState('0%');
+  const [mediaPorDia, setMediaPorDia] = useState('0 Reservas/Dia');
+  const [totalReservas, setTotalReservas] = useState('0 Reservas');
+  const [chartData, setChartData] = useState([]);  // Dados para o gráfico
+  const [selectedMonth, setSelectedMonth] = useState('all'); // Mês selecionado
+  const [loading, setLoading] = useState(false);  // Estado de carregamento
+
+  // Função para buscar os dados do backend
+  const fetchData = async (year, month) => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:5000/reservas-dashboard', {
+        params: { year, month }
+      });
+
+      const { ocupacao, mediaPorDia, totalReservas, reservasMensais } = response.data;
+
+      // Atualiza os estados com os dados recebidos
+      setOcupacao(ocupacao);
+      setMediaPorDia(mediaPorDia);
+      setTotalReservas(totalReservas);
+      setChartData(reservasMensais);
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+      setLoading(false);
+    }
+  };
 
   // Função para atualizar as estatísticas e dados do gráfico com base no filtro
   const handleFilterChange = (year, month) => {
-    console.log(`Ano: ${year}, Mês: ${month}`);
-    setSelectedMonth(month); // Atualiza o estado com o mês selecionado
-
-    // Lógica para atualizar as estatísticas e os dados do gráfico com base no filtro
-    if (year === '2024' && month === 'all') {
-      setOcupacao('80%');
-      setMediaPorDia('15 Reservas/Dia');
-      setTotalReservas('500 Reservas');
-      setChartData([20, 25, 30, 35, 40]); // Dados para todos os meses
-    } else if (year === '2023' && month === 'all') {
-      setOcupacao('70%');
-      setMediaPorDia('10 Reservas/Dia');
-      setTotalReservas('350 Reservas');
-      setChartData([10, 15, 20, 25, 30]); // Dados para todos os meses
-    } else {
-      setOcupacao('75%');
-      setMediaPorDia('12 Reservas/Dia');
-      setTotalReservas('300 Reservas');
-      setChartData([12, 19, 3, 5, 2]); // Dados padrão
-    }
+    setSelectedMonth(month);  // Atualiza o mês selecionado
+    fetchData(year, month);  // Chama a função para buscar os dados filtrados
   };
 
   // Filtra os dados do gráfico com base no mês selecionado
@@ -100,7 +107,7 @@ const Dashboard = () => {
 
       <div className="chart-container">
         <h3>Gráfico de Reservas Mensais</h3>
-        <Bar data={data} options={options} />
+        {loading ? <p>Carregando...</p> : <Bar data={data} options={options} />}
       </div>
     </div>
   );

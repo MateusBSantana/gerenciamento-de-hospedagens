@@ -181,7 +181,8 @@ const CadastroAcomodacao = () => {
                 required
               >
                 <option value="disponivel">Disponível</option>
-                
+                <option value="reservado">Reservado</option>
+
               </Form.Control>
             </Form.Group>
 
