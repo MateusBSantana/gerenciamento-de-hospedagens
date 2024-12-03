@@ -1,25 +1,23 @@
-
-import { createHospede, updateHospede, deleteHospede, readHospedes, getOneHospede } from "../models/HospedeModel.js";
-import { isNullOrEmpty, validateHospede } from "../validations/HospedeValidations.js";
-
+import {
+  createHospede,
+  updateHospede,
+  deleteHospede,
+  readHospedes,
+  getOneHospede,
+} from '../models/HospedeModel.js';
 
 export async function cadastroHospede(req, res) {
-    console.log('HospedeController cadastroHospede');
-    const hospede = req.body;
-  
-    console.log('Dados recebidos do frontend:', hospede);
+  console.log('HospedeController cadastroHospede');
+  const hospede = req.body;
 
-    if (validateHospede(hospede)) {
-      res.status(400).json({ mensagem: 'Hóspede não pode ter campos vazios' });
-    } else {
-      try {
-        const [status, resposta] = await createHospede(hospede);
-        res.status(status).json(resposta);
-      } catch (error) {
-        console.log(error);
-        res.status(500).json(error);
-      }
-   }
+  console.log('Dados recebidos do frontend:', hospede);
+  try {
+    const [status, resposta] = await createHospede(hospede);
+    res.status(status).json(resposta);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
 }
 
 export async function mostrandoHospedes(req, res) {
@@ -38,19 +36,14 @@ export async function mostrandoUmHospede(req, res) {
   console.log('HospedeController mostrandoUmHospede');
   const { id } = req.params;
 
-  if (isNullOrEmpty(id)) {
-      return res.status(400).json({ mensagem: 'O ID deve ser preenchido' });
-  } 
-
   try {
-      const [status, resposta] = await getOneHospede(id);
-      return res.status(status).json(resposta);
+    const [status, resposta] = await getOneHospede(id);
+    return res.status(status).json(resposta);
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ mensagem: 'Erro ao buscar hóspede', error });
+    console.error(error);
+    return res.status(500).json({ mensagem: 'Erro ao buscar hóspede', error });
   }
 }
-
 
 export async function atualizandoHospede(req, res) {
   console.log('HospedeController AtulizandoHospede');
@@ -58,16 +51,12 @@ export async function atualizandoHospede(req, res) {
   const hospede = req.body;
   console.log(hospede);
 
-  if(validateHospede(hospede) || isNullOrEmpty(id)){
-    res.status(400).json({message:'Hospede não pode ter campos vazios'})
-  } else {
-      try {
-      const [status, resposta] = await updateHospede(hospede, id);
-      res.status(status).json(resposta);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json(error);
-    }
+  try {
+    const [status, resposta] = await updateHospede(hospede, id);
+    res.status(status).json(resposta);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 }
 
@@ -75,16 +64,11 @@ export async function excluindoHospede(req, res) {
   console.log('HospedeController excluindoHospede');
   const { id } = req.params;
 
-  if (!id) {
-    res.status(400).json({ message: 'O id deve ser preenchido!' });
-  } else {
-    try {
-      const [status, resposta] = await deleteHospede(id);
-      res.status(status).json(resposta);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Erro ao excluir o hóspede', error });
-    }
+  try {
+    const [status, resposta] = await deleteHospede(id);
+    res.status(status).json(resposta);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Erro ao excluir o hóspede', error });
   }
 }
-

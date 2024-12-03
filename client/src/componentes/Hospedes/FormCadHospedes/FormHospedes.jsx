@@ -1,26 +1,38 @@
 import { useState } from "react";
 import { Form, Tab } from "react-bootstrap";
 
-function FormHospede({ formData, handleChange, submit }) {
-  const [errors, setErrors] = useState({});
-
-  // Valida campos individuais
-  const validateField = (name, value) => {
-    let errorMsg = "";
-
-    if (name === "cpf") {
-      if (!/^\d{11}$/.test(value)) {
-        errorMsg = "O CPF deve conter exatamente 11 dígitos.";
-      }
-    }
-
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
+function FormHospede({ setFormData, formData, handleChange, submit }) {
+  const formGroupStyle = {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "1rem",
   };
 
-  // Manipula o evento de perda de foco (onBlur)
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    validateField(name, value);
+  const labelStyle = {
+    width: "160px",
+    textAlign: "right",
+    marginRight: "0.5rem",
+  };
+
+  const inputStyle = { width: "400px" };
+
+  const validarCPF = (cpf) => {
+    cpf = cpf.replace(/\D/g, "");
+    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+    const calcularDigito = (baseCpf, pesoInicial) => {
+      let soma = 0;
+      for (let i = 0; i < baseCpf.length; i++) {
+        soma += parseInt(baseCpf[i]) * (pesoInicial - i);
+      }
+      const resto = soma % 11;
+      return resto < 2 ? 0 : 11 - resto;
+    };
+
+    const digito1 = calcularDigito(cpf.slice(0, 9), 10);
+    const digito2 = calcularDigito(cpf.slice(0, 10), 11);
+
+    return digito1 === parseInt(cpf[9]) && digito2 === parseInt(cpf[10]);
   };
 
   return (
@@ -33,12 +45,8 @@ function FormHospede({ formData, handleChange, submit }) {
         >
           <div className="mx-auto">
             {/* Nome Completo */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formNome"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formNome" style={labelStyle}>
                 Nome Completo:
               </Form.Label>
               <Form.Control
@@ -46,20 +54,21 @@ function FormHospede({ formData, handleChange, submit }) {
                 id="formNome"
                 name="nome_hospede"
                 value={formData.nome_hospede}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-ZáéíóúÁÉÍÓÚãõâêîôûçÇ\s'-]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 placeholder="Digite seu nome completo"
                 required
-                style={{ width: "400px" }}
+                style={inputStyle}
               />
             </div>
 
             {/* CPF */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formCpf"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formCpf" style={labelStyle}>
                 CPF:
               </Form.Label>
               <Form.Control
@@ -67,26 +76,30 @@ function FormHospede({ formData, handleChange, submit }) {
                 id="formCpf"
                 name="cpf"
                 value={formData.cpf}
-                onChange={handleChange}
-                onBlur={handleBlur} // Valida ao perder o foco
-                isInvalid={!!errors.cpf} // Destaca o campo com erro
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Permite apenas números
+                  if (/^\d*$/.test(value)) {
+                    // Atualiza o valor do CPF no estado
+                    setFormData({ ...formData, cpf: value });
+
+                    // Valida o CPF se o valor tiver 11 dígitos
+                    if (value.length === 11 && !validarCPF(value)) {
+                      alert("O CPF informado é inválido.");
+                    }
+                  }
+                }}
                 placeholder="Digite seu CPF"
                 maxLength={11}
                 required
                 style={{ width: "200px" }}
               />
-              <Form.Control.Feedback type="invalid">
-                {errors.cpf}
-              </Form.Control.Feedback>
             </div>
 
             {/* RG */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formRg"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formRg" style={labelStyle}>
                 RG:
               </Form.Label>
               <Form.Control
@@ -101,12 +114,8 @@ function FormHospede({ formData, handleChange, submit }) {
             </div>
 
             {/* Data de Nascimento */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formDataNascimento"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formDataNascimento" style={labelStyle}>
                 Data de Nascimento:
               </Form.Label>
               <Form.Control
@@ -125,12 +134,8 @@ function FormHospede({ formData, handleChange, submit }) {
             </div>
 
             {/* Sexo */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formSexo"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formSexo" style={labelStyle}>
                 Sexo:
               </Form.Label>
               <Form.Control
@@ -150,12 +155,8 @@ function FormHospede({ formData, handleChange, submit }) {
             </div>
 
             {/* Profissão */}
-            <div className="mb-3 d-flex align-items-center">
-              <Form.Label
-                className="me-2 text-end"
-                htmlFor="formProfissao"
-                style={{ width: "160px" }}
-              >
+            <div style={formGroupStyle}>
+              <Form.Label htmlFor="formProfissao" style={labelStyle}>
                 Profissão:
               </Form.Label>
               <Form.Control
@@ -165,7 +166,7 @@ function FormHospede({ formData, handleChange, submit }) {
                 value={formData.profissao}
                 onChange={handleChange}
                 required
-                style={{ width: "400px" }}
+                style={inputStyle}
               />
             </div>
 
@@ -228,7 +229,12 @@ function FormHospede({ formData, handleChange, submit }) {
                 id="formEstado"
                 name="estado"
                 value={formData.estado}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^[a-zA-ZáéíóúÁÉÍÓÚãõâêîôûçÇ\s'-]*$/.test(value)) {
+                    handleChange(e);
+                  }
+                }}
                 required
                 style={{ width: "250px" }}
               />

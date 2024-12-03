@@ -11,7 +11,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
   const InfAcomodacao = () => setMostrarTabelaAcomodacoes(true);
-  const InfHospede = () => setMostrarTabelaHospedes(true);
   const [nomeHospedeExibido, setNomeHospedeExibido] = useState(nomeHospede || "");
   const [nomeAcomodacaoExibida, setNomeAcomodacaoExibida] = useState(nomeAcomodacao || "");
   const [capacidade, setCapacidade] = useState("");
@@ -67,7 +66,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     }))
   };
 
-
   const handleSelectAcomodacao = (fk_acomodacao) => {
     console.log("Dados da acomodação selecionada:", fk_acomodacao);
     // Salva a capacidade no estado
@@ -112,8 +110,8 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   };
 
   useEffect(() => {
-    console.log('Data Inícioooooo:', dataInicio);
-    console.log('Data Fimmmmm:', dataFim);
+    console.log('Data Início:', dataInicio);
+    console.log('Data Fim:', dataFim);
   }, [dataInicio, dataFim]);
 
   useEffect(() => {

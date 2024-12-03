@@ -10,7 +10,7 @@ const params = [
     'numero',  
     'cidade',                 
     'estado',  
-    'cep',             
+    'cep',            
     'bairro',
     'complemento',
     'observacoes_endereco',               
