@@ -107,7 +107,7 @@ export async function updateReserva(reserva, id) {
     reserva.valor_diaria,        
     reserva.numero_adulto,         
     reserva.numero_crianca,        
-    observacoes,  // Campo observacoes tratado como null quando vazio
+    observacoes, 
     reserva.pago,
     id
   ];
@@ -253,6 +253,47 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
   }
 }
 
+// Função para buscar reservas com status bloqueado
+export async function getReservasBloqueadas() {
+  console.log('ReservaModel: getReservasBloqueadas');
+  
+  const conexao = mysql.createPool(db); // Cria uma pool de conexões com o banco
+
+  // SQL para buscar somente as reservas com status "bloqueado"
+  const sql = `
+    SELECT 
+      id_reserva,
+      nome_hospede,
+      data_checkin,
+      data_checkout,
+      nome_acomodacao,
+      status_reserva
+    FROM view_informacoes_reserva
+    WHERE status_reserva = 'bloqueado'
+  `;
+
+  try {
+    // Executa a consulta no banco
+    const [retorno] = await conexao.query(sql);
+    console.log('Reservas bloqueadas encontradas:', retorno.length);
+
+    // Verifica se há resultados
+    if (retorno.length < 1) {
+      return [404, { mensagem: 'Nenhuma reserva bloqueada encontrada.' }];
+    }
+
+    // Retorna as reservas encontradas
+    return [200, retorno];
+  } catch (error) {
+    console.error('Erro ao buscar reservas bloqueadas:', error);
+
+    // Retorna erro padronizado
+    return [500, { mensagem: 'Erro interno ao buscar reservas bloqueadas.', detalhes: error.message }];
+  } finally {
+    // Fecha a pool de conexões
+    await conexao.end();
+  }
+}
 
 
 

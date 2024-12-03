@@ -89,8 +89,11 @@ function TabelaReservas() {
       (reserva.id_reserva && reserva.id_reserva.toString().includes(searchTerm)) ||
       (reserva.cpf && reserva.cpf.includes(searchTerm));
     const matchesStatus = !statusFilter || reserva.status_reserva === statusFilter;
-    return matchesSearch && matchesStatus;
+    const isNotBlockedOrUnlocked =
+      reserva.status_reserva !== "bloqueado" && reserva.status_reserva !== "desbloqueada"; // Exclui reservas bloqueadas ou desbloqueadas
+    return matchesSearch && matchesStatus && isNotBlockedOrUnlocked;
   });
+  
 
   function formatDateToDash(isoString) {
     const date = new Date(isoString);
@@ -200,11 +203,7 @@ function TabelaReservas() {
           ))}
         </tbody>
       </table>
-      
         </div>
-
-
-
         {selectedReserva && (
           <div
             className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-5 w-25"

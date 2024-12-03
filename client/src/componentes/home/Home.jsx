@@ -24,12 +24,12 @@ const Home = () => {
       if (!response.ok) {
         throw new Error('Erro ao buscar acomodações');
       }
-  
+
       const acomodacoesData = await response.json(); // Dados recebidos do backend
       console.log('Dados das acomodações:', acomodacoesData);
-  
+
       const dataAtual = new Date().toLocaleDateString('en-CA'); // Data atual no formato ISO
-  
+
       // Atualizando os status das acomodações com base nas reservas
       const acomodacoesComStatus = await Promise.all(
         acomodacoesData.map(async (acomodacao) => {
@@ -37,32 +37,32 @@ const Home = () => {
             const reservaResponse = await fetch(
               `http://localhost:5000/status/${acomodacao.id}?data=${dataAtual}`
             );
-  
+
             if (reservaResponse.status === 404) {
               // Caso não haja reservas para a acomodação
               console.log(`Acomodação ${acomodacao.id} sem reservas. Status: disponível`);
               return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
             }
-  
+
             if (!reservaResponse.ok) {
               throw new Error(`Erro ao buscar reservas para acomodação ${acomodacao.id}`);
             }
-  
+
             const reservaData = await reservaResponse.json();
             console.log(`Dados da reserva para acomodação ${acomodacao.id}:`, reservaData);
-  
+
             const status = reservaData?.status_reserva?.toLowerCase() || 'disponível';
-  
+
             // Filtrar apenas os status permitidos
             if (!['reservado', 'hospedado', 'bloqueado'].includes(status)) {
               return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
             }
-  
+
             const nomeHospede = reservaData?.nome_hospede || 'Sem hóspede';
             const dataCheckin = reservaData?.data_checkin ? formatDateToDash(reservaData.data_checkin) : '-';
             const dataCheckout = reservaData?.data_checkout ? formatDateToDash(reservaData.data_checkout) : '-';
             const idReserva = reservaData?.id_reserva || null;
-  
+
             return {
               ...acomodacao,
               status,
@@ -77,7 +77,7 @@ const Home = () => {
           }
         })
       );
-  
+
       console.log('Acomodações com status atualizado:', acomodacoesComStatus);
       setAcomodacoes(acomodacoesComStatus); // Atualiza o estado com os dados das acomodações
     } catch (error) {
@@ -86,7 +86,7 @@ const Home = () => {
       setLoading(false); // Define o carregamento como concluído
     }
   };
-  
+
 
   // Carrega os dados ao montar o componente
   useEffect(() => {
@@ -167,6 +167,11 @@ const Home = () => {
                         {acomodacao.entradaAcessivel === 1 && <li>Entrada Acessível</li>}
                         {acomodacao.estacionamentoAcessivel === 1 && <li>Estacionamento Acessível</li>}
                       </ul>
+                    </>
+                  ) : acomodacao.status.toLowerCase() === 'bloqueado' ? (
+                    <>
+                      <p className="card-text">Data Início Bloqueio: {acomodacao.dataCheckin}</p>
+                      <p className="card-text">Data Fim Bloqueio: {acomodacao.dataCheckout}</p>
                     </>
                   ) : (
                     <>

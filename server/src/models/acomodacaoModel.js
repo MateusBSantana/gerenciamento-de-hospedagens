@@ -139,7 +139,7 @@ WHERE NOT EXISTS (
         (? < r.data_checkout AND ? > r.data_checkin) OR
         (? < r.data_checkout AND ? > r.data_checkin)
     )
-    AND r.status_reserva IN ('reservado', 'hospedado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
+    AND r.status_reserva IN ('reservado', 'hospedado', 'bloqueado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
 )
 
     `;
@@ -162,3 +162,70 @@ WHERE NOT EXISTS (
       return [500, error];
     }
 }
+
+/// Bloquear Acomodação
+export async function bloquearAcomodacao(funcionarioId, acomodacaoId, dataInicio, dataFim, motivo) {
+    const sql = `
+        INSERT INTO reservas (fk_hospede, fk_acomodacao, data_checkin, data_checkout, observacoes, status_reserva)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    const params = [
+        funcionarioId,       // ID do funcionário
+        acomodacaoId,        // ID da acomodação
+        dataInicio,          // Data de início do bloqueio
+        dataFim,             // Data de fim do bloqueio
+        motivo,              // Motivo do bloqueio
+        "bloqueado"          // Status da reserva
+    ];
+
+    try {
+        const [resultado] = await conexao.query(sql, params);
+        return [201, { message: "Bloqueio registrado com sucesso", resultado }];
+    } catch (error) {
+        console.error("Erro ao bloquear acomodação:", error);
+        return [500, { message: "Erro ao bloquear acomodação", error }];
+    }
+}
+
+export async function verificarReservasConflitantes(acomodacaoId, dataInicio, dataFim) {
+    const sql = `
+        SELECT *
+        FROM reservas
+        WHERE fk_acomodacao = ?
+          AND status_reserva IN ('reservado', 'hospedado')
+          AND (
+            (? BETWEEN data_checkin AND data_checkout) OR
+            (? BETWEEN data_checkin AND data_checkout) OR
+            (data_checkin BETWEEN ? AND ?) OR
+            (data_checkout BETWEEN ? AND ?)
+          )
+    `;
+
+    const params = [
+        acomodacaoId,
+        dataInicio,
+        dataFim,
+        dataInicio,
+        dataFim,
+        dataInicio,
+        dataFim
+    ];
+
+    try {
+        const [resultado] = await conexao.query(sql, params);
+
+        if (resultado.length > 0) {
+            // Há reservas conflitantes
+            return [200, { conflito: true, reservas: resultado }];
+        }
+
+        // Nenhuma reserva conflitante encontrada
+        return [200, { conflito: false }];
+    } catch (error) {
+        console.error("Erro ao verificar reservas conflitantes:", error);
+        return [500, { message: "Erro ao verificar reservas conflitantes", error }];
+    }
+}
+
+

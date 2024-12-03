@@ -37,7 +37,7 @@ function Login() {
   // Função para efetuar login
   async function efetuarLogin() {
     setIsLoading(true);
-    console.log('teste')
+    console.log("Tentando efetuar login...");
     try {
       const resposta = await fetch("http://localhost:5000/logar", {
         method: "POST",
@@ -47,33 +47,39 @@ function Login() {
         body: JSON.stringify({ cpf: formData.login }), // Envia o login como CPF
       });
 
-      if (!resposta.ok) {
-        const errorData = await resposta.json();
-        throw new Error(errorData.message || "Erro ao efetuar login");
-      }
-      console.log(resposta);
-      // Supondo que a resposta contenha o nome do usuário
+      console.log("Status da resposta:", resposta.status); // Loga o status HTTP da resposta
+      console.log("Headers da resposta:", resposta.headers); // Loga os headers da resposta
+
       const data = await resposta.json();
+      console.log("Resposta do backend:", data); // Log detalhado da resposta do backend
 
-      // Verifique a resposta da API
-      console.log(data); // Isso vai mostrar o que foi retornado da API
-
-      if (data && data.nome_funcionario) {
-        // Armazena o nome do usuário no localStorage corretamente
-        localStorage.setItem("userName", data.nome_funcionario); // Usa o nome real retornado pela API
-        localStorage.setItem("userCargo", data.cargo);
-        localStorage.setItem("userCPF", formData.login); // Salva o CPF do usuário
+      // Verifica se o backend retornou sucesso
+      if (resposta.ok) {
+        if (data && data.nome_funcionario) {
+          // Salva os dados no localStorage
+          console.log("Dados do funcionário recebidos:", data);
+          localStorage.setItem("userId", data.id_funcionario);
+          localStorage.setItem("userName", data.nome_funcionario);
+          localStorage.setItem("userCargo", data.cargo);
+          localStorage.setItem("userCPF", formData.login);
+          console.log("Dados do funcionário salvos no localStorage:", {
+            userId: data.id_funcionario,
+            userName: data.nome_funcionario,
+          });
+          setAuthError("");
+          console.log("Login bem-sucedido com CPF:", formData.login);
+          window.location.href = "http://localhost:3000/home"; // Redireciona após login
+        } else {
+          console.error("Nome do usuário não encontrado na resposta da API.");
+          setAuthError("Erro inesperado: Nome do usuário não encontrado.");
+        }
       } else {
-        console.error("Nome do usuário não encontrado na resposta da API.");
+        console.error("Erro do backend:", data.message || "Erro desconhecido.");
+        setAuthError(data.message || "CPF ou senha inválidos.");
       }
-
-      // Login bem-sucedido
-      setAuthError("");
-      console.log("Login bem-sucedido com CPF:", formData.login);
-      window.location.href = "http://localhost:3000"; // Redireciona após login
     } catch (error) {
-      console.log("Erro ao efetuar login:", error);
-      setAuthError("CPF ou senha inválidos.");
+      console.error("Erro ao efetuar login:", error);
+      setAuthError("Erro ao se comunicar com o servidor.");
     } finally {
       setIsLoading(false);
     }

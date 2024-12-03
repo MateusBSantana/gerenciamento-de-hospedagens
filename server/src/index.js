@@ -2,11 +2,13 @@ import express from 'express';
 import cors from 'cors';
 
 import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, 
-mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
+mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis, bloquearAcomodacao, 
+verificarConflitoReservas} from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva,
-   alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva } from './controllers/reservaController.js';
+   alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva, 
+   buscarReservasBloqueadas} from './controllers/reservaController.js';
 import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
  
 
@@ -42,6 +44,14 @@ app.delete('/acomodacoes/:id', excluindoAcomodacao);
 app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDisponiveis);
 // Rota para verificar a disponibilidade de uma acomodação nas novas datas
 app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarDisponibilidadeAcomodacao);
+
+// Rota para bloquear acomodação
+app.post("/bloquear", bloquearAcomodacao);
+app.post("/acomodacoes/verificar-conflito", verificarConflitoReservas);
+// Rota para buscar reservas bloqueadas
+app.get('/reservas/bloqueadas', buscarReservasBloqueadas);
+
+
 
 // Rotas de CRUD de reserva
 app.post('/reservas', cadastroReserva);

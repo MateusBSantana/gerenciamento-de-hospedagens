@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 // Importação dos componentes
 import Login from './componentes/pages/Login';
-import Home from './componentes/home/Home';
+import Home from './componentes/Home/Home';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
@@ -14,6 +14,10 @@ import EditarFuncionario from './componentes/pages/EditarFuncionario';
 import CadastroAcomodacao from './componentes/acomodacao/Cadastro';
 import MenuLateral from './componentes/layout/MenuLateral/MenuLateral';
 import ListaAcomodacoes from './componentes/acomodacao/ListaAcomodacoes';
+import ListaAcomodacoesBloqueadas from './componentes/acomodacao/ListaAcomodacoesBloqueadas'
+
+
+
 
 // Importação dos componentes para hóspedes
 import CadastroHospede from './componentes/pages/CadastroHospede';
@@ -30,6 +34,8 @@ import Dashboard from './componentes/Relatorios/Dashboard'; // Corrigido o camin
 // Importação do Mapa de Reservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
 
+import BloquearAcomodacao from './componentes/acomodacao/BloquearAcomodacao';
+
 function AppContent() {
   const location = useLocation();
 
@@ -41,10 +47,10 @@ function AppContent() {
         <Routes>
           {/* Rota para login */}
           <Route path='/login' element={<Login />} />
-          
+
           {/* Rota para a página inicial */}
           <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
-          
+
           {/* Rotas para funcionários */}
           <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
           <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
@@ -54,6 +60,10 @@ function AppContent() {
           <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
           <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} />
           <Route path='/editar_acomodacao/:id' element={<CadastroAcomodacao />} />
+          {/* Rota para bloquear acomodação */}
+          <Route path='/bloquear_acomodacao' element={<BloquearAcomodacao />} />
+          // Adicione a rota para a lista de acomodações bloqueadas
+          <Route path="/acomodacoes_bloqueadas" element={<ListaAcomodacoesBloqueadas />} />
 
           {/* Rotas para hóspedes */}
           <Route path='/cadastro_hospede' element={<CadastroHospede />} />

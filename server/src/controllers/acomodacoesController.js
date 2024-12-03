@@ -6,7 +6,9 @@ import {
     atualizandoAcomodacao as atualizandoAcomodacaoModel,
     excluindoAcomodacao as excluindoAcomodacaoModel,
     mostrandoAcomodacaoPorId as mostrandoAcomodacaoPorIdModel,
-    getAcomodacoesDisponiveis 
+    getAcomodacoesDisponiveis, 
+    bloquearAcomodacao as bloquearAcomodacaoModel,
+    verificarReservasConflitantes
 } from '../models/acomodacaoModel.js';
 
 // Cadastrando Acomodação
@@ -94,6 +96,60 @@ export async function mostrandoAcomodacoesDisponiveis(req, res) {
         res.status(500).json({ message: "Erro ao listar acomodações disponíveis." });
     }
 }
+
+// Bloquear Acomodação
+export async function bloquearAcomodacao(req, res) {
+    console.log("Corpo da requisição recebido:", req.body);
+
+    const { funcionarioId, acomodacaoId, dataInicio, dataFim, motivo } = req.body;
+
+    if (!funcionarioId || !acomodacaoId || !dataInicio || !dataFim || !motivo) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios." });
+    }
+
+    try {
+        const [status, resultado] = await bloquearAcomodacaoModel(
+            funcionarioId,
+            acomodacaoId,
+            dataInicio,
+            dataFim,
+            motivo
+        );
+
+        if (status === 201) {
+            return res.status(201).json(resultado);
+        }
+
+        return res.status(status).json({ message: "Não foi possível bloquear a acomodação." });
+    } catch (error) {
+        console.error("Erro ao bloquear acomodação:", error);
+        res.status(500).json({ message: "Erro interno ao processar o bloqueio." });
+    }
+}
+
+
+
+export async function verificarConflitoReservas(req, res) {
+    const { acomodacaoId, dataInicio, dataFim } = req.body;
+
+    if (!acomodacaoId || !dataInicio || !dataFim) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios." });
+    }
+
+    try {
+        const [status, resultado] = await verificarReservasConflitantes(acomodacaoId, dataInicio, dataFim);
+
+        if (status !== 200) {
+            return res.status(500).json({ message: "Erro ao verificar reservas." });
+        }
+
+        res.status(200).json(resultado);
+    } catch (error) {
+        console.error("Erro ao verificar conflito de reservas:", error);
+        res.status(500).json({ message: "Erro ao verificar conflito de reservas.", error });
+    }
+}
+
 
 
 

@@ -338,8 +338,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
-            min={new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-CA')}
-
+            min={!isEditing ? new Date().toLocaleDateString('en-CA') : undefined} // Remove a restrição ao editar
             disabled={isNonEditable}
           />
         </div>
