@@ -10,13 +10,9 @@ const CalendarBody = ({ dates, accommodations, reservations }) => {
         return "#0000FF"; // Azul escuro
       case "bloqueado":
         return "#FF0000"; // Vermelho
-      default:
-        return "#90EE90"; // Verde (Disponível)
     }
   };
   
-
-
   const isDateInRange = (currentDate, start, end) => {
     if (!currentDate || !start || !end) return false;
 
@@ -202,9 +198,6 @@ const CalendarBody = ({ dates, accommodations, reservations }) => {
       </div>
     </div>
   );
-  
-
-  
   
 };
 

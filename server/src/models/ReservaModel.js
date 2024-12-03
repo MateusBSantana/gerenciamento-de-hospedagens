@@ -220,6 +220,7 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
     FROM view_informacoes_reserva
     WHERE fk_acomodacao = ?
       AND ? BETWEEN data_checkin AND data_checkout
+      AND status_reserva IN ('Reservado', 'Hospedado', 'Bloqueado')
   `;
 
   const params = [acomodacaoId, dataAtual];
@@ -251,6 +252,7 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
     }
   }
 }
+
 
 
 
