@@ -14,6 +14,7 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import AtalhoRelatorios from "../../Relatorios/AtalhoRelatorios";
 
 function MenuLateral() {
   const [isOpen, setIsOpen] = useState(false);
@@ -276,7 +277,7 @@ function MenuLateral() {
                 </Link>
               </Col>
               <Col md={12} className="mb-3">
-                <Link to="/dashboard">
+                <Link to="/atalhos_relatorios">
                   <Button
                     variant="primary"
                     className="w-100"
@@ -307,6 +308,7 @@ function MenuLateral() {
           transition: "transform 0.3s",
         }}
       >
+        <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
         <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: "20px" }} />
       </button>
     </div>

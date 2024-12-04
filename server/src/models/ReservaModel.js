@@ -6,24 +6,28 @@ import db from '../conexao.js';
 
 // Cadastrando reserva
 export async function createReserva(reserva) {
+  console.log("Dados recebidos para cadastro da reserva:", reserva);
   const conexao = mysql.createPool(db);
   const sql = `INSERT INTO reservas 
-    (status_reserva, fk_hospede, fk_acomodacao, data_checkin, data_checkout, valor_diaria, numero_adulto, numero_crianca, observacoes, pago ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  (status_reserva, fk_hospede, fk_acomodacao, data_checkin, data_checkout, valor_diaria, numero_adulto, numero_crianca, observacoes, pago, quantidade_diarias, valor_total) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  const params = [
-    reserva.status_reserva,           
-    reserva.fk_hospede,            
-    reserva.fk_acomodacao,      
-    reserva.data_checkin,       
-    reserva.data_checkout,          
-    reserva.valor_diaria,        
-    reserva.numero_adulto,         
-    reserva.numero_crianca,        
-    reserva.observacoes,
-    reserva.pago      
+
+    const params = [
+      reserva.status_reserva,           
+      reserva.fk_hospede,            
+      reserva.fk_acomodacao,      
+      reserva.data_checkin,       
+      reserva.data_checkout,          
+      reserva.valor_diaria,        
+      reserva.numero_adulto,         
+      reserva.numero_crianca,        
+      reserva.observacoes,
+      reserva.pago,
+      reserva.quantidade_diarias,  
+      reserva.valor_total          
+    ];
     
-  ];
 
   try {
     const [retorno] = await conexao.query(sql, params);
@@ -74,17 +78,15 @@ export async function getOneReserva(id) {
   }
 }
 
-
+// atualizando reserva
 export async function updateReserva(reserva, id) {
   console.log("ReservaModel: updateReserva");
   console.log('Dados recebidos para atualização:', reserva);
   const conexao = mysql.createPool(db);
-  
   // Verifica se o campo observacoes está vazio, e se sim, substitui por null
   const observacoes = reserva.observacoes && reserva.observacoes.trim() !== "" 
                         ? reserva.observacoes 
                         : null;
-
   const sql = `UPDATE reservas SET 
       status_reserva = ?, 
       fk_hospede = ?, 
@@ -95,9 +97,10 @@ export async function updateReserva(reserva, id) {
       numero_adulto = ?, 
       numero_crianca = ?, 
       observacoes = ?, 
-      pago = ?
+      pago = ?, 
+      quantidade_diarias = ?, 
+      valor_total = ? 
       WHERE id_reserva = ?`;
-
   const params = [
     reserva.status_reserva,           
     reserva.fk_hospede,            
@@ -109,23 +112,26 @@ export async function updateReserva(reserva, id) {
     reserva.numero_crianca,        
     observacoes, 
     reserva.pago,
+    reserva.quantidade_diarias, 
+    reserva.valor_total,        
     id
   ];
 
   try {
     const [retorno] = await conexao.query(sql, params);
     console.log("Atualizando Reserva");
-    
+
     if (retorno.affectedRows < 1) {
       return [404, { mensagem: "Reserva não encontrada" }];
     }
-    
+
     return [200, { mensagem: "Reserva atualizada" }];
   } catch (error) {
     console.error(error);
     return [500, error];
   }
 }
+
 
 export async function updateStatusReserva(id, novoStatus) {
   console.log("ReservaModel: updateStatusReserva");

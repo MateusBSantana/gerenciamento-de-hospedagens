@@ -22,6 +22,7 @@ function FormCadReserva({ handleSubmit }) {
     valor_diaria: "",
     pago: "não",
     observacoes: " ",
+    valor_total: "",
   });
 
   const [dataInicio, setDataInicio] = useState("");

@@ -188,6 +188,7 @@ export async function buscarReservas(req, res) {
   }
 }
 
+//buscar status reserva
 export async function buscarStatusReserva(req, res) {
   const acomodacaoId = req.params.acomodacaoId;
   const dataAtual = req.query.data;

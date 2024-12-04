@@ -10,8 +10,11 @@ import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoRes
    alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva, 
    buscarReservasBloqueadas} from './controllers/reservaController.js';
 import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
- 
+import { buscarRelatorioFinanceiro, getPrevisaoReceita, getRelatorioOcupacao } from './controllers/relatorioFinanceiroController.js'; // Importando o controlador
 
+
+
+ 
 const app = express();
 const porta = 5000;
 
@@ -71,6 +74,12 @@ app.post('/logar/',logarUsuario);
 
 // Rota para Home
 app.get('/status/:acomodacaoId', buscarStatusReserva);
+
+// Adicione no bloco de rotas
+app.get('/relatorios/financeiro', buscarRelatorioFinanceiro);
+app.get('/relatorios/previsao-receita', getPrevisaoReceita);
+app.get('/relatorios/ocupacao', getRelatorioOcupacao);
+
 
 
 app.listen(porta, () => {

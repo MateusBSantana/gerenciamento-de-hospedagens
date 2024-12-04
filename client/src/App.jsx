@@ -28,13 +28,17 @@ import EditarHospede from './componentes/pages/EditarHospede';
 import CadastroReserva from './componentes/pages/CadastroReserva';
 import TabelaReservas from './componentes/Reservas/TabelaReservas/TabelaReservas';
 
-// Importação do Dashboard
-import Dashboard from './componentes/Relatorios/Dashboard'; // Corrigido o caminho
+
 
 // Importação do Mapa de Reservas
 import MapaReservas from './componentes/MapaDeReservas/MapaDeReservas/MapaReservas';
 
 import BloquearAcomodacao from './componentes/acomodacao/BloquearAcomodacao';
+
+import RelatorioFinanceiro from './componentes/Relatorios/RelatorioFinanceiro/RelatorioFinanceiro';
+import PrevisaoReceita from './componentes/Relatorios/RelatorioFinanceiro/PrevisaoReceita';
+import RelatorioOcupacao from './componentes/Relatorios/RelatorioFinanceiro/RelatorioOcupacao';
+import AtalhoRelatorios from './componentes/Relatorios/AtalhoRelatorios';
 
 function AppContent() {
   const location = useLocation();
@@ -78,8 +82,11 @@ function AppContent() {
           {/* Rota para o Mapa de Reservas */}
           <Route path='/mapa_reservas' element={<MapaReservas />} />
 
-          {/* Rota para o Dashboard */}
-          <Route path='/dashboard' element={<Dashboard />} /> {/* Adicionada a rota para o Dashboard */}
+          
+          <Route path='/atalhos_relatorios' element={<AtalhoRelatorios/>} />
+          <Route path='/relatorio_financeiro' element={<RelatorioFinanceiro />} />
+          <Route path='/previsao_receita' element={<PrevisaoReceita />} />
+          <Route path='/relatorio_ocupacao' element={<RelatorioOcupacao />} />
 
         </Routes>
       </div>
