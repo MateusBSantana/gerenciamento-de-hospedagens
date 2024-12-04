@@ -279,7 +279,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
           </div>
         </div>
 
-
         {/* Campo Hóspede */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>

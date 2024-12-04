@@ -17,6 +17,8 @@ const Home = () => {
   const [selectedAcomodacao, setSelectedAcomodacao] = useState(null); // Estado para armazenar a acomodação selecionada
   const [selectedReserva, setSelectedReserva] = useState(null); // Estado para armazenar a reserva selecionada
   const [newStatus, setNewStatus] = useState(''); // Estado para armazenar o novo status da acomodação ou reserva
+  const [showPaymentWarning, setShowPaymentWarning] = useState(false); // Estado para controlar o modal de aviso
+
 
   // Função para buscar acomodações e seus respectivos status
   const fetchAcomodacoesComStatus = async () => {
@@ -53,6 +55,8 @@ const Home = () => {
             }
 
             const reservaData = await reservaResponse.json();
+
+            console.log(`Dados da reserva para acomodação ${acomodacao.id}:`, reservaData);
             const status = reservaData?.status_reserva?.toLowerCase() || 'disponível';
 
             if (!['reservado', 'hospedado', 'bloqueado'].includes(status)) {
@@ -63,6 +67,7 @@ const Home = () => {
             const dataCheckin = reservaData?.data_checkin ? formatDateToDash(reservaData.data_checkin) : '-';
             const dataCheckout = reservaData?.data_checkout ? formatDateToDash(reservaData.data_checkout) : '-';
             const idReserva = reservaData?.id_reserva || null;
+            const pago = reservaData.pago
 
             return {
               ...acomodacao,
@@ -71,6 +76,7 @@ const Home = () => {
               dataCheckin,
               dataCheckout,
               idReserva,
+              pago,
             };
           } catch (error) {
             console.error(`Erro na acomodação ${acomodacao.id}:`, error);
@@ -216,6 +222,9 @@ const Home = () => {
                       <p className="card-text">Hóspede: {acomodacao.nomeHospede}</p>
                       <p className="card-text">Check-in: {acomodacao.dataCheckin}</p>
                       <p className="card-text">Check-out: {acomodacao.dataCheckout}</p>
+                      {console.log('Valor de pago:', acomodacao.pago)}
+                      <p className="card-text">Pago: {acomodacao.pago?.trim().toLowerCase() === 'sim' ? 'Sim' : 'Não'}</p>
+
                       {acomodacao.idReserva && (
                         <p className="card-text">ID da Reserva: {acomodacao.idReserva}</p>
                       )}
@@ -245,25 +254,61 @@ const Home = () => {
                     </button>
                   )}
                   {(acomodacao.status.toLowerCase() === 'reservado' || acomodacao.status.toLowerCase() === 'hospedado') && (
-                    <button
-                      className="btn btn-primary mt-2 w-100"
-                      onClick={() =>
-                        openConfirmationModal(
-                          acomodacao.idReserva,
-                          acomodacao.status.toLowerCase() === 'reservado' ? 'hospedado' : 'finalizada',
-                          'reserva'
-                        )
-                      }
-                    >
-                      {acomodacao.status.toLowerCase() === 'reservado' ? 'Hospedar' : 'Finalizar Reserva'}
-                    </button>
+                    <>
+                      <button
+                        className="btn btn-primary mt-2 w-100"
+                        onClick={() => {
+                          if (acomodacao.pago?.trim().toLowerCase() !== 'sim') {
+                            setShowPaymentWarning(true); // Exibe o modal
+                            return;
+                          }
+                          openConfirmationModal(
+                            acomodacao.idReserva,
+                            acomodacao.status.toLowerCase() === 'reservado' ? 'hospedado' : 'finalizada',
+                            'reserva'
+                          );
+                        }}
+                      >
+                        {acomodacao.status.toLowerCase() === 'reservado' ? 'Hospedar' : 'Finalizar Reserva'}
+                      </button>
+
+                      <button
+                        className="btn btn-primary mt-2 w-100"
+                        onClick={() => {
+                          window.location.href = `/cadastro_reserva/${acomodacao.idReserva}`;
+                        }}
+                      >
+                        Ver Detalhes
+                      </button>
+                    </>
                   )}
+
+
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+      {showPaymentWarning && (
+        <div
+          className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-4 w-50"
+          style={{ zIndex: 1060 }}
+        >
+          <h5 className="text-center mb-3">Ação Bloqueada</h5>
+          <p className="text-center">
+            O pagamento ainda não foi efetuado. Por favor, realize o pagamento antes de finalizar a reserva.
+          </p>
+          <div className="text-center">
+            <button
+              className="btn btn-danger"
+              onClick={() => setShowPaymentWarning(false)} // Fecha o modal
+            >
+              Entendido
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Modal de Confirmação */}
       {showConfirmation && (

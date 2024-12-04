@@ -44,7 +44,7 @@ export async function readReservas() {
 
     try {
         const [retorno] = await conexao.query(sql);
-        console.log("Mostrando Reservas");
+        console.log("Mostrando Reservas",retorno);
         return [200, retorno];
     } catch (error) {
         console.log(error);
@@ -127,7 +127,6 @@ export async function updateReserva(reserva, id) {
   }
 }
 
-
 export async function updateStatusReserva(id, novoStatus) {
   console.log("ReservaModel: updateStatusReserva");
 
@@ -199,13 +198,6 @@ export async function updateStatusReserva(id, novoStatus) {
   }
 }
 
-
-
-
-
-
-
-
 export const verificarDisponibilidade = async (dataEntrada, dataSaida, acomodacaoId, reservaId) => {
   console.log('ReservaModel: verificarDisponibilidade');
   
@@ -259,7 +251,8 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
       nome_hospede, 
       data_checkin, 
       data_checkout,
-      id_reserva 
+      id_reserva,
+      pago 
     FROM view_informacoes_reserva
     WHERE fk_acomodacao = ?
       AND ? BETWEEN data_checkin AND data_checkout
@@ -310,7 +303,7 @@ export async function getReservasBloqueadas() {
       data_checkin,
       data_checkout,
       nome_acomodacao,
-      status_reserva
+      status_reserva,
     FROM view_informacoes_reserva
     WHERE status_reserva = 'bloqueado'
   `;

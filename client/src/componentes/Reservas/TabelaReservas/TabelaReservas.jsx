@@ -93,7 +93,6 @@ function TabelaReservas() {
       reserva.status_reserva !== "bloqueado" && reserva.status_reserva !== "desbloqueada"; // Exclui reservas bloqueadas ou desbloqueadas
     return matchesSearch && matchesStatus && isNotBlockedOrUnlocked;
   });
-  
 
   function formatDateToDash(isoString) {
     const date = new Date(isoString);
@@ -121,13 +120,13 @@ function TabelaReservas() {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        width: "100%", 
+        width: "100%",
       }}
     >
       <div className="container py- w-100"
         style={{
-          maxWidth: "100%", 
-          padding: "0", 
+          maxWidth: "100%",
+          padding: "0",
         }}
       >
         <Alertas
@@ -164,112 +163,139 @@ function TabelaReservas() {
           style={{
             maxHeight: "500px",
             overflowY: "auto",
-            width: "100%", 
+            width: "100%",
           }}
-        ><table
-        className="table table-bordered table-hover mx-auto"
-        style={{
-          width: "95%", 
-          tableLayout: "fixed", 
-        }}
-      >
-        <thead className="table-primary">
-          <tr>
-            <th>Número da Reserva</th>
-            <th>Hóspede</th>
-            <th>CPF</th>
-            <th>Acomodação</th>
-            <th>Data Entrada</th>
-            <th>Data Saída</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredReservas.map((reserva) => (
-            <tr
-              key={reserva.id_reserva}
-              onClick={() => setSelectedReserva(reserva)}
-              className={selectedReserva?.id_reserva === "table-primary" ? "table-primary" : ""}
-              style={{ cursor: "pointer" }}
-            >
-              <td>{reserva.id_reserva}</td>
-              <td>{reserva.nome_hospede || "Nome não informado"}</td>
-              <td>{reserva.cpf}</td>
-              <td>{reserva.nome_acomodacao || "Acomodação não informada"}</td>
-              <td>{formatDateToDash(reserva.data_checkin)}</td>
-              <td>{formatDateToDash(reserva.data_checkout)}</td>
-              <td>{reserva.status_reserva}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        >
+          <table
+            className="table table-bordered table-hover mx-auto"
+            style={{
+              width: "95%",
+              tableLayout: "fixed",
+            }}
+          >
+            <thead className="table-primary">
+              <tr>
+                <th>Número da Reserva</th>
+                <th>Hóspede</th>
+                <th>CPF</th>
+                <th>Acomodação</th>
+                <th>Data Entrada</th>
+                <th>Data Saída</th>
+                <th>Pago</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredReservas.map((reserva) => (
+                <tr
+                  key={reserva.id_reserva}
+                  onClick={() => setSelectedReserva(reserva)}
+                  className={selectedReserva?.id_reserva === "table-primary" ? "table-primary" : ""}
+                  style={{ cursor: "pointer" }}
+                >
+                  <td>{reserva.id_reserva}</td>
+                  <td>{reserva.nome_hospede || "Nome não informado"}</td>
+                  <td>{reserva.cpf}</td>
+                  <td>{reserva.nome_acomodacao || "Acomodação não informada"}</td>
+                  <td>{formatDateToDash(reserva.data_checkin)}</td>
+                  <td>{formatDateToDash(reserva.data_checkout)}</td>
+                  <td>{reserva.pago === "sim" ? "Sim" : "Não"}</td>
+                  <td>{reserva.status_reserva}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         {selectedReserva && (
           <div
-            className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-5 w-25"
-            style={{ zIndex: 1050 }}>
-            <button
-              type="button"
-              className="btn btn-danger position-absolute top-0 end-0 m-2"
-              aria-label="Fechar"
-              onClick={() => setSelectedReserva(null)}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-            <h4 className="text-center mb-4">Opções para a Reserva #{selectedReserva.id_reserva}</h4>
-            <p><strong>Hóspede:</strong> {selectedReserva.nome_hospede}</p>
-            <p><strong>Data Entrada:</strong> {formatDateToDash(selectedReserva.data_checkin)}</p>
-            <p><strong>Data Saída:</strong> {formatDateToDash(selectedReserva.data_checkout)}</p>
-            <p><strong>Status:</strong> {selectedReserva.status_reserva}</p>
-            <div className="d-flex flex-column align-items-center gap-2 mt-3 w-100">
-              <Link
-                className="btn btn-primary w-100"
-                to={`/cadastro_reserva/${selectedReserva.id_reserva}`}>
-                {selectedReserva.status_reserva === 'cancelada' || selectedReserva.status_reserva === 'finalizada'
-                  ? 'Visualizar Reserva'
-                  : 'Editar'}
-              </Link>
-              {selectedReserva.status_reserva === 'reservado' && (
-                <>
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50"
+            style={{ zIndex: 1050 }}
+            onClick={(e) => e.stopPropagation()} 
+          >
+            <div
+              className="bg-light border rounded shadow-lg p-5 w-25 position-relative"
+            >
+              <button
+                type="button"
+                className="btn btn-danger position-absolute top-0 end-0 m-2"
+                aria-label="Fechar"
+                onClick={() => setSelectedReserva(null)}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+              <h4 className="text-center mb-4">Opções para a Reserva #{selectedReserva.id_reserva}</h4>
+              <p><strong>Hóspede:</strong> {selectedReserva.nome_hospede}</p>
+              <p><strong>Data Entrada:</strong> {formatDateToDash(selectedReserva.data_checkin)}</p>
+              <p><strong>Data Saída:</strong> {formatDateToDash(selectedReserva.data_checkout)}</p>
+              <p><strong>Status:</strong> {selectedReserva.status_reserva}</p>
+              <p><strong>Pago:</strong> {selectedReserva.pago === "sim" ? "Sim" : "Não"}</p>
+              <div className="d-flex flex-column align-items-center gap-2 mt-3 w-100">
+                <Link
+                  className="btn btn-primary w-100"
+                  to={`/cadastro_reserva/${selectedReserva.id_reserva}`}
+                >
+                  {selectedReserva.status_reserva === 'cancelada' || selectedReserva.status_reserva === 'finalizada'
+                    ? 'Visualizar Reserva'
+                    : 'Editar'}
+                </Link>
+                {selectedReserva.status_reserva === 'reservado' && (
+                  <>
+                    <button
+                      className="btn btn-warning w-100"
+                      onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'cancelada'), selectedReserva)}
+                    >
+                      Cancelar Reserva
+                    </button>
+                    <button
+                      className="btn btn-info w-100"
+                      onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'hospedado'), selectedReserva)}
+                    >
+                      Hospedar
+                    </button>
+                  </>
+                )}
+                {selectedReserva.status_reserva === 'hospedado' && (
                   <button
-                    className="btn btn-warning w-100"
-                    onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'cancelada'), selectedReserva)}>
-                    Cancelar Reserva
+                    className="btn btn-success w-100"
+                    onClick={() => {
+                      if (selectedReserva.pago !== "sim") {
+                        showAlert("A reserva não pode ser finalizada. O pagamento ainda não foi confirmado.", "danger");
+                        return;
+                      }
+                      openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'finalizada'), selectedReserva);
+                    }}
+                  >
+                    Finalizar Reserva
                   </button>
-                  <button
-                    className="btn btn-info w-100"
-                    onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'hospedado'), selectedReserva)}>
-                    Hospedar
-                  </button>
-                </>
-              )}
-              {selectedReserva.status_reserva === 'hospedado' && (
-                <button
-                  className="btn btn-success w-100"
-                  onClick={() => openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'finalizada'), selectedReserva)}>
-                  Finalizar Reserva
-                </button>
-              )}
+                )}
+              </div>
             </div>
           </div>
         )}
         {showConfirmation && (
           <div
-            className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-4 w-50"
-            style={{ zIndex: 1060 }}>
-            <h5 className="text-center mb-3">
-              Deseja realmente {confirmAction?.toString().includes('hospedado') ? 'hospedar' : selectedReserva?.status_reserva === 'reservado' ? 'cancelar' : 'finalizar'} esta reserva?
-            </h5>
-            <div className="text-center">
-              <button
-                className="btn btn-secondary me-3"
-                onClick={() => setShowConfirmation(false)}>
-                Voltar
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={handleConfirmAction}>
-                Sim
-              </button>
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50"
+            style={{ zIndex: 1060 }}
+            onClick={(e) => e.stopPropagation()} // Bloqueia cliques externos
+          >
+            <div className="bg-light border rounded shadow-lg p-4" style={{ width: "50%" }}>
+              <h5 className="text-center mb-3">
+                Deseja realmente {confirmAction?.toString().includes('hospedado') ? 'hospedar' : selectedReserva?.status_reserva === 'reservado' ? 'cancelar' : 'finalizar'} esta reserva?
+              </h5>
+              <div className="text-center">
+                <button
+                  className="btn btn-secondary me-3"
+                  onClick={() => setShowConfirmation(false)}
+                >
+                  Voltar
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={handleConfirmAction}
+                >
+                  Sim
+                </button>
+              </div>
             </div>
           </div>
         )}
