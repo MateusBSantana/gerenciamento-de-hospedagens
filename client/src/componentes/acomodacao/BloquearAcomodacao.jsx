@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function BloquearAcomodacao() {
   const [acomodacaoId, setAcomodacaoId] = useState("");
@@ -8,22 +9,19 @@ function BloquearAcomodacao() {
   const [motivo, setMotivo] = useState("");
   const [message, setMessage] = useState("");
   const [funcionario, setFuncionario] = useState({ id: "", nome: "" });
+  const navigate = useNavigate();
 
   // Recupera os dados do funcionário ao montar o componente
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
-    
-    console.log("Dados do localStorage:", { userId, userName }); // Adicionado aqui
-  
+
     if (userId && userName) {
       setFuncionario({ id: userId, nome: userName });
-      console.log("Funcionário recuperado:", { id: userId, nome: userName }); // Adicionado aqui
     } else {
       setMessage("Erro: Funcionário não autenticado.");
     }
   }, []);
-  
 
   async function handleBloquear() {
     try {
@@ -31,12 +29,12 @@ function BloquearAcomodacao() {
         setMessage("Erro: Funcionário não autenticado.");
         return;
       }
-  
+
       if (!acomodacaoId || !dataInicio || !dataFim || !motivo) {
         setMessage("Por favor, preencha todos os campos.");
         return;
       }
-  
+
       // Verificar se existem reservas conflitantes
       const verificarResponse = await fetch(
         `http://localhost:5000/acomodacoes/verificar-conflito`,
@@ -52,16 +50,16 @@ function BloquearAcomodacao() {
           }),
         }
       );
-  
+
       const verificarData = await verificarResponse.json();
-  
+
       if (verificarData.conflito) {
         setMessage(
           `Existem reservas em aberto para a acomodação no período de ${dataInicio} a ${dataFim}.`
         );
         return; // Interrompe o fluxo se houver conflitos
       }
-  
+
       // Se não houver conflitos, realiza o bloqueio
       const response = await fetch("http://localhost:5000/bloquear", {
         method: "POST",
@@ -76,10 +74,15 @@ function BloquearAcomodacao() {
           motivo,
         }),
       });
-  
+
       const data = await response.json();
       if (response.ok) {
         setMessage(`Acomodação ${acomodacaoId} bloqueada com sucesso!`);
+
+        // Redireciona após 3 segundos
+        setTimeout(() => {
+          navigate("/acomodacoes_bloqueadas");
+        }, 3000);
       } else {
         setMessage(`Erro ao bloquear acomodação: ${data.message}`);
       }
@@ -87,8 +90,7 @@ function BloquearAcomodacao() {
       console.error("Erro ao bloquear acomodação:", error);
       setMessage("Erro ao tentar bloquear a acomodação.");
     }
-  }  
-  
+  }
 
   return (
     <Container>
@@ -155,8 +157,17 @@ function BloquearAcomodacao() {
             </Form.Group>
 
             {/* Botão de Bloquear */}
-            <Button variant="primary" className="w-100" onClick={handleBloquear}>
+            <Button variant="primary" className="w-100 mb-2" onClick={handleBloquear}>
               Bloquear Acomodação
+            </Button>
+
+            {/* Botão de Cancelar */}
+            <Button
+              variant="secondary"
+              className="w-100"
+              onClick={() => navigate("/listagem_acomodacoes")}
+            >
+              Cancelar
             </Button>
           </Form>
         </Col>

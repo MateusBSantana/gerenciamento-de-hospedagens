@@ -58,13 +58,13 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
           <h2>Acomodações</h2>
           {!dataInicio && !dataFim && (
             <>
-              <Button variant="danger" onClick={() => navigate('/acomodacoes_bloqueadas')}>
+              <Button size="sm" variant="danger" onClick={() => navigate('/acomodacoes_bloqueadas')}>
                 Ver Acomodações Bloqueadas
               </Button>
-              <Button variant="danger" onClick={() => navigate('/bloquear_acomodacao')}>
+              <Button size="sm" variant="danger" onClick={() => navigate('/bloquear_acomodacao')}>
                 Bloquear Acomodação
               </Button>
-              <Button variant="primary" onClick={() => navigate('/cadastro_acomodacao')}>
+              <Button size="sm" variant="primary" onClick={() => navigate('/cadastro_acomodacao')}>
                 Nova Acomodação
               </Button>
             </>
@@ -126,7 +126,7 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
           ) : (
             <tr>
               <td colSpan="7" className="text-center">
-                Nenhuma acomodação encontrada.
+                Nenhuma acomodação disponível para as datas informadas.
               </td>
             </tr>
           )}

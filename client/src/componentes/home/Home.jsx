@@ -14,8 +14,9 @@ const Home = () => {
   const [acomodacoes, setAcomodacoes] = useState([]); // Estado para armazenar as acomodações
   const [loading, setLoading] = useState(true); // Estado para exibir o indicador de carregamento
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para controlar a exibição do modal de confirmação
+  const [selectedAcomodacao, setSelectedAcomodacao] = useState(null); // Estado para armazenar a acomodação selecionada
   const [selectedReserva, setSelectedReserva] = useState(null); // Estado para armazenar a reserva selecionada
-  const [newStatus, setNewStatus] = useState(''); // Estado para armazenar o novo status da reserva
+  const [newStatus, setNewStatus] = useState(''); // Estado para armazenar o novo status da acomodação ou reserva
 
   // Função para buscar acomodações e seus respectivos status
   const fetchAcomodacoesComStatus = async () => {
@@ -30,17 +31,20 @@ const Home = () => {
 
       const dataAtual = new Date().toLocaleDateString('en-CA'); // Data atual no formato ISO
 
-      // Atualizando os status das acomodações com base nas reservas
+      // Atualizando os status das acomodações com base nas reservas e na verificação de "em limpeza"
       const acomodacoesComStatus = await Promise.all(
         acomodacoesData.map(async (acomodacao) => {
+          if (acomodacao.status.toLowerCase() === 'em limpeza') {
+            console.log(`Acomodação ${acomodacao.id} está em limpeza. Ignorando reservas.`);
+            return { ...acomodacao, nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
+          }
+
           try {
             const reservaResponse = await fetch(
               `http://localhost:5000/status/${acomodacao.id}?data=${dataAtual}`
             );
 
             if (reservaResponse.status === 404) {
-              // Caso não haja reservas para a acomodação
-              console.log(`Acomodação ${acomodacao.id} sem reservas. Status: disponível`);
               return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
             }
 
@@ -49,11 +53,8 @@ const Home = () => {
             }
 
             const reservaData = await reservaResponse.json();
-            console.log(`Dados da reserva para acomodação ${acomodacao.id}:`, reservaData);
-
             const status = reservaData?.status_reserva?.toLowerCase() || 'disponível';
 
-            // Filtrar apenas os status permitidos
             if (!['reservado', 'hospedado', 'bloqueado'].includes(status)) {
               return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
             }
@@ -87,14 +88,37 @@ const Home = () => {
     }
   };
 
-
-  // Carrega os dados ao montar o componente
   useEffect(() => {
     fetchAcomodacoesComStatus();
   }, []);
 
+  // Função para atualizar o status da acomodação
+  const handleAcomodacaoStatusAction = async () => {
+    if (!selectedAcomodacao || newStatus !== 'disponível') return;
+
+    try {
+      const resposta = await fetch(`http://localhost:5000/acomodacoes/${selectedAcomodacao}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!resposta.ok) {
+        throw new Error(`Erro ao atualizar status da acomodação ${selectedAcomodacao}`);
+      }
+
+      console.log(`Acomodação ${selectedAcomodacao} atualizada para o status: ${newStatus}`);
+      setShowConfirmation(false);
+      fetchAcomodacoesComStatus();
+    } catch (error) {
+      console.error(`Erro ao atualizar status da acomodação ${selectedAcomodacao}:`, error);
+    }
+  };
+
   // Função para atualizar o status da reserva
-  const handleStatusAction = async () => {
+  const handleReservaStatusAction = async () => {
     if (!selectedReserva || !newStatus) return;
 
     try {
@@ -112,20 +136,30 @@ const Home = () => {
 
       console.log(`Reserva ${selectedReserva} atualizada para o status: ${newStatus}`);
       setShowConfirmation(false);
-      fetchAcomodacoesComStatus(); // Atualiza os dados das acomodações
+      fetchAcomodacoesComStatus();
     } catch (error) {
       console.error(`Erro ao atualizar status da reserva ${selectedReserva}:`, error);
     }
   };
 
-  // Abre o modal de confirmação
-  const openConfirmationModal = (idReserva, novoStatus) => {
-    setSelectedReserva(idReserva);
+  const openConfirmationModal = (id, novoStatus, type = 'acomodacao') => {
+    if (type === 'acomodacao') {
+      setSelectedAcomodacao(id);
+    } else {
+      setSelectedReserva(id);
+    }
     setNewStatus(novoStatus);
     setShowConfirmation(true);
   };
 
-  // Estilos dos cards com base no status
+  const handleAction = () => {
+    if (newStatus === 'disponível') {
+      handleAcomodacaoStatusAction();
+    } else {
+      handleReservaStatusAction();
+    }
+  };
+
   const getCardStyle = (status) => {
     switch (status.toLowerCase()) {
       case 'reservado':
@@ -134,6 +168,8 @@ const Home = () => {
         return { backgroundColor: '#0000FF', color: '#FFF' }; // Azul escuro
       case 'bloqueado':
         return { backgroundColor: '#FF0000', color: '#FFF' }; // Vermelho
+      case 'em limpeza':
+        return { backgroundColor: '#FFA500', color: '#000' }; // Laranja
       default:
         return { backgroundColor: '#90EE90', color: '#000' }; // Verde (Disponível)
     }
@@ -145,13 +181,13 @@ const Home = () => {
 
   return (
     <div className="container-fluid mt-3" style={{ maxWidth: '95%' }}>
-      <h2 className="text-center mb-4">Acomodações Cadastradas</h2>
+      <h2 className="text-center mb-4">Gerenciamento de Acomodações</h2>
       <div className="custom-scroll-container" style={{ maxHeight: '80vh', overflowY: 'auto', paddingRight: '15px' }}>
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
           {acomodacoes.map((acomodacao) => (
             <div className="col" key={acomodacao.id}>
-              <div className="card h-100" style={getCardStyle(acomodacao.status)}>
-                <div className="card-body">
+              <div className="card h-100 d-flex flex-column" style={getCardStyle(acomodacao.status)}>
+                <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{acomodacao.nome}</h5>
                   {acomodacao.status.toLowerCase() === 'disponível' ? (
                     <>
@@ -168,6 +204,8 @@ const Home = () => {
                         {acomodacao.estacionamentoAcessivel === 1 && <li>Estacionamento Acessível</li>}
                       </ul>
                     </>
+                  ) : acomodacao.status.toLowerCase() === 'em limpeza' ? (
+                    <p className="card-text">Acomodação em processo de limpeza.</p>
                   ) : acomodacao.status.toLowerCase() === 'bloqueado' ? (
                     <>
                       <p className="card-text">Data Início Bloqueio: {acomodacao.dataCheckin}</p>
@@ -183,30 +221,37 @@ const Home = () => {
                       )}
                     </>
                   )}
-                  <p className="card-text">
+                  <p className="card-text mt-auto">
                     Status: <span className="badge bg-light text-dark">{acomodacao.status}</span>
                   </p>
-                  <button
-                    className="btn btn-primary mt-2 w-100"
-                    onClick={() => {
-                      if (acomodacao.status.toLowerCase() === 'disponível') {
+                </div>
+                <div className="mt-auto p-3">
+                  {acomodacao.status.toLowerCase() === 'disponível' && (
+                    <button
+                      className="btn btn-primary mt-2 w-100"
+                      onClick={() => {
                         window.location.href = '/cadastro_reserva';
-                      } else if (acomodacao.idReserva) {
-                        window.location.href = `/cadastro_reserva/${acomodacao.idReserva}`;
-                      } else {
-                        alert(`ID da reserva não encontrado para a acomodação ${acomodacao.nome}`);
-                      }
-                    }}
-                  >
-                    {acomodacao.status.toLowerCase() === 'disponível' ? 'Nova Reserva' : 'Ver Detalhes'}
-                  </button>
+                      }}
+                    >
+                      Nova Reserva
+                    </button>
+                  )}
+                  {acomodacao.status.toLowerCase() === 'em limpeza' && (
+                    <button
+                      className="btn btn-primary mt-2 w-100"
+                      onClick={() => openConfirmationModal(acomodacao.id, 'disponível', 'acomodacao')}
+                    >
+                      Finalizar Limpeza
+                    </button>
+                  )}
                   {(acomodacao.status.toLowerCase() === 'reservado' || acomodacao.status.toLowerCase() === 'hospedado') && (
                     <button
                       className="btn btn-primary mt-2 w-100"
                       onClick={() =>
                         openConfirmationModal(
                           acomodacao.idReserva,
-                          acomodacao.status.toLowerCase() === 'reservado' ? 'hospedado' : 'finalizada'
+                          acomodacao.status.toLowerCase() === 'reservado' ? 'hospedado' : 'finalizada',
+                          'reserva'
                         )
                       }
                     >
@@ -227,13 +272,13 @@ const Home = () => {
           style={{ zIndex: 1060 }}
         >
           <h5 className="text-center mb-3">
-            Deseja realmente {newStatus === 'hospedado' ? 'hospedar' : 'finalizar'} esta reserva?
+            Deseja realmente {newStatus === 'disponível' ? 'finalizar a limpeza' : 'executar esta ação'}?
           </h5>
           <div className="text-center">
             <button className="btn btn-secondary me-3" onClick={() => setShowConfirmation(false)}>
               Cancelar
             </button>
-            <button className="btn btn-danger" onClick={handleStatusAction}>
+            <button className="btn btn-danger" onClick={handleAction}>
               Confirmar
             </button>
           </div>

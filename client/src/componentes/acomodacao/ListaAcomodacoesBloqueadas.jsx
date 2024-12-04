@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Container, Spinner, Button } from 'react-bootstrap';
+import { Table, Container, Spinner, Button, Modal, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function ListaAcomodacoesBloqueadas() {
   const [acomodacoesBloqueadas, setAcomodacoesBloqueadas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const navigate = useNavigate();
 
   // Função para buscar acomodações bloqueadas
   const fetchAcomodacoesBloqueadas = async () => {
@@ -22,9 +26,11 @@ function ListaAcomodacoesBloqueadas() {
   };
 
   // Função para desbloquear uma acomodação
-  const handleDesbloquear = async (id) => {
+  const handleDesbloquear = async () => {
+    if (!selectedId) return;
+
     try {
-      const resposta = await fetch(`http://localhost:5000/reservas/${id}/status`, {
+      const resposta = await fetch(`http://localhost:5000/reservas/${selectedId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -34,15 +40,25 @@ function ListaAcomodacoesBloqueadas() {
 
       if (!resposta.ok) {
         const errorMessage = await resposta.text();
-        throw new Error(`Erro ao atualizar status da reserva ${id}: ${errorMessage}`);
+        throw new Error(`Erro ao atualizar status da reserva ${selectedId}: ${errorMessage}`);
       }
 
-      console.log(`Status da reserva ${id} atualizado para "desbloqueada" com sucesso.`);
-      // Atualiza a lista de acomodações bloqueadas
-      await fetchAcomodacoesBloqueadas();
+      console.log(`Status da reserva ${selectedId} atualizado para "desbloqueada" com sucesso.`);
+
+      // Recarrega a página
+      fetchAcomodacoesBloqueadas();
     } catch (error) {
-      console.error(`Erro ao atualizar status da reserva ${id}:`, error);
+      console.error(`Erro ao atualizar status da reserva ${selectedId}:`, error);
+    } finally {
+      setShowConfirmation(false); // Fecha o modal de confirmação
+      setSelectedId(null);
     }
+  };
+
+  // Abre o modal de confirmação
+  const openConfirmationModal = (id) => {
+    setSelectedId(id);
+    setShowConfirmation(true);
   };
 
   // Carregar acomodações bloqueadas ao montar o componente
@@ -52,7 +68,19 @@ function ListaAcomodacoesBloqueadas() {
 
   return (
     <Container className="mt-5">
-      <h2>Acomodações Bloqueadas</h2>
+      <Row className="justify-content-between align-items-center mb-3">
+        <Col>
+          <h2>Acomodações Bloqueadas</h2>
+        </Col>
+        <Col className="text-end">
+          <Button
+            variant="secondary"
+            onClick={() => navigate('/listagem_acomodacoes')}
+          >
+            Fechar
+          </Button>
+        </Col>
+      </Row>
       {loading ? (
         <div className="text-center">
           <Spinner animation="border" role="status">
@@ -84,7 +112,7 @@ function ListaAcomodacoesBloqueadas() {
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => handleDesbloquear(item.id_reserva)} // Passa o ID da reserva
+                      onClick={() => openConfirmationModal(item.id_reserva)} // Abre o modal com o ID da reserva
                     >
                       Desbloquear
                     </Button>
@@ -99,6 +127,24 @@ function ListaAcomodacoesBloqueadas() {
           </tbody>
         </Table>
       )}
+
+      {/* Modal de Confirmação */}
+      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Ação</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza que deseja desbloquear esta acomodação?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmation(false)}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleDesbloquear}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

@@ -128,39 +128,82 @@ export async function updateReserva(reserva, id) {
 }
 
 
-// Alterando o status de uma reserva
 export async function updateStatusReserva(id, novoStatus) {
   console.log("ReservaModel: updateStatusReserva");
-  
+
   const conexao = mysql.createPool(db); // Configuração da conexão com o banco de dados
-  
+
   // SQL para atualizar o campo `status_reserva` da reserva com o ID especificado
-  const sql = `UPDATE reservas SET status_reserva = ? WHERE id_reserva = ?`;
-  const params = [novoStatus, id];
+  const sqlAtualizarReserva = `UPDATE reservas SET status_reserva = ? WHERE id_reserva = ?`;
+  const paramsReserva = [novoStatus, id];
 
   try {
-    // Executa a consulta no banco de dados
-    const [retorno] = await conexao.query(sql, params);
+    // Inicia uma transação
+    await conexao.query("START TRANSACTION");
+
+    // Atualiza o status da reserva
+    const [retornoReserva] = await conexao.query(sqlAtualizarReserva, paramsReserva);
     console.log("Atualizando status da reserva no banco de dados");
 
-    // Verifica se a reserva foi encontrada e atualizada
-    if (retorno.affectedRows < 1) {
+    if (retornoReserva.affectedRows < 1) {
       console.log(`Nenhuma reserva encontrada com o ID: ${id}`);
+      await conexao.query("ROLLBACK");
       return [404, { mensagem: "Reserva não encontrada ou nenhum registro atualizado." }];
     }
+
+    // Se o novo status for "finalizada", atualiza o status da acomodação para "em limpeza"
+    if (novoStatus === "finalizada") {
+      // Obter o ID da acomodação associada à reserva
+      const sqlObterAcomodacao = `SELECT fk_acomodacao FROM reservas WHERE id_reserva = ?`;
+      const [resultadoAcomodacao] = await conexao.query(sqlObterAcomodacao, [id]);
+
+      if (resultadoAcomodacao.length === 0) {
+        console.log(`Nenhuma acomodação encontrada para a reserva ID: ${id}`);
+        await conexao.query("ROLLBACK");
+        return [404, { mensagem: "Acomodação não encontrada para esta reserva." }];
+      }
+
+      const idAcomodacao = resultadoAcomodacao[0].fk_acomodacao;
+      console.log(`ID da acomodação associada à reserva: ${idAcomodacao}`);
+
+      // SQL para atualizar o status da acomodação
+      const sqlAtualizarAcomodacao = `
+        UPDATE acomodacao 
+        SET status = 'em limpeza' 
+        WHERE id = ?`;
+      const paramsAcomodacao = [idAcomodacao];
+
+      const [retornoAcomodacao] = await conexao.query(sqlAtualizarAcomodacao, paramsAcomodacao);
+
+      if (retornoAcomodacao.affectedRows < 1) {
+        console.log(`Falha ao atualizar o status da acomodação ID: ${idAcomodacao}`);
+        await conexao.query("ROLLBACK");
+        return [404, { mensagem: "Falha ao atualizar o status da acomodação." }];
+      }
+
+      console.log("Status da acomodação atualizado para 'em limpeza'");
+    }
+
+    // Confirma a transação
+    await conexao.query("COMMIT");
 
     // Retorna sucesso com mensagem
     return [200, { mensagem: `Status da reserva atualizado para '${novoStatus}' com sucesso.` }];
   } catch (error) {
-    console.error('Erro ao atualizar status da reserva:', error.message);
-
-    // Retorna erro com detalhes
-    return [500, { mensagem: 'Erro ao atualizar status da reserva.', detalhes: error.message }];
+    console.error('Erro ao atualizar status da reserva ou acomodação:', error.message);
+    await conexao.query("ROLLBACK");
+    return [500, { mensagem: 'Erro ao atualizar status da reserva ou acomodação.', detalhes: error.message }];
   } finally {
     // Fecha a conexão do pool
     await conexao.end();
   }
 }
+
+
+
+
+
+
 
 
 export const verificarDisponibilidade = async (dataEntrada, dataSaida, acomodacaoId, reservaId) => {
@@ -220,7 +263,7 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
     FROM view_informacoes_reserva
     WHERE fk_acomodacao = ?
       AND ? BETWEEN data_checkin AND data_checkout
-      AND status_reserva IN ('Reservado', 'Hospedado', 'Bloqueado')
+      AND status_reserva IN ('Reservado', 'Hospedado', 'Bloqueado', 'em limpeza')
   `;
 
   const params = [acomodacaoId, dataAtual];
