@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 
 // Importação dos componentes
 import Login from './componentes/pages/Login';
-import Home from './componentes/Home/Home';
+import Home from './componentes/home/Home';
 
 // Importação dos componentes para funcionários
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';

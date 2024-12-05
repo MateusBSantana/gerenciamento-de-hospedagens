@@ -114,6 +114,18 @@ const CalendarHeader = ({ startDate, endDate, setStartDate, setEndDate }) => {
                 border: "1px solid #000",
               }}
             ></div>
+            <span style={{ fontSize: "14px" }}>Bloqueado</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div
+              style={{
+                backgroundColor: "#FF0000",
+                width: "20px",
+                height: "20px",
+                borderRadius: "3px",
+                border: "1px solid #000",
+              }}
+            ></div>
             <span style={{ fontSize: "14px", color: "#000" }}>Hospedado</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

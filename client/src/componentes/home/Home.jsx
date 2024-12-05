@@ -186,9 +186,9 @@ const Home = () => {
   }
 
   return (
-    <div className="container-fluid mt-3" style={{ maxWidth: '95%' }}>
+    <div className="container-fluid mt-3" style={{ maxWidth: '99%' }}>
       <h2 className="text-center mb-4">Gerenciamento de Acomodações</h2>
-      <div className="custom-scroll-container" style={{ maxHeight: '80vh', overflowY: 'auto', paddingRight: '15px' }}>
+      <div className="custom-scroll-container" style={{ maxHeight: '90vh', overflowY: 'auto', paddingRight: '15px' }}>
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
           {acomodacoes.map((acomodacao) => (
             <div className="col" key={acomodacao.id}>

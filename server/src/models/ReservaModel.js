@@ -303,16 +303,16 @@ export async function getReservasBloqueadas() {
 
   // SQL para buscar somente as reservas com status "bloqueado"
   const sql = `
-    SELECT 
-      id_reserva,
-      nome_hospede,
-      data_checkin,
-      data_checkout,
-      nome_acomodacao,
-      status_reserva,
-    FROM view_informacoes_reserva
-    WHERE status_reserva = 'bloqueado'
-  `;
+        SELECT 
+            id_reserva,
+            nome_hospede,
+            data_checkin,
+            data_checkout,
+            nome_acomodacao,
+            status_reserva
+        FROM view_informacoes_reserva
+        WHERE status_reserva = 'bloqueado';
+    `;
 
   try {
     // Executa a consulta no banco
