@@ -188,6 +188,67 @@ const Home = () => {
   return (
     <div className="container-fluid mt-3" style={{ maxWidth: '99%' }}>
       <h2 className="text-center mb-4">Gerenciamento de Acomodações</h2>
+       {/* Índice de cores */}
+    <div className="row mb-4">
+      <div className="col text-center">
+        <div className="d-flex justify-content-center align-items-center flex-wrap">
+          <div
+            className="d-flex align-items-center m-2"
+            style={{
+              backgroundColor: '#ADD8E6',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+            }}
+          ></div>
+          <span className="ms-2">Reservado</span>
+
+          <div
+            className="d-flex align-items-center m-2 ms-4"
+            style={{
+              backgroundColor: '#0000FF',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+            }}
+          ></div>
+          <span className="ms-2">Hospedado</span>
+
+          <div
+            className="d-flex align-items-center m-2 ms-4"
+            style={{
+              backgroundColor: '#FF0000',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+            }}
+          ></div>
+          <span className="ms-2">Bloqueado</span>
+
+          <div
+            className="d-flex align-items-center m-2 ms-4"
+            style={{
+              backgroundColor: '#FFA500',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+            }}
+          ></div>
+          <span className="ms-2">Em Limpeza</span>
+
+          <div
+            className="d-flex align-items-center m-2 ms-4"
+            style={{
+              backgroundColor: '#90EE90',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+            }}
+          ></div>
+          <span className="ms-2">Disponível</span>
+        </div>
+      </div>
+    </div>
       <div className="custom-scroll-container" style={{ maxHeight: '90vh', overflowY: 'auto', paddingRight: '15px' }}>
         <div className="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
           {acomodacoes.map((acomodacao) => (
@@ -258,10 +319,14 @@ const Home = () => {
                       <button
                         className="btn btn-primary mt-2 w-100"
                         onClick={() => {
-                          if (acomodacao.pago?.trim().toLowerCase() !== 'sim') {
-                            setShowPaymentWarning(true); // Exibe o modal
+                          if (
+                            acomodacao.status.toLowerCase() === 'hospedado' &&
+                            acomodacao.pago?.trim().toLowerCase() !== 'sim'
+                          ) {
+                            setShowPaymentWarning(true); // Exibe o modal de aviso
                             return;
                           }
+
                           openConfirmationModal(
                             acomodacao.idReserva,
                             acomodacao.status.toLowerCase() === 'reservado' ? 'hospedado' : 'finalizada',
@@ -282,8 +347,6 @@ const Home = () => {
                       </button>
                     </>
                   )}
-
-
                 </div>
               </div>
             </div>
@@ -297,7 +360,7 @@ const Home = () => {
         >
           <h5 className="text-center mb-3">Ação Bloqueada</h5>
           <p className="text-center">
-            O pagamento ainda não foi efetuado. Por favor, realize o pagamento antes de finalizar a reserva.
+            O pagamento ainda não foi efetuado. Por favor, confirme o pagamento antes de finalizar a reserva.
           </p>
           <div className="text-center">
             <button
@@ -310,14 +373,21 @@ const Home = () => {
         </div>
       )}
 
-      {/* Modal de Confirmação */}
       {showConfirmation && (
         <div
           className="position-fixed top-50 start-50 translate-middle bg-light border rounded shadow-lg p-4 w-50"
           style={{ zIndex: 1060 }}
         >
           <h5 className="text-center mb-3">
-            Deseja realmente {newStatus === 'disponível' ? 'finalizar a limpeza' : 'executar esta ação'}?
+            {selectedReserva && newStatus === 'hospedado' && (
+              <>Deseja realmente hospedar a reserva selecionada?</>
+            )}
+            {selectedReserva && newStatus === 'finalizada' && (
+              <>Deseja realmente finalizar a reserva selecionada?</>
+            )}
+            {selectedAcomodacao && newStatus === 'disponível' && (
+              <>Deseja realmente finalizar a limpeza da acomodação?</>
+            )}
           </h5>
           <div className="text-center">
             <button className="btn btn-secondary me-3" onClick={() => setShowConfirmation(false)}>

@@ -71,16 +71,18 @@ const AtalhoRelatorios = () => {
 
         const fetchReceitaConfirmada = async () => {
             if (!dataInicio || !dataFim) return;
-
+        
             try {
                 const response = await axios.get('http://localhost:5000/relatorios/financeiro', {
                     params: { dataInicio, dataFim },
                 });
-
+        
                 const data = response.data;
-                const labels = data.map(item => item.mes);
-                const receitas = data.map(item => item.receita);
-
+                console.log('Retorno da API receita confirmada:', data);
+        
+                const labels = data.map(item => item.nome_acomodacao); // Atualizado
+                const receitas = data.map(item => parseFloat(item.receita_total)); // Atualizado
+        
                 setReceitaConfirmada({
                     labels,
                     datasets: [
@@ -97,6 +99,7 @@ const AtalhoRelatorios = () => {
                 console.error('Erro ao buscar a receita confirmada:', error);
             }
         };
+        
 
         const fetchPrevisaoReceita = async () => {
             if (!dataInicioPrev || !dataFimPrev) return;

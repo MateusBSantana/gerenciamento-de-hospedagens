@@ -43,7 +43,6 @@ function Login() {
 
   async function efetuarLogin() {
     setIsLoading(true);
-    console.log("Tentando efetuar login...");
     try {
       const resposta = await fetch("http://localhost:5000/logar", {
         method: "POST",
@@ -53,52 +52,25 @@ function Login() {
         body: JSON.stringify({ cpf: formData.login }),
       });
 
-      console.log("Status da resposta:", resposta.status); // Loga o status HTTP da resposta
-      console.log("Headers da resposta:", resposta.headers); // Loga os headers da resposta
-
       if (!resposta.ok) {
         const errorData = await resposta.json();
         throw new Error(errorData.message || "Erro ao efetuar login");
       }
 
       const data = await resposta.json();
-      console.log("Resposta do backend:", data); // Log detalhado da resposta do backend
-
-      // Verifica se o backend retornou sucesso
-      if (resposta.ok) {
-        if (data && data.nome_funcionario) {
-          // Salva os dados no localStorage
-          console.log("Dados do funcionário recebidos:", data);
-          localStorage.setItem("userId", data.id_funcionario);
-          localStorage.setItem("userName", data.nome_funcionario);
-          localStorage.setItem("userCargo", data.cargo);
-          localStorage.setItem("userCPF", formData.login);
-          console.log("Dados do funcionário salvos no localStorage:", {
-            userId: data.id_funcionario,
-            userName: data.nome_funcionario,
-          });
-          setAuthError("");
-          console.log("Login bem-sucedido com CPF:", formData.login);
-          window.location.href = "http://localhost:3000/home"; // Redireciona após login
-        } else {
-          console.error("Nome do usuário não encontrado na resposta da API.");
-          setAuthError("Erro inesperado: Nome do usuário não encontrado.");
-        }
-      } else {
-        console.error("Erro do backend:", data.message || "Erro desconhecido.");
-        setAuthError(data.message || "CPF ou senha inválidos.");
 
       if (data && data.nome_funcionario) {
+        localStorage.setItem("userId", data.id_funcionario);
         localStorage.setItem("userName", data.nome_funcionario);
         localStorage.setItem("userCargo", data.cargo);
         localStorage.setItem("userCPF", formData.login);
+        setAuthError("");
+        window.location.href = "http://localhost:3000/home";
+      } else {
+        setAuthError("Erro inesperado: Nome do usuário não encontrado.");
       }
-
-      setAuthError("");
-      window.location.href = "http://localhost:3000";
     } catch (error) {
       console.error("Erro ao efetuar login:", error);
-      setAuthError("Erro ao se comunicar com o servidor.");
       setAuthError("CPF ou senha inválidos.");
     } finally {
       setIsLoading(false);
@@ -120,7 +92,7 @@ function Login() {
       className="d-flex justify-content-center align-items-center"
       style={{
         height: "100vh",
-        background: "#fffff",
+        background: "#ffffff",
       }}
     >
       <Row className="w-100">
@@ -136,12 +108,12 @@ function Login() {
               onSubmit={handleSubmit}
               className="p-4 rounded shadow"
               style={{
-                background: "linear-gradient(135deg, #006bb4, #003f7f)", // Gradiente de fundo para o formulário
+                background: "linear-gradient(135deg, #006bb4, #003f7f)",
                 border: "1px solid #e0e0e0",
-                color: "#ffffff", // Cor do texto no formulário
+                color: "#ffffff",
               }}
             >
-              <div className="text-center mb-4" >
+              <div className="text-center mb-4">
                 <img
                   src={logo}
                   alt="Logo Hospeda Facil"
@@ -153,16 +125,20 @@ function Login() {
               </div>
               <h2
                 style={{
-                  color: "#ffffff", // Certifique-se de que o contraste é adequado
+                  color: "#ffffff",
                   fontWeight: "bold",
                   marginBottom: "20px",
-                  textAlign: "center", // Centraliza o texto
+                  textAlign: "center",
                 }}
               >
                 Bem-vindo a Hospeda Fácil
               </h2>
 
-              <Form.Group className="mb-3" controlId="formLogin"  style={{fontWeight: "bold"}}>
+              <Form.Group
+                className="mb-3"
+                controlId="formLogin"
+                style={{ fontWeight: "bold" }}
+              >
                 <Form.Label>CPF</Form.Label>
                 <Form.Control
                   type="text"
@@ -179,7 +155,11 @@ function Login() {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formSenha" style={{fontWeight: "bold"}}>
+              <Form.Group
+                className="mb-3"
+                controlId="formSenha"
+                style={{ fontWeight: "bold" }}
+              >
                 <Form.Label>Senha</Form.Label>
                 <Form.Control
                   type="password"
@@ -201,7 +181,11 @@ function Login() {
                 type="submit"
                 className="w-100"
                 disabled={isLoading}
-                style={{ backgroundColor: "#006bb4", borderColor: "#006bb4", fontWeight: "bold", }}
+                style={{
+                  backgroundColor: "#006bb4",
+                  borderColor: "#006bb4",
+                  fontWeight: "bold",
+                }}
               >
                 {isLoading ? (
                   <Spinner animation="border" size="sm" />

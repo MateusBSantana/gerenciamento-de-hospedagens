@@ -47,7 +47,9 @@ function FormCadHospede({ handleSubmit }) {
 
     // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
     if (name === "cep" && value.length === 8) {
+      console.log("chamou",value)
       handleBuscarCep(value);
+      
     }
   };
 

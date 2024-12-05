@@ -12,6 +12,7 @@ function TabelaReservas() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
   const [statusFilter, setStatusFilter] = useState('');
+  const [showPaymentWarning, setShowPaymentWarning] = useState(false); // Modal de aviso para pagamento
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -90,7 +91,7 @@ function TabelaReservas() {
       (reserva.cpf && reserva.cpf.includes(searchTerm));
     const matchesStatus = !statusFilter || reserva.status_reserva === statusFilter;
     const isNotBlockedOrUnlocked =
-      reserva.status_reserva !== "bloqueado" && reserva.status_reserva !== "desbloqueada"; // Exclui reservas bloqueadas ou desbloqueadas
+      reserva.status_reserva !== "bloqueado" && reserva.status_reserva !== "desbloqueada";
     return matchesSearch && matchesStatus && isNotBlockedOrUnlocked;
   });
 
@@ -259,7 +260,7 @@ function TabelaReservas() {
                     className="btn btn-success w-100"
                     onClick={() => {
                       if (selectedReserva.pago !== "sim") {
-                        showAlert("A reserva não pode ser finalizada. O pagamento ainda não foi confirmado.", "danger");
+                        setShowPaymentWarning(true); // Exibe o modal de aviso de pagamento
                         return;
                       }
                       openConfirmationModal(() => handleStatusAction(selectedReserva.id_reserva, 'finalizada'), selectedReserva);
@@ -268,6 +269,27 @@ function TabelaReservas() {
                     Finalizar Reserva
                   </button>
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+        {showPaymentWarning && (
+          <div
+            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50"
+            style={{ zIndex: 1060 }}
+          >
+            <div className="bg-light border rounded shadow-lg p-4" style={{ width: "50%" }}>
+              <h5 className="text-center mb-3">Ação Bloqueada</h5>
+              <p className="text-center">
+                O pagamento ainda não foi efetuado. Por favor, confirme o pagamento antes de finalizar a reserva.
+              </p>
+              <div className="text-center">
+                <button
+                  className="btn btn-danger"
+                  onClick={() => setShowPaymentWarning(false)} // Fecha o modal
+                >
+                  Entendido
+                </button>
               </div>
             </div>
           </div>
@@ -303,4 +325,5 @@ function TabelaReservas() {
     </div>
   );
 }
+
 export default TabelaReservas;

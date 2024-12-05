@@ -206,8 +206,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formProfissao"
-                name="profissao"
-                value={formData.profissao}
+                name="Profissao"
+                value={formData.Profissao}
                 onChange={handleChange}
                 placeholder="Digite seu profissão"
                 maxLength={255}
@@ -297,7 +297,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                     handleChange(e);
                   }
                 }}
-                placeholder="Estado"
+                placeholder="Estados"
                 maxLength={255}
                 required
                 style={{ width: "250px" }}

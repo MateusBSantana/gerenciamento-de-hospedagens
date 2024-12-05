@@ -45,7 +45,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
   );
 
   return (
-    <>
+    <div style={{ height: '99vh', overflowY: 'auto', padding: '1%', boxSizing: 'border-box' }}>
       <div className="d-flex">
         <div className="flex-grow-1 p-3">
           <h2 className="text-center">Lista de Hóspedes</h2>
@@ -94,7 +94,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
                           className="btn btn-primary btn-sm"
                           onClick={() => {
                             if (textoBotao === 'Selecionar') {
-                              onSelectHospede(hospede); // Passe os dados do hóspede selecionado
+                              onSelectHospede(hospede);
                             } else if (textoBotao === 'Editar') {
                               navigate(`/editar_hospede/${hospede.id_hospede}`);
                             }
@@ -111,7 +111,7 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
     Chart as ChartJS,
@@ -30,6 +31,7 @@ const RelatorioFinanceiro = () => {
     const [dadosRelatorio, setDadosRelatorio] = useState([]);
     const [receitaTotalPeriodo, setReceitaTotalPeriodo] = useState(0);
     const [tipoGrafico, setTipoGrafico] = useState('barras'); // Estado para definir o tipo de gráfico
+    const navigate = useNavigate(); // Para navegação
 
     const buscarRelatorio = async () => {
         try {
@@ -111,8 +113,21 @@ const RelatorioFinanceiro = () => {
             overflow: 'auto',
             border: '1px solid #ddd',
             borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            position: 'relative'
         }}>
+            {/* Botão Voltar */}
+            <button
+                className="btn btn-danger"
+                style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px'
+                }}
+                onClick={() => navigate('/atalhos_relatorios')}
+            >
+                Voltar
+            </button>
             <h2>Relatório Financeiro por Acomodação</h2>
             <div className="d-flex align-items-end gap-3 mb-4">
                 <div>
