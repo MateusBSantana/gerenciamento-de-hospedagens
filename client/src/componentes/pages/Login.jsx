@@ -43,6 +43,7 @@ function Login() {
 
   async function efetuarLogin() {
     setIsLoading(true);
+    console.log("Tentando efetuar login...");
     try {
       const resposta = await fetch("http://localhost:5000/logar", {
         method: "POST",
@@ -52,12 +53,40 @@ function Login() {
         body: JSON.stringify({ cpf: formData.login }),
       });
 
+      console.log("Status da resposta:", resposta.status); // Loga o status HTTP da resposta
+      console.log("Headers da resposta:", resposta.headers); // Loga os headers da resposta
+
       if (!resposta.ok) {
         const errorData = await resposta.json();
         throw new Error(errorData.message || "Erro ao efetuar login");
       }
 
       const data = await resposta.json();
+      console.log("Resposta do backend:", data); // Log detalhado da resposta do backend
+
+      // Verifica se o backend retornou sucesso
+      if (resposta.ok) {
+        if (data && data.nome_funcionario) {
+          // Salva os dados no localStorage
+          console.log("Dados do funcionário recebidos:", data);
+          localStorage.setItem("userId", data.id_funcionario);
+          localStorage.setItem("userName", data.nome_funcionario);
+          localStorage.setItem("userCargo", data.cargo);
+          localStorage.setItem("userCPF", formData.login);
+          console.log("Dados do funcionário salvos no localStorage:", {
+            userId: data.id_funcionario,
+            userName: data.nome_funcionario,
+          });
+          setAuthError("");
+          console.log("Login bem-sucedido com CPF:", formData.login);
+          window.location.href = "http://localhost:3000/home"; // Redireciona após login
+        } else {
+          console.error("Nome do usuário não encontrado na resposta da API.");
+          setAuthError("Erro inesperado: Nome do usuário não encontrado.");
+        }
+      } else {
+        console.error("Erro do backend:", data.message || "Erro desconhecido.");
+        setAuthError(data.message || "CPF ou senha inválidos.");
 
       if (data && data.nome_funcionario) {
         localStorage.setItem("userName", data.nome_funcionario);
@@ -68,6 +97,8 @@ function Login() {
       setAuthError("");
       window.location.href = "http://localhost:3000";
     } catch (error) {
+      console.error("Erro ao efetuar login:", error);
+      setAuthError("Erro ao se comunicar com o servidor.");
       setAuthError("CPF ou senha inválidos.");
     } finally {
       setIsLoading(false);

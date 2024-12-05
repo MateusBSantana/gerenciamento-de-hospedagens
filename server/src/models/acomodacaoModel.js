@@ -63,38 +63,83 @@ export async function mostrandoAcomodacaoPorId(id) {
 
 // Atualizando Acomodação
 export async function atualizandoAcomodacao(id, acomodacao) {
-    const sql = `UPDATE acomodacao SET 
-        Nome = ?, Capacidade = ?, Tipo = ?, Observacoes = ?, Status = ?, 
-        Wifi = ?, Tv = ?, arCondicionado = ?, Frigobar = ?, 
-        banheirosAdaptados = ?, sinalizacaoBraille = ?, 
-        entradaAcessivel = ?, estacionamentoAcessivel = ?
-        WHERE id = ?`;
+    // Construir dinamicamente o SQL e os parâmetros
+    const campos = [];
+    const valores = [];
 
-    const params = [
-        acomodacao.nome,
-        acomodacao.capacidade,
-        acomodacao.tipo,
-        acomodacao.observacoes,
-        acomodacao.status || 'Disponível',
-        acomodacao.wifi || false,
-        acomodacao.tv || false,
-        acomodacao.arCondicionado || false,
-        acomodacao.frigobar || false,
-        acomodacao.banheirosAdaptados || false,
-        acomodacao.sinalizacaoBraille || false,
-        acomodacao.entradaAcessivel || false,
-        acomodacao.estacionamentoAcessivel || false,
-        id
-    ];
+    if (acomodacao.nome !== undefined) {
+        campos.push('Nome = ?');
+        valores.push(acomodacao.nome);
+    }
+    if (acomodacao.capacidade !== undefined) {
+        campos.push('Capacidade = ?');
+        valores.push(acomodacao.capacidade);
+    }
+    if (acomodacao.tipo !== undefined) {
+        campos.push('Tipo = ?');
+        valores.push(acomodacao.tipo);
+    }
+    if (acomodacao.observacoes !== undefined) {
+        campos.push('Observacoes = ?');
+        valores.push(acomodacao.observacoes);
+    }
+    if (acomodacao.status !== undefined) {
+        campos.push('Status = ?');
+        valores.push(acomodacao.status);
+    }
+    if (acomodacao.wifi !== undefined) {
+        campos.push('Wifi = ?');
+        valores.push(acomodacao.wifi);
+    }
+    if (acomodacao.tv !== undefined) {
+        campos.push('Tv = ?');
+        valores.push(acomodacao.tv);
+    }
+    if (acomodacao.arCondicionado !== undefined) {
+        campos.push('arCondicionado = ?');
+        valores.push(acomodacao.arCondicionado);
+    }
+    if (acomodacao.frigobar !== undefined) {
+        campos.push('Frigobar = ?');
+        valores.push(acomodacao.frigobar);
+    }
+    if (acomodacao.banheirosAdaptados !== undefined) {
+        campos.push('banheirosAdaptados = ?');
+        valores.push(acomodacao.banheirosAdaptados);
+    }
+    if (acomodacao.sinalizacaoBraille !== undefined) {
+        campos.push('sinalizacaoBraille = ?');
+        valores.push(acomodacao.sinalizacaoBraille);
+    }
+    if (acomodacao.entradaAcessivel !== undefined) {
+        campos.push('entradaAcessivel = ?');
+        valores.push(acomodacao.entradaAcessivel);
+    }
+    if (acomodacao.estacionamentoAcessivel !== undefined) {
+        campos.push('estacionamentoAcessivel = ?');
+        valores.push(acomodacao.estacionamentoAcessivel);
+    }
+
+    // Garantir que há algo para atualizar
+    if (campos.length === 0) {
+        throw new Error('Nenhum campo fornecido para atualização.');
+    }
+
+    // Adicionar o ID no final dos parâmetros
+    valores.push(id);
+
+    // Construir o SQL dinamicamente
+    const sql = `UPDATE acomodacao SET ${campos.join(', ')} WHERE id = ?`;
 
     try {
-        const [retorno] = await conexao.query(sql, params);
-        return [200, retorno];  // Retorna código 200 para sucesso
+        const [retorno] = await conexao.query(sql, valores);
+        return [200, retorno]; // Retorna código 200 para sucesso
     } catch (error) {
         console.error('Erro ao atualizar acomodação:', error);
-        throw error;  // Lança erro para ser tratado em outro lugar
+        throw error; // Lança erro para ser tratado em outro lugar
     }
 }
+
 
 // Excluindo Acomodação
 export async function excluindoAcomodacao(id) {
@@ -139,7 +184,7 @@ WHERE NOT EXISTS (
         (? < r.data_checkout AND ? > r.data_checkin) OR
         (? < r.data_checkout AND ? > r.data_checkin)
     )
-    AND r.status_reserva IN ('reservado', 'hospedado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
+    AND r.status_reserva IN ('reservado', 'hospedado', 'bloqueado') -- Adicionando a condição para excluir 'reservado' e 'hospedado'
 )
 
     `;
@@ -162,3 +207,70 @@ WHERE NOT EXISTS (
       return [500, error];
     }
 }
+
+/// Bloquear Acomodação
+export async function bloquearAcomodacao(funcionarioId, acomodacaoId, dataInicio, dataFim, motivo) {
+    const sql = `
+        INSERT INTO reservas (fk_hospede, fk_acomodacao, data_checkin, data_checkout, observacoes, status_reserva)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    const params = [
+        funcionarioId,       // ID do funcionário
+        acomodacaoId,        // ID da acomodação
+        dataInicio,          // Data de início do bloqueio
+        dataFim,             // Data de fim do bloqueio
+        motivo,              // Motivo do bloqueio
+        "bloqueado"          // Status da reserva
+    ];
+
+    try {
+        const [resultado] = await conexao.query(sql, params);
+        return [201, { message: "Bloqueio registrado com sucesso", resultado }];
+    } catch (error) {
+        console.error("Erro ao bloquear acomodação:", error);
+        return [500, { message: "Erro ao bloquear acomodação", error }];
+    }
+}
+
+export async function verificarReservasConflitantes(acomodacaoId, dataInicio, dataFim) {
+    const sql = `
+        SELECT *
+        FROM reservas
+        WHERE fk_acomodacao = ?
+          AND status_reserva IN ('reservado', 'hospedado')
+          AND (
+            (? BETWEEN data_checkin AND data_checkout) OR
+            (? BETWEEN data_checkin AND data_checkout) OR
+            (data_checkin BETWEEN ? AND ?) OR
+            (data_checkout BETWEEN ? AND ?)
+          )
+    `;
+
+    const params = [
+        acomodacaoId,
+        dataInicio,
+        dataFim,
+        dataInicio,
+        dataFim,
+        dataInicio,
+        dataFim
+    ];
+
+    try {
+        const [resultado] = await conexao.query(sql, params);
+
+        if (resultado.length > 0) {
+            // Há reservas conflitantes
+            return [200, { conflito: true, reservas: resultado }];
+        }
+
+        // Nenhuma reserva conflitante encontrada
+        return [200, { conflito: false }];
+    } catch (error) {
+        console.error("Erro ao verificar reservas conflitantes:", error);
+        return [500, { message: "Erro ao verificar reservas conflitantes", error }];
+    }
+}
+
+

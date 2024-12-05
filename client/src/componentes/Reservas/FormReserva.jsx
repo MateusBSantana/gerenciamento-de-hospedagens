@@ -182,10 +182,19 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     if (formData.data_checkin && formData.data_checkout) {
       const qtdDiarias = calcularDiarias(formData.data_checkin, formData.data_checkout);
       setDiarias(qtdDiarias);
+      setFormData((prev) => ({
+        ...prev,
+        quantidade_diarias: qtdDiarias, // Atualiza o número de diárias no formData
+      }));
     } else {
       setDiarias(0);
+      setFormData((prev) => ({
+        ...prev,
+        quantidade_diarias: 0, // Define 0 se as datas forem inválidas
+      }));
     }
   }, [formData.data_checkin, formData.data_checkout]);
+  
 
 
   const calcularDiarias = (dataInicio, dataFim) => {
@@ -209,10 +218,19 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     if (formData.valor_diaria && diarias) {
       const total = calcularValorTotal(parseFloat(formData.valor_diaria), diarias);
       setValorTotal(total);
+      setFormData((prev) => ({
+        ...prev,
+        valor_total: total.toFixed(2), // Atualiza o valor total no formData
+      }));
     } else {
       setValorTotal(0);
+      setFormData((prev) => ({
+        ...prev,
+        valor_total: "0.00", // Define 0.00 se o valor da diária ou diárias forem inválidos
+      }));
     }
   }, [formData.valor_diaria, diarias]);
+  
 
 
 
@@ -277,7 +295,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
           </div>
         </div>
 
-
         {/* Campo Hóspede */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Hóspede:</label>
@@ -325,7 +342,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
           </div>
         )}
 
-
         {/* Campo Data de Entrada */}
         <div className="mb-3 d-flex align-items-center">
           <label className="me-2 text-end" style={{ width: "160px" }}>Data de Entrada:</label>
@@ -336,8 +352,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             value={formData.data_checkin ? formData.data_checkin.split('T')[0] : ''}
             onChange={handleDateChange}
             style={{ width: "200px" }}
-            min={new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-CA')}
-
+            min={!isEditing ? new Date().toLocaleDateString('en-CA') : undefined} // Remove a restrição ao editar
             disabled={isNonEditable}
           />
         </div>
@@ -388,7 +403,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
             </button>
           </div>
         </div>
-
         {mostrarTabelaAcomodacoes && (
           <div
             className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50"
@@ -401,7 +415,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
                 dataInicio={dataInicio}
                 dataFim={dataFim}
               />
-
               {/* Botão de Fechar posicionado no canto superior direito e cor vermelha */}
               <button
                 type="button"

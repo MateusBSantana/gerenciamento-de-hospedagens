@@ -6,24 +6,28 @@ import db from '../conexao.js';
 
 // Cadastrando reserva
 export async function createReserva(reserva) {
+  console.log("Dados recebidos para cadastro da reserva:", reserva);
   const conexao = mysql.createPool(db);
   const sql = `INSERT INTO reservas 
-    (status_reserva, fk_hospede, fk_acomodacao, data_checkin, data_checkout, valor_diaria, numero_adulto, numero_crianca, observacoes, pago ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  (status_reserva, fk_hospede, fk_acomodacao, data_checkin, data_checkout, valor_diaria, numero_adulto, numero_crianca, observacoes, pago, quantidade_diarias, valor_total) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  const params = [
-    reserva.status_reserva,           
-    reserva.fk_hospede,            
-    reserva.fk_acomodacao,      
-    reserva.data_checkin,       
-    reserva.data_checkout,          
-    reserva.valor_diaria,        
-    reserva.numero_adulto,         
-    reserva.numero_crianca,        
-    reserva.observacoes,
-    reserva.pago      
+
+    const params = [
+      reserva.status_reserva,           
+      reserva.fk_hospede,            
+      reserva.fk_acomodacao,      
+      reserva.data_checkin,       
+      reserva.data_checkout,          
+      reserva.valor_diaria,        
+      reserva.numero_adulto,         
+      reserva.numero_crianca,        
+      reserva.observacoes,
+      reserva.pago,
+      reserva.quantidade_diarias,  
+      reserva.valor_total          
+    ];
     
-  ];
 
   try {
     const [retorno] = await conexao.query(sql, params);
@@ -44,7 +48,7 @@ export async function readReservas() {
 
     try {
         const [retorno] = await conexao.query(sql);
-        console.log("Mostrando Reservas");
+        console.log("Mostrando Reservas",retorno);
         return [200, retorno];
     } catch (error) {
         console.log(error);
@@ -74,17 +78,15 @@ export async function getOneReserva(id) {
   }
 }
 
-
+// atualizando reserva
 export async function updateReserva(reserva, id) {
   console.log("ReservaModel: updateReserva");
   console.log('Dados recebidos para atualização:', reserva);
   const conexao = mysql.createPool(db);
-  
   // Verifica se o campo observacoes está vazio, e se sim, substitui por null
   const observacoes = reserva.observacoes && reserva.observacoes.trim() !== "" 
                         ? reserva.observacoes 
                         : null;
-
   const sql = `UPDATE reservas SET 
       status_reserva = ?, 
       fk_hospede = ?, 
@@ -95,9 +97,10 @@ export async function updateReserva(reserva, id) {
       numero_adulto = ?, 
       numero_crianca = ?, 
       observacoes = ?, 
-      pago = ?
+      pago = ?, 
+      quantidade_diarias = ?, 
+      valor_total = ? 
       WHERE id_reserva = ?`;
-
   const params = [
     reserva.status_reserva,           
     reserva.fk_hospede,            
@@ -107,19 +110,21 @@ export async function updateReserva(reserva, id) {
     reserva.valor_diaria,        
     reserva.numero_adulto,         
     reserva.numero_crianca,        
-    observacoes,  // Campo observacoes tratado como null quando vazio
+    observacoes, 
     reserva.pago,
+    reserva.quantidade_diarias, 
+    reserva.valor_total,        
     id
   ];
 
   try {
     const [retorno] = await conexao.query(sql, params);
     console.log("Atualizando Reserva");
-    
+
     if (retorno.affectedRows < 1) {
       return [404, { mensagem: "Reserva não encontrada" }];
     }
-    
+
     return [200, { mensagem: "Reserva atualizada" }];
   } catch (error) {
     console.error(error);
@@ -128,40 +133,76 @@ export async function updateReserva(reserva, id) {
 }
 
 
-// Alterando o status de uma reserva
 export async function updateStatusReserva(id, novoStatus) {
   console.log("ReservaModel: updateStatusReserva");
-  
+
   const conexao = mysql.createPool(db); // Configuração da conexão com o banco de dados
-  
+
   // SQL para atualizar o campo `status_reserva` da reserva com o ID especificado
-  const sql = `UPDATE reservas SET status_reserva = ? WHERE id_reserva = ?`;
-  const params = [novoStatus, id];
+  const sqlAtualizarReserva = `UPDATE reservas SET status_reserva = ? WHERE id_reserva = ?`;
+  const paramsReserva = [novoStatus, id];
 
   try {
-    // Executa a consulta no banco de dados
-    const [retorno] = await conexao.query(sql, params);
+    // Inicia uma transação
+    await conexao.query("START TRANSACTION");
+
+    // Atualiza o status da reserva
+    const [retornoReserva] = await conexao.query(sqlAtualizarReserva, paramsReserva);
     console.log("Atualizando status da reserva no banco de dados");
 
-    // Verifica se a reserva foi encontrada e atualizada
-    if (retorno.affectedRows < 1) {
+    if (retornoReserva.affectedRows < 1) {
       console.log(`Nenhuma reserva encontrada com o ID: ${id}`);
+      await conexao.query("ROLLBACK");
       return [404, { mensagem: "Reserva não encontrada ou nenhum registro atualizado." }];
     }
+
+    // Se o novo status for "finalizada", atualiza o status da acomodação para "em limpeza"
+    if (novoStatus === "finalizada") {
+      // Obter o ID da acomodação associada à reserva
+      const sqlObterAcomodacao = `SELECT fk_acomodacao FROM reservas WHERE id_reserva = ?`;
+      const [resultadoAcomodacao] = await conexao.query(sqlObterAcomodacao, [id]);
+
+      if (resultadoAcomodacao.length === 0) {
+        console.log(`Nenhuma acomodação encontrada para a reserva ID: ${id}`);
+        await conexao.query("ROLLBACK");
+        return [404, { mensagem: "Acomodação não encontrada para esta reserva." }];
+      }
+
+      const idAcomodacao = resultadoAcomodacao[0].fk_acomodacao;
+      console.log(`ID da acomodação associada à reserva: ${idAcomodacao}`);
+
+      // SQL para atualizar o status da acomodação
+      const sqlAtualizarAcomodacao = `
+        UPDATE acomodacao 
+        SET status = 'em limpeza' 
+        WHERE id = ?`;
+      const paramsAcomodacao = [idAcomodacao];
+
+      const [retornoAcomodacao] = await conexao.query(sqlAtualizarAcomodacao, paramsAcomodacao);
+
+      if (retornoAcomodacao.affectedRows < 1) {
+        console.log(`Falha ao atualizar o status da acomodação ID: ${idAcomodacao}`);
+        await conexao.query("ROLLBACK");
+        return [404, { mensagem: "Falha ao atualizar o status da acomodação." }];
+      }
+
+      console.log("Status da acomodação atualizado para 'em limpeza'");
+    }
+
+    // Confirma a transação
+    await conexao.query("COMMIT");
 
     // Retorna sucesso com mensagem
     return [200, { mensagem: `Status da reserva atualizado para '${novoStatus}' com sucesso.` }];
   } catch (error) {
-    console.error('Erro ao atualizar status da reserva:', error.message);
-
-    // Retorna erro com detalhes
-    return [500, { mensagem: 'Erro ao atualizar status da reserva.', detalhes: error.message }];
+    console.error('Erro ao atualizar status da reserva ou acomodação:', error.message);
+    await conexao.query("ROLLBACK");
+    return [500, { mensagem: 'Erro ao atualizar status da reserva ou acomodação.', detalhes: error.message }];
   } finally {
     // Fecha a conexão do pool
     await conexao.end();
   }
 }
-
 
 export const verificarDisponibilidade = async (dataEntrada, dataSaida, acomodacaoId, reservaId) => {
   console.log('ReservaModel: verificarDisponibilidade');
@@ -216,10 +257,12 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
       nome_hospede, 
       data_checkin, 
       data_checkout,
-      id_reserva 
+      id_reserva,
+      pago 
     FROM view_informacoes_reserva
     WHERE fk_acomodacao = ?
       AND ? BETWEEN data_checkin AND data_checkout
+      AND status_reserva IN ('Reservado', 'Hospedado', 'Bloqueado', 'em limpeza')
   `;
 
   const params = [acomodacaoId, dataAtual];
@@ -249,6 +292,48 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
     if (conexao && conexao.end) {
       await conexao.end();
     }
+  }
+}
+
+// Função para buscar reservas com status bloqueado
+export async function getReservasBloqueadas() {
+  console.log('ReservaModel: getReservasBloqueadas');
+  
+  const conexao = mysql.createPool(db); // Cria uma pool de conexões com o banco
+
+  // SQL para buscar somente as reservas com status "bloqueado"
+  const sql = `
+        SELECT 
+            id_reserva,
+            nome_hospede,
+            data_checkin,
+            data_checkout,
+            nome_acomodacao,
+            status_reserva
+        FROM view_informacoes_reserva
+        WHERE status_reserva = 'bloqueado';
+    `;
+
+  try {
+    // Executa a consulta no banco
+    const [retorno] = await conexao.query(sql);
+    console.log('Reservas bloqueadas encontradas:', retorno.length);
+
+    // Verifica se há resultados
+    if (retorno.length < 1) {
+      return [404, { mensagem: 'Nenhuma reserva bloqueada encontrada.' }];
+    }
+
+    // Retorna as reservas encontradas
+    return [200, retorno];
+  } catch (error) {
+    console.error('Erro ao buscar reservas bloqueadas:', error);
+
+    // Retorna erro padronizado
+    return [500, { mensagem: 'Erro interno ao buscar reservas bloqueadas.', detalhes: error.message }];
+  } finally {
+    // Fecha a pool de conexões
+    await conexao.end();
   }
 }
 

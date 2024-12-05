@@ -2,14 +2,19 @@ import express from 'express';
 import cors from 'cors';
 
 import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, 
-mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis } from './controllers/acomodacoesController.js'; 
+mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis, bloquearAcomodacao, 
+verificarConflitoReservas} from './controllers/acomodacoesController.js'; 
 import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva,
-   alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva } from './controllers/reservaController.js';
+   alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva, 
+   buscarReservasBloqueadas} from './controllers/reservaController.js';
 import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
- 
+import { buscarRelatorioFinanceiro, getPrevisaoReceita, getRelatorioOcupacao } from './controllers/relatorioFinanceiroController.js'; // Importando o controlador
 
+
+
+ 
 const app = express();
 const porta = 5000;
 
@@ -43,6 +48,14 @@ app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDis
 // Rota para verificar a disponibilidade de uma acomodação nas novas datas
 app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarDisponibilidadeAcomodacao);
 
+// Rota para bloquear acomodação
+app.post("/bloquear", bloquearAcomodacao);
+app.post("/acomodacoes/verificar-conflito", verificarConflitoReservas);
+// Rota para buscar reservas bloqueadas
+app.get('/reservas/bloqueadas', buscarReservasBloqueadas);
+
+
+
 // Rotas de CRUD de reserva
 app.post('/reservas', cadastroReserva);
 app.get('/reservas', mostrandoReservas);
@@ -61,6 +74,12 @@ app.post('/logar/',logarUsuario);
 
 // Rota para Home
 app.get('/status/:acomodacaoId', buscarStatusReserva);
+
+// Adicione no bloco de rotas
+app.get('/relatorios/financeiro', buscarRelatorioFinanceiro);
+app.get('/relatorios/previsao-receita', getPrevisaoReceita);
+app.get('/relatorios/ocupacao', getRelatorioOcupacao);
+
 
 
 app.listen(porta, () => {

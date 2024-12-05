@@ -1,4 +1,5 @@
-import { createReserva, readReservas, getOneReserva, updateReserva, updateStatusReserva, verificarDisponibilidade, buscarStatusReservaPorData } from "../models/reservaModel.js";
+import { createReserva, readReservas, getOneReserva, updateReserva, updateStatusReserva, verificarDisponibilidade, 
+  buscarStatusReservaPorData, getReservasBloqueadas } from "../models/reservaModel.js";
 import { isNullOrEmpty, validateReserva } from "../validations/ReservaValidation.js";
 
 
@@ -100,7 +101,7 @@ export async function alterarStatusReserva(req, res) {
   console.log(`Recebida requisição para alterar status da reserva ID: ${id} para ${novoStatus}`);
 
   // Validação do campo `novoStatus`
-  const statusPermitidos = ['cancelada', 'finalizada', 'hospedado'];
+  const statusPermitidos = ['cancelada', 'finalizada', 'hospedado', 'desbloqueada'];
   if (!statusPermitidos.includes(novoStatus)) {
     return res.status(400).json({ mensagem: `Status inválido. Use um dos seguintes: ${statusPermitidos.join(', ')}.` });
   }
@@ -187,6 +188,7 @@ export async function buscarReservas(req, res) {
   }
 }
 
+//buscar status reserva
 export async function buscarStatusReserva(req, res) {
   const acomodacaoId = req.params.acomodacaoId;
   const dataAtual = req.query.data;
@@ -204,3 +206,10 @@ export async function buscarStatusReserva(req, res) {
   }
 }
 
+//reservas bloqueadas
+export async function buscarReservasBloqueadas(req, res) {
+  const [status, resultado] = await getReservasBloqueadas();
+
+  // Retorna o status e o resultado para a resposta da API
+  res.status(status).json(resultado);
+}

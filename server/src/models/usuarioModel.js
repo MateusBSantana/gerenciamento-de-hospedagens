@@ -122,6 +122,8 @@ export async function getUserByLoginPassword(cpf) {
 
     const [resposta] = await conexao.query(sql, params);
 
+    console.log("resposta backend",resposta)
+
     // Verificar se o funcionário foi encontrado
     if (resposta.length < 1) {
       // Mensagem genérica para evitar a exposição de informações
