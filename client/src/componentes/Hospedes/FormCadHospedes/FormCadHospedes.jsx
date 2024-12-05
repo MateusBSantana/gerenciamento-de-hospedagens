@@ -152,10 +152,6 @@ function FormCadHospede({ handleSubmit }) {
       return false;
     }
 
-    if (!formData.celular || !/^\d{10,11}$/.test(formData.celular)) {
-      showAlert("O campo Número do Celular é obrigatório e deve ser válido.", "danger");
-      return false;
-    }
 
     // Se todos os campos estiverem preenchidos corretamente, chama a função de envio e navega para a próxima página
     handleSubmit(formData);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Tab } from "react-bootstrap";
+import Alertas from "../../layout/Alertas";
 
 function FormHospede({ setFormData, formData, handleChange, submit }) {
   const formGroupStyle = {
@@ -12,6 +13,17 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
     width: "160px",
     textAlign: "right",
     marginRight: "0.5rem",
+  };
+
+  const [alertProps, setAlertProps] = useState({
+    show: false,
+    message: "",
+    variant: "danger",
+  });
+
+  const showAlert = (message, variant) => {
+    setAlertProps({ show: true, message, variant });
+    setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
   const inputStyle = { width: "400px" };
@@ -37,6 +49,12 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
 
   return (
     <>
+      <Alertas
+        show={alertProps.show}
+        variant={alertProps.variant}
+        message={alertProps.message}
+        onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
+      />
       <Tab.Pane eventKey="informacoes">
         <Form
           onSubmit={submit}
@@ -58,9 +76,15 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                   const value = e.target.value;
                   if (/^[a-zA-ZáéíóúÁÉÍÓÚãõâêîôûçÇ\s'-]*$/.test(value)) {
                     handleChange(e);
+                  } else {
+                    showAlert(
+                      "O campo Nome Completo deve conter apenas letras",
+                      "danger"
+                    );
                   }
                 }}
                 placeholder="Digite seu nome completo"
+                maxLength={255}
                 required
                 style={inputStyle}
               />
@@ -86,8 +110,13 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
 
                     // Valida o CPF se o valor tiver 11 dígitos
                     if (value.length === 11 && !validarCPF(value)) {
-                      alert("O CPF informado é inválido.");
+                      showAlert("O CPF informado é inválido.", "danger");
                     }
+                  } else {
+                    showAlert(
+                      "O campo CPF deve conter apenas números",
+                      "danger"
+                    );
                   }
                 }}
                 placeholder="Digite seu CPF"
@@ -107,7 +136,22 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 id="formRg"
                 name="rg"
                 value={formData.rg}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Permite apenas números
+                  if (/^\d*$/.test(value)) {
+                    // Atualiza o valor do RG no estado
+                    setFormData({ ...formData, rg: value });
+                  } else {
+                    showAlert(
+                      "O campo RG deve conter apenas números",
+                      "danger"
+                    );
+                  }
+                }}
+                placeholder="Digite seu RG"
+                maxLength={20}
                 required
                 style={{ width: "150px" }}
               />
@@ -165,6 +209,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="profissao"
                 value={formData.profissao}
                 onChange={handleChange}
+                placeholder="Digite seu profissão"
+                maxLength={255}
                 required
                 style={inputStyle}
               />
@@ -185,6 +231,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="observacoes"
                 value={formData.observacoes}
                 onChange={handleChange}
+                placeholder="Observaões..."
+                maxLength={255}
                 style={{ width: "400px" }}
               />
             </div>
@@ -209,7 +257,21 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 id="formCep"
                 name="cep"
                 value={formData.cep}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Permite apenas números
+                  if (/^\d*$/.test(value)) {
+                    // Atualiza o valor do CEP no estado
+                    setFormData({ ...formData, cep: value });
+                  } else {
+                    showAlert(
+                      "O campo CEP deve conter apenas números",
+                      "danger"
+                    );
+                  }
+                }}
+                maxLength={9}
                 required
                 style={{ width: "180px" }}
               />
@@ -235,6 +297,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                     handleChange(e);
                   }
                 }}
+                placeholder="Estado"
+                maxLength={255}
                 required
                 style={{ width: "250px" }}
               />
@@ -255,6 +319,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="cidade"
                 value={formData.cidade}
                 onChange={handleChange}
+                placeholder="Cidade"
+                maxLength={255}
                 required
                 style={{ width: "250px" }}
               />
@@ -275,6 +341,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="bairro"
                 value={formData.bairro}
                 onChange={handleChange}
+                placeholder="Bairro"
+                maxLength={255}
                 required
                 style={{ width: "250px" }}
               />
@@ -295,6 +363,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="rua"
                 value={formData.rua}
                 onChange={handleChange}
+                placeholder="Rua"
+                maxLength={255}
                 required
                 style={{ width: "350px" }}
               />
@@ -315,6 +385,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="numero"
                 value={formData.numero}
                 onChange={handleChange}
+                placeholder="Número"
+                maxLength={255}
                 required
                 style={{ width: "100px" }}
               />
@@ -335,6 +407,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="complemento"
                 value={formData.complemento}
                 onChange={handleChange}
+                placeholder="Complemento"
+                maxLength={255}
                 style={{ width: "350px" }}
               />
             </div>
@@ -354,6 +428,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="observacoes_endereco"
                 value={formData.observacoes_endereco}
                 onChange={handleChange}
+                placeholder="Observações..."
+                maxLength={255}
                 style={{ width: "350px" }}
               />
             </div>
@@ -379,6 +455,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Digite seu Email"
+                maxLength={255}
                 required
                 style={{ width: "400px" }}
               />
@@ -398,7 +476,22 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 id="formCelular"
                 name="celular"
                 value={formData.celular}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // Permite apenas números
+                  if (/^\d*$/.test(value)) {
+                    // Atualiza o valor do Celular no estado
+                    setFormData({ ...formData, celular: value });
+                  } else {
+                    showAlert(
+                      "O campo Número do Celular deve conter apenas números",
+                      "danger"
+                    );
+                  }
+                }}
+                placeholder="Digite seu número de celular"
+                maxLength={255}
                 required
                 style={{ width: "200px" }}
               />

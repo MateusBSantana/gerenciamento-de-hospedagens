@@ -8,7 +8,7 @@ import db from '../conexao.js';
 export async function createHospede(hospede) {
   const conexao = mysql.createPool(db);
   const sql = `INSERT INTO hospedes 
-          (nome_hospede, cpf, rg, data_nascimento, sexo, Profissao, observacoes, rua, numero, cidade, estado, cep, bairro, complemento, observacoes_endereco, email, celular) 
+          (nome_hospede, cpf, rg, data_nascimento, sexo, profissao, observacoes, rua, numero, cidade, estado, cep, bairro, complemento, observacoes_endereco, email, celular) 
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const params = [
     hospede.nome_hospede,
