@@ -41,6 +41,7 @@ function FormCadHospede({ handleSubmit }) {
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -48,33 +49,10 @@ function FormCadHospede({ handleSubmit }) {
     // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
     if (name === "cep" && value.length === 8) {
       console.log("chamou",value)
-      handleBuscarCep(value);
       
     }
   };
 
-  // Função para buscar o endereço pelo CEP
-  const handleBuscarCep = async (cep) => {
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
-
-      if (!data.erro) {
-        setFormData((prevData) => ({
-          ...prevData,
-          estado: data.uf || "",
-          cidade: data.localidade || "",
-          bairro: data.bairro || "",
-          rua: data.logradouro || "",
-          complemento: data.complemento || "",
-        }));
-      } else {
-        console.error("CEP inválido");
-      }
-    } catch (error) {
-      console.error("Erro ao consultar o CEP:", error);
-    }
-  };
 
   const submit = (e) => {
   e.preventDefault();
@@ -160,8 +138,7 @@ function FormCadHospede({ handleSubmit }) {
     txtHospede(formData);
     navigate("/tabela_hospedes");
   }
-};
-
+}; 
 
   const handleCancel = () => {
     navigate("/tabela_hospedes");

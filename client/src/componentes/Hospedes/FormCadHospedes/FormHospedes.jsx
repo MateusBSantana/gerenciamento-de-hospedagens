@@ -47,6 +47,32 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
     return digito1 === parseInt(cpf[9]) && digito2 === parseInt(cpf[10]);
   };
 
+  // Função para buscar o endereço pelo CEP
+  const handleBuscarCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        setFormData((prevData) => ({
+          ...prevData,
+          estado: data.uf || "",
+          cidade: data.localidade || "",
+          bairro: data.bairro || "",
+          rua: data.logradouro || "",
+          complemento: data.complemento || "",
+        }));
+        console.log("CEP enviado:", cep);
+        console.log("Resposta da API:", data);
+      } else {
+        console.error("CEP inválido");
+      }
+    } catch (error) {
+      console.error("Erro ao consultar o CEP:", error);
+    }
+  };
+
+
   return (
     <>
       <Alertas
@@ -206,8 +232,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formProfissao"
-                name="Profissao"
-                value={formData.Profissao}
+                name="profissao"
+                value={formData.profissao}
                 onChange={handleChange}
                 placeholder="Digite seu profissão"
                 maxLength={255}
@@ -259,19 +285,20 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 value={formData.cep}
                 onChange={(e) => {
                   const value = e.target.value;
-
+              
                   // Permite apenas números
                   if (/^\d*$/.test(value)) {
-                    // Atualiza o valor do CEP no estado
                     setFormData({ ...formData, cep: value });
+              
+                    // Chama a função buscar CEP quando o valor atinge 8 dígitos
+                    if (value.length === 8) {
+                      handleBuscarCep(value);
+                    }
                   } else {
-                    showAlert(
-                      "O campo CEP deve conter apenas números",
-                      "danger"
-                    );
+                    showAlert("O campo CEP deve conter apenas números", "danger");
                   }
                 }}
-                maxLength={9}
+                maxLength={8}
                 required
                 style={{ width: "180px" }}
               />
