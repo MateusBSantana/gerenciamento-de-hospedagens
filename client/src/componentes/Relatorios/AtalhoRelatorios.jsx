@@ -138,7 +138,16 @@ const AtalhoRelatorios = () => {
     }, [dataInicio, dataFim, dataInicioPrev, dataFimPrev]);
 
     return (
-        <div className="container mt-5">
+        <div
+        className="container-fluid mt-5"
+        style={{
+            minHeight: '95vh', // Garante que ocupa toda a altura da tela
+            padding: '0 20px',
+            overflow: 'hidden', // Impede rolagem no navegador
+            display: 'flex',
+            flexDirection: 'column',
+        }}
+    >
             <h2>Dashboard de Relatórios</h2>
             <p>Selecione o relatório que deseja visualizar:</p>
             <div className="d-flex flex-column gap-3">
@@ -152,8 +161,8 @@ const AtalhoRelatorios = () => {
                     Relatório de Ocupação por Período
                 </Link>
             </div>
-            <div className="overflow-auto" style={{ maxHeight: '400px' }}>
-                <div className="mb-5" style={{ height: '300px' }}>
+            <div className="overflow-auto mt-4" style={{ maxHeight: 'calc(83vh - 150px)' }}>
+                <div className="mb-4" style={{ height: '400px' }}>
                     <h4>Previsão de Ocupação (Próximos 30 Dias)</h4>
                     <Bar
                         data={previsaoOcupacao}
